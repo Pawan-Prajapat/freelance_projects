@@ -1,0 +1,56 @@
+import React, { lazy, Suspense } from 'react';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+const Home = lazy(() => import('./components/client/home.jsx'));
+const Navbar = lazy(() => import('./components/client/Navbar.jsx'));
+const Skin = lazy(() => import('./components/client/skin.jsx'));
+const Hair = lazy(() => import('./components/client/hair.jsx'));
+const Combopack = lazy(() => import('./components/client/combopack.jsx'));
+const Deals = lazy(() => import('./components/client/deals.jsx'));
+const ProductDetail = lazy(() => import('./components/client/productDetailWhole.jsx'))
+const Footer = lazy(() => import("./components/client/footer.jsx"));
+const PaymentDetailSummary = lazy(() => import("./components/client/paymentDetailSummary.jsx"));
+const AddToCart = lazy(() => import("./components/client/addToCart.jsx"))
+const Register = lazy(() => import("./components/client/register.jsx"))
+const Logout = lazy(() => import("./components/client/logout.jsx"))
+import DotLoader from "react-spinners/DotLoader";
+
+// admin components
+const Products = lazy(() => import('./components/admin/products.jsx'));
+const InsertProducts = lazy(() => import('./components/admin/InsertProducts.jsx'));
+const UserDetail = lazy(() => import('./components/admin/UserDetail.jsx'));
+const UserPaymentDetail = lazy(() => import('./components/admin/UserPaymentDetail.jsx'));
+const AdminLayout = lazy(() => import('./components/layouts/adminLayout.jsx'));
+
+function App() {
+
+  return (
+    <Router>
+      <Navbar />
+
+      <Suspense fallback={<div className='w-full h-screen flex justify-center items-center'><DotLoader color="#36d7b7" loading={true} /></div>}>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path="/hair" element={<Hair which="hair" />} />
+          <Route path="/addtocart" element={<AddToCart />} />
+          <Route path="/face" element={<Skin />} />
+          <Route path="/combopack" element={<Combopack />} />
+          <Route path="/deals" element={<Deals />} />
+          <Route path='/productDetail/:id' element={<ProductDetail />} />
+          <Route path='/paymentDetailSummary/:id' element={<PaymentDetailSummary />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/logout' element={<Logout />} />
+          <Route path='/admin' element={<AdminLayout />} >
+            <Route path='products' element={<Products />} />
+            <Route path='insertProduct' element={<InsertProducts />} />
+            <Route path='userDetail' element={<UserDetail />} />
+            <Route path='userPaymentDetail' element={<UserPaymentDetail />} />
+          </Route>
+        </Routes>
+      </Suspense>
+
+      <Footer />
+    </Router>
+  );
+}
+export default App;
