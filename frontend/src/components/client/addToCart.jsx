@@ -12,6 +12,8 @@ import { removeProductCart } from "../../features/AddToCartSlice";
 import { calculateTotal } from "../../features/AddToCartSlice";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 
 function AddToCart() {
 
@@ -51,7 +53,7 @@ function AddToCart() {
                     <div className="w-full lg:w-1/2 flex justify-center pe-5">
                       <div className="flex gap-3 pt-5">
                         <div className="h-24 w-24 ps-5 ">
-                          <LazyLoadImage src={data.image} alt="" />
+                          <LazyLoadImage src={`${serverUrl}/${data.image}`} alt="" />
                           
                         </div>
                         <div className="w-52">
