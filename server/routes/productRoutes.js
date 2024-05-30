@@ -9,17 +9,7 @@ import { adminMiddleware } from "../middlewares/adminMiddleware.js"
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        console.log(req.body.categroies , " pawan ");
-        if (req.body.categroies === "hair") {
-            return cb(null, "./public/images/Hair")
-        }
-        else if (req.body.categroies === "face") {
-            return cb(null, "./public/images/Face")
-        }
-        else{
-
-            return cb(null, "./public/images")
-        }
+        return cb(null, "./public/images")
     },
     filename: function (req, file, cb) {
         return cb(null, `${file.originalname}`)

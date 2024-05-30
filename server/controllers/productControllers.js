@@ -5,7 +5,7 @@ export const storeProductData = async (req, res) => {
     try {
         const { name, price, subCategroies,  categroies, qyt, description } = req.body;
         // console.log(req.body.image , " pawan controllers");
-        const image = req.file.path.replace("public\\", "");
+        const image = req.file.path.replace('public', "");
 
         const id = name.replace(/\s/g, '') + subCategroies + categroies;
         // Check if an product with the same ID already exists
