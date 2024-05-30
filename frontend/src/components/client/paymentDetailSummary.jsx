@@ -307,7 +307,7 @@ function paymentDetailSummary() {
           ) : (
             <div className={`flex  justify-between items-center`}>
               <div >
-                <LazyLoadImage className=' h-16 w-20 border border-gray-400 rounded-lg' src={currentProduct[0].image} alt="" />
+                <LazyLoadImage className=' h-16 w-20 border border-gray-400 rounded-lg' src={`${serverUrl}/${currentProduct[0].image}`} alt="" />
               </div>
               <div><p className='text-center'>{currentProduct[0].name}</p></div>
               <div>Rs. {currentProduct[0].price}</div>
