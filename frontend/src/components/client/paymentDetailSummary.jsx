@@ -296,7 +296,7 @@ function paymentDetailSummary() {
               {AddToCartData.map((data) => (
                 <div key={data.id} className={`flex  justify-between items-center mt-5`}>
                   <div className='relative'>
-                    <LazyLoadImage className=' h-16 w-20 border border-gray-400 rounded-lg' src={data.image} alt="" />
+                    <LazyLoadImage className=' h-16 w-20 border border-gray-400 rounded-lg' src={`${serverUrl}/${data.image}`} alt="" />
                     <p className=" absolute -top-3 right-0 rounded-full bg-gray-700 flex justify-center items-center text-white w-5  h-5"> {data.qyt} </p>
                   </div>
                   <div><p className='text-center'>{data.description}</p></div>

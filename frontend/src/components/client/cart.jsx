@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+ import React, { useState, useEffect, useCallback, useRef } from "react";
 import '../../Cart.css';
 
 import { Link, NavLink } from "react-router-dom";
@@ -7,7 +7,7 @@ import { GoChevronDown } from "react-icons/go";
 import { BiFilterAlt } from "react-icons/bi";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 // add to cart products
 import { useDispatch} from "react-redux"
 import { addProductInCart } from "../../features/AddToCartSlice"
@@ -449,7 +449,7 @@ export default function Cart(props) {
                                         pathname: `/productDetail/${data.subCategroies}`
                                     }}
                                     >
-                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block ${window.innerWidth > 1024 ? image : ''}`} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`http://localhost:4000/${data.image}`} />
+                                        <LazyLoadImage alt={`${serverUrl}${data.image}`} className={`object-cover object-center block ${window.innerWidth > 1024 ? image : ''}`} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
                                     </Link>
                                     <div className=" mt-4 text-center  pt-3 ">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
