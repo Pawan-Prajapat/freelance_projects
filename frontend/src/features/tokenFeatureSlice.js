@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 const setTokenFunc = (token) => {
     localStorage.setItem("HennaKartToken", token);
 };
@@ -13,7 +14,7 @@ export const fetchUserData = createAsyncThunk(
         const token = state.TokenReducer.token; // Access token from the state
 
         try {
-            const response = await axios.get('http://localhost:4000/api/user', {
+            const response = await axios.get(`${serverUrl}/api/user`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
