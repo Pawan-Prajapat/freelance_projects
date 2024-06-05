@@ -162,9 +162,9 @@ export default function Navbar() {
                                 onMouseLeave={() => showTheSubmenuOnHoverFunc(2)}><Link to="/deals">
                                     Deals
                                     <div className={`${showTheSubmenuOnHover[2] ? 'border-t absolute w-40 ps-2 top-[25px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
-                                        <Link className='    mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">under 100</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">under 200</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">under 300</Link>
+                                        <Link className='    mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/deals100">under 100</Link>
+                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/deals200">under 200</Link>
+                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/deals300">under 300</Link>
                                     </div>
                                 </Link>
                             </li>

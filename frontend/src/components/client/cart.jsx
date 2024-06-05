@@ -1,4 +1,4 @@
- import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import '../../Cart.css';
 
 import { Link, NavLink } from "react-router-dom";
@@ -9,13 +9,10 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 // add to cart products
-import { useDispatch} from "react-redux"
+import { useDispatch } from "react-redux"
 import { addProductInCart } from "../../features/AddToCartSlice"
 export default function Cart(props) {
-    if(!props.data){
-        console.log(props.data)
-        return <h1 className=" font-pawan text-2xl text-center uppercase font-bold py-28">no products found</h1>
-    }
+
     const [gridCart, setGridCart] = useState(window.innerWidth < 1024 ? 'grid-cols-2' : 'grid-cols-4');  // gird images
     const [image, setImage] = useState(' w-full  h-[218px]'); // image size on grid 
     const [selectedOption, setSelectedOption] = useState('10');
@@ -174,7 +171,7 @@ export default function Cart(props) {
 
     const [selected, setSelected] = useState([]);
     const productTypeChange = (e, index) => {
-       
+
         const activeCheck = document.getElementById(index).checked;
         // console.log(activeCheck , "active check");
         if (activeCheck) {
@@ -235,7 +232,6 @@ export default function Cart(props) {
     const addCartHandler = (product) => {
         dispatch(addProductInCart(product));
     }
-    // console.log(useSelector(state=>state.addToCart))
 
     return (
         <>
@@ -442,7 +438,7 @@ export default function Cart(props) {
                     </div> {/* cutomize grid */}
                     <div className={`w-full grid gap-2 lg:gap-4 mt-5  ${gridCart}`}> {/* carts */}
 
-                        {  
+                        {
                             records.map((data, i) => (
                                 <div key={i} className="    hover:-translate-y-5 transition ease-in-out duration-500 mt-10 ">
                                     <Link className="overflow-hidden" to={{
@@ -455,19 +451,19 @@ export default function Cart(props) {
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                         <p className=" text-base">{data.name}</p>
                                         <p className="font-bold mt-1">Rs. {data.price}</p>
-                                        <div > 
-                                        <NavLink to={"/addToCart"} >
-                                            <button onClick={() => addCartHandler(data)} className= "   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
-                                                Add To Cart
-                                            </button>
-                                        </NavLink>
+                                        <div >
+                                            <NavLink to={"/addToCart"} >
+                                                <button onClick={() => addCartHandler(data)} className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
+                                                    Add To Cart
+                                                </button>
+                                            </NavLink>
                                         </div>
                                     </div>
                                 </div>
                             ))
                         }
                     </div>
-                    <div className={`flex my-14 justify-center flex-col ${numbers.length === 1 ? 'hidden' : ''}`}>
+                    <div className={`flex my-14 justify-center flex-col ${records.length > 0 ? "" : "hidden"} ${numbers.length === 1 ? 'hidden' : ''}`}>
                         <div className="flex justify-center items-center flex-col ">
                             <p className=" text-gray-600 text-base font-normal "> Showing {firstIndex + 1 + " - " + Math.min(lastIndex, props.data.length) + " of " + props.data.length + " total"}</p>
                             <div className=" w-48 h-1 bg-slate-100 rounded-sm my-2">
@@ -479,7 +475,7 @@ export default function Cart(props) {
 
 
                         </div>
-                        <div className=" flex justify-center">
+                        <div className={`  flex justify-center`}>
                             <button className={`${currentPage === 1 ? 'hidden' : ''}`} onClick={() => { onclickArrow('left') }}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-left" viewBox="0 0 16 16">
                                 <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
                             </svg> </button>
@@ -496,6 +492,9 @@ export default function Cart(props) {
                                 <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
                             </svg></button>
                         </div>
+                    </div>
+                    <div className={`${records.length > 0 ? "hidden" : ""} my-10 `}>
+                        <p className=" font-pawan text-3xl font-semibold text-center capitalize">No Product found</p>
                     </div>
                 </div>
             </section>

@@ -35,7 +35,9 @@ function App() {
           <Route path="/addtocart" element={<AddToCart />} />
           <Route path="/face" element={<Skin />} />
           <Route path="/combopack" element={<Combopack />} />
-          <Route path="/deals" element={<Deals />} />
+          <Route path="/deals100" element={<Deals under = {100} />} />
+          <Route path="/deals200" element={<Deals under = {200} />} />
+          <Route path="/deals300" element={<Deals under = {300} />} />
           <Route path='/productDetail/:id' element={<ProductDetail />} />
           <Route path='/paymentDetailSummary/:id' element={<PaymentDetailSummary />} />
           <Route path='/register' element={<Register />} />
