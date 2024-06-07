@@ -3,7 +3,7 @@ import Cart from "./cart.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../features/productsFileHairSlice.js";
 
-export default function Deals(props) {
+export default function Newlaunches() {
   const dispatch = useDispatch();
   const myName = useSelector((state) => state.ProductHairReducer);
 
@@ -21,15 +21,8 @@ export default function Deals(props) {
     return
   }
   let selectedComboData;
-  if (props.under === 100) {
-    selectedComboData = myName.data.data.filter(element => element.price <= 100);
-  } else if (props.under === 200) {
-    selectedComboData = myName.data.data.filter(element => element.price > 100 && element.price <= 200);
-  } else if (props.under === 300) {
-    selectedComboData = myName.data.data.filter(element => element.price > 200 && element.price <= 300);
-  }
-  else {
-    selectedComboData = myName.data.data;
+  if (myName.data !== null) {
+    selectedComboData = myName.data.data.filter(element => element.categroies && element.categroies.indexOf("newLaunches") !== -1);
   }
 
   const subcategoryCounts = selectedComboData.reduce((acc, current) => {

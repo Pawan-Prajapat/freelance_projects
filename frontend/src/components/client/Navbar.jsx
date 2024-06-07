@@ -135,26 +135,26 @@ export default function Navbar() {
                     {/* this is for desktop  */}
                     <div >
                         <ul className={`${navbar ? '  ' : ' items-center  justify-center  '} hidden z-30  xl:inline-flex   `}>
-                            <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/">bestsellers</Link></li>
+                            <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/bestSellers">bestsellers</Link></li>
                             <li className=' relative uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer' onMouseEnter={() => showTheSubmenuOnHoverFunc(0)}
                                 onMouseLeave={() => showTheSubmenuOnHoverFunc(0)}><Link to="/hair">
                                     hairCare
                                     <div className={`${showTheSubmenuOnHover[0] ? 'border-t absolute w-52 top-[25px] left-1 flex flex-col bg-white z-50 text-black' : 'hidden'}`}>
-                                        <Link className=' mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">Hennas</Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4 ' to="/combopack"><span>Hair Mask</span></Link>
+                                        <Link className=' mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/hennas">Hennas</Link>
+                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4 ' to="/hairMask"><span>Hair Mask</span></Link>
                                         <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4 ' to="/hair">Hair Care</Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4 ' to="/combopack">Essential Oil For Hair</Link>
+                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4 ' to="/hairEssentialOil">Essential Oil For Hair</Link>
                                     </div>
                                 </Link>
                             </li>
                             <li className=' relative uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer' onMouseEnter={() => showTheSubmenuOnHoverFunc(1)}
-                                onMouseLeave={() => showTheSubmenuOnHoverFunc(1)}><Link to="/face">
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(1)}><Link to="/skin">
                                     SkinCare
                                     <div className={`${showTheSubmenuOnHover[1] ? 'border-t absolute w-40 top-[25px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
-                                        <Link className='           mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">fack powder</Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack"><span>face pack</span></Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">face sheet</Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">Essential Oil </Link>
+                                        <Link className='           mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/facePowder">fack powder</Link>
+                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/facePack"><span>face pack</span></Link>
+                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/faceSheet">face sheet</Link>
+                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/faceEssentialOil">Essential Oil </Link>
                                     </div>
                                 </Link>
                             </li>
@@ -172,15 +172,15 @@ export default function Navbar() {
                                 onMouseLeave={() => showTheSubmenuOnHoverFunc(3)}><Link to="/combopack">
                                     combopack
                                     <div className={`${showTheSubmenuOnHover[3] ? 'border-t absolute w-[15vw] text ps-2 top-[25px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
-                                        <Link className='    mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">Hair mask combo</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">face mask combo</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">Henna Indigo combo</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">face sheet combo</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopack">Esential Oil combo</Link>
+                                        <Link className='    mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackHairMask">Hair mask combo</Link>
+                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackFaceCare">face mask combo</Link>
+                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackHennaIndigo">Henna Indigo combo</Link>
+                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackFaceSheet">face sheet combo</Link>
+                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackEssentialOil">Esential Oil combo</Link>
                                     </div>
                                 </Link>
                             </li>
-                            <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/">newlaunches </Link></li>
+                            <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/newLaunches">new launches </Link></li>
                             <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/">review </Link></li>
                             <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/">result </Link></li>
                             <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/">blog </Link></li>
@@ -195,12 +195,12 @@ export default function Navbar() {
                                 <h2>Menu</h2>
                                 <IoCloseOutline onClick={() => offcanvasOpenAndClose(0)} className=' mt-0 text-3xl cursor-pointer ' />
                             </div>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/">bestsellers</Link>
+                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/bestSellers">bestsellers</Link>
                             <Link onClick={() => offcanvasOpenAndClose(0)} to="/hair">haircare</Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/face">skincare</Link>
+                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/skin">skincare</Link>
                             <Link onClick={() => offcanvasOpenAndClose(0)} to="/deals">deals </Link>
                             <Link onClick={() => offcanvasOpenAndClose(0)} to="/combopack">combopack </Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/">newlaunches </Link>
+                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/newLaunches">newlaunches </Link>
                             <Link onClick={() => offcanvasOpenAndClose(0)} to="/">review </Link>
                             <Link onClick={() => offcanvasOpenAndClose(0)} to="/">result </Link>
                             <Link onClick={() => offcanvasOpenAndClose(0)} to="/">blog </Link>

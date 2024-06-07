@@ -13,6 +13,8 @@ const PaymentDetailSummary = lazy(() => import("./components/client/paymentDetai
 const AddToCart = lazy(() => import("./components/client/addToCart.jsx"))
 const Register = lazy(() => import("./components/client/register.jsx"))
 const Logout = lazy(() => import("./components/client/logout.jsx"))
+const BestSellers = lazy(() => import("./components/client/bestSellers.jsx"))
+const NewLaunches = lazy(() => import("./components/client/newLaunches.jsx"))
 import DotLoader from "react-spinners/DotLoader";
 
 // admin components
@@ -21,6 +23,8 @@ const InsertProducts = lazy(() => import('./components/admin/InsertProducts.jsx'
 const UserDetail = lazy(() => import('./components/admin/UserDetail.jsx'));
 const UserPaymentDetail = lazy(() => import('./components/admin/UserPaymentDetail.jsx'));
 const AdminLayout = lazy(() => import('./components/layouts/adminLayout.jsx'));
+const Categroies = lazy(() => import('./components/admin/categroies.jsx'));
+const Subcategroies = lazy(() => import('./components/admin/subCategroies.jsx'));
 
 function App() {
 
@@ -32,9 +36,24 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path="/hair" element={<Hair which="hair" />} />
+          <Route path="/hennas" element={<Hair which="hennas" />} />
+          <Route path="/hairMask" element={<Hair which="hairMask" />} />
+          <Route path="/hairEssentialOil" element={<Hair which="hairEssentialOil" />} />
           <Route path="/addtocart" element={<AddToCart />} />
-          <Route path="/face" element={<Skin />} />
-          <Route path="/combopack" element={<Combopack />} />
+          <Route path="/skin" element={<Skin which = {"skin"} />} />
+          <Route path="/facePowder" element={<Skin which = {"facePowder"} />} />
+          <Route path="/facePack" element={<Skin which = {"facePack"} />} />
+          <Route path="/faceSheet" element={<Skin which = {"faceSheet"} />} />
+          <Route path="/faceEssentialOil" element={<Skin which = {"faceEssentialOil"} />} />
+          <Route path="/bestSellers" element={<BestSellers />} />
+          <Route path="/combopack" element={<Combopack which={"combo"} />} />
+          <Route path="/combopackHairMask" element={<Combopack which={"comboHairMask"} />} />
+          <Route path="/combopackFaceCare" element={<Combopack which={"comboFaceMask"} />} />
+          <Route path="/combopackFaceSheet" element={<Combopack which={"comboFaceSheet"} />} />
+          <Route path="/combopackHennaIndigo" element={<Combopack which={"comboHennaIndigo"} />} />
+          <Route path="/combopackEssentialOil" element={<Combopack which={"comboEssentialOil"} />} />
+          <Route path="/newLaunches" element={<NewLaunches />} />
+          <Route path="/deals" element={<Deals under = {0} />} />
           <Route path="/deals100" element={<Deals under = {100} />} />
           <Route path="/deals200" element={<Deals under = {200} />} />
           <Route path="/deals300" element={<Deals under = {300} />} />
@@ -47,6 +66,8 @@ function App() {
             <Route path='insertProduct' element={<InsertProducts />} />
             <Route path='userDetail' element={<UserDetail />} />
             <Route path='userPaymentDetail' element={<UserPaymentDetail />} />
+            <Route path='categroies' element={<Categroies />} />
+            <Route path='subcategroies' element={<Subcategroies />} />
           </Route>
         </Routes>
       </Suspense>

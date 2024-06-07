@@ -25,7 +25,6 @@ const initialState = {
             state.data = action.payload;
         })
         builder.addCase(fetchProducts.rejected , (state,action)=>{
-            console.log("Error",action.payload);
             state.isError = true
         })
     }

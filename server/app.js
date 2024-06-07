@@ -5,6 +5,7 @@ import paymentRoute from "./routes/paymentRoutes.js";
 import buyerRoute from "./routes/buyerRoutes.js";
 import productRoute from "./routes/productRoutes.js";
 import authRoute from "./routes/authRoutes.js";
+import categroiesRoute from "./routes/categroiesRoutes.js";
 config({path : "./config/config.env"});
 export  const app = express();
 app.use(cors());
@@ -14,6 +15,7 @@ app.use("/api",paymentRoute);
 app.use("/api",buyerRoute);
 app.use("/api",productRoute);
 app.use("/api",authRoute);
+app.use("/api",categroiesRoute);
 app.use(express.static('public'));
 
 app.get("/api/getkey",(req,res)=>

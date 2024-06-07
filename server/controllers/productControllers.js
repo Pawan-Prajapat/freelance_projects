@@ -1,10 +1,9 @@
 import { ProductData } from "../models/productModel.js";
 
 export const storeProductData = async (req, res) => {
-    console.log(req.file , req.body , 4)
     try {
         const { name, price, subCategroies,  categroies, qyt, description } = req.body;
-        // console.log(req.body.image , " pawan controllers");
+        // console.log(req.body , " pawan controllers");
         const image = req.file.path.replace('public', "");
 
         const id = name.replace(/\s/g, '') + subCategroies + categroies;

@@ -72,6 +72,23 @@ function adminLayout() {
                                 </div>
                             </div>
                         </div>
+                        <div className=" pt-0 w-full">
+                            <div className=" flex gap-2 items-center cursor-pointer " onClick={() => togglePrice(2)}>
+                                <div className=" text-base tracking-wide font-bold text-white">Categroies</div>
+                                <div className="text-gray-600">
+                                    <span className={`arrow`}>
+                                        <IoMdArrowDropdown className={`${dropDownArray[2] ? "rotate-[-180deg]" : ""} transition duration-1000 bi bi-chevron-down h-8 w-7`} />
+                                    </span>
+                                </div>
+                            </div>
+                            <div className={`${dropDownArray[2] ? " pt-3 grid-rows-[0fr] opacity-100" : "grid-rows-[1fr]"} ps-5 pt-3 overflow-hidden grid duration-500 ease-in-out transition-all`}>
+                                <div className=" overflow-hidden flex flex-col">
+                                    <Link className=' text-white hover:underline hover:underline-offset-4' to={'/admin/categroies'}>categroies</Link>
+                                    <Link className=' text-white hover:underline hover:underline-offset-4' to={'/admin/subcategroies'}>subcategroies</Link>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                     <div className='w-[85%] bg-white px-8'>
                         <Outlet />

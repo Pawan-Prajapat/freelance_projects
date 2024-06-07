@@ -259,7 +259,7 @@ export default function Cart(props) {
                                 }
                             </div>
                         </div>
-                        <div className=" w-full">
+                        <div className={`${props.max === 0 ? 'hidden' : ''} w-full`}>
                             <div className=" border-b pb-2 border-black  flex justify-between items-center " onClick={() => togglePrice(0)}>
                                 <div className=" text-sm tracking-wide font-bold">PRICE</div>
                                 <div className="text-gray-600">
@@ -312,8 +312,8 @@ export default function Cart(props) {
                                     {
                                         props.productTypes.map((product, i) => (
                                             <div key={i}>
-                                                <input type="checkbox" value={product.subCategroies} id={i} onChange={(e) => productTypeChange(e, i)} />
-                                                <span className="ps-3 ">{product.subCategroies} {`(${product.qyt})`}</span>
+                                                <input type="checkbox" value={product.subcategory} id={i} onChange={(e) => productTypeChange(e, i)} />
+                                                <span className="ps-3 ">{product.subcategory} {`(${product.count})`}</span>
                                             </div>
                                         ))
                                     }
