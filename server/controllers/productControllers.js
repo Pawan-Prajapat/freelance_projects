@@ -1,8 +1,11 @@
 import { ProductData } from "../models/productModel.js";
+import fs from "fs";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 export const storeProductData = async (req, res) => {
     try {
-        const { name, price, subCategroies,  categroies, qyt, description } = req.body;
+        const { name, price, subCategroies, categroies, qyt, description } = req.body;
         // console.log(req.body , " pawan controllers");
         const image = req.file.path.replace('public', "");
 
@@ -32,7 +35,7 @@ export const storeProductData = async (req, res) => {
 
 export const updateProductData = async (req, res) => {
     try {
-        const { _id, name, price, subCategroies, image, categroies, qyt, description } = req.body;
+        const { _id, name, price, subCategroies, categroies, qyt, description } = req.body;
         const id = name.replace(/\s/g, '') + subCategroies + categroies;
         const updatedProduct = await ProductData.findOneAndUpdate(
             { _id },
@@ -41,7 +44,6 @@ export const updateProductData = async (req, res) => {
                 name,
                 price,
                 subCategroies,
-                image,
                 categroies,
                 qyt,
                 description,
@@ -53,6 +55,9 @@ export const updateProductData = async (req, res) => {
         res.status(400).json({ message: "Error updating product", error });
     }
 }
+// Helper to resolve __dirname in ES6 modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const deleteProductData = async (req, res) => {
     try {
@@ -61,12 +66,21 @@ export const deleteProductData = async (req, res) => {
         if (!deletedProduct) {
             return res.status(404).json({ message: "Product not found" });
         }
+
+        const imagePath = path.join(__dirname, '..', 'public', deletedProduct.image);
+
+        try {
+            await fs.promises.unlink(imagePath);
+            console.log("Image deleted successfully");
+        } catch (error) {
+            console.error(`Error deleting image: ${error}`);
+        }
+
         res.status(200).json({ message: "Product deleted successfully", data: deletedProduct });
     } catch (error) {
         res.status(500).json({ message: "Error deleting product", error });
     }
-}
-
+};
 export const getAllProductData = async (req, res) => {
     try {
         const productData = await ProductData.find({});
@@ -80,7 +94,7 @@ export const getAllProductData = async (req, res) => {
 }
 export const getSingleProductData = async (req, res) => {
     try {
-        const {_id} = req.body
+        const { _id } = req.body
         const productData = await ProductData.findById(_id);
         if (productData.length === 0) {
             return res.status(200).json({ message: "No product data found", data: [] });

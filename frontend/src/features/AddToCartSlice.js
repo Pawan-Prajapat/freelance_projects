@@ -16,17 +16,17 @@ export const AddToCartSlice = createSlice({
     reducers: {
         addProductInCart: (state, action) => {
             const product = action.payload;
-            const checkExist = state.addToCart.find((check) => check.id === action.payload.id);
+            const checkExist = state.addToCart.find((check) => check._id === action.payload._id);
             if (checkExist) {
                 checkExist.qyt = checkExist.qyt + 1;
             } else {
                 const newProductCartData = {
-                    id: product.id,
+                    _id: product._id,
                     name: product.name,
                     image: product.image,
                     description: product.description,
                     price: product.price,
-                    qyt: product.qyt,
+                    qyt: 1,
                     subCategroies: product.subCategroies,
                     categroies: product.categroies
                 }
@@ -35,23 +35,23 @@ export const AddToCartSlice = createSlice({
             setItemFunc(state.addToCart.map(item => item));
         },
         updateProductQuantityIncrease: (state, action) => {
-            const id = action.payload;
-            const product = state.addToCart.find((p) => p.id === id);
+            const _id = action.payload;
+            const product = state.addToCart.find((p) => p._id === _id);
             if (product) {
                 product.qyt = product.qyt + 1;
             }
             setItemFunc(state.addToCart.map(item => item));
         },
         updateProductQuantityDecrease: (state, action) => {
-            const id = action.payload;
-            const product = state.addToCart.find((p) => p.id === id);
+            const _id = action.payload;
+            const product = state.addToCart.find((p) => p._id === _id);
             if (product && product.qyt > 0) {
                 product.qyt = product.qyt - 1;
             }
             setItemFunc(state.addToCart.map(item => item));
         },
         removeProductCart: (state, action) => {
-            state.addToCart = state.addToCart.filter((product) => product.id !== action.payload);
+            state.addToCart = state.addToCart.filter((product) => product._id !== action.payload);
             setItemFunc(state.addToCart.map(item => item));
         }
     }

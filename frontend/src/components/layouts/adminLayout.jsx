@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { IoMdArrowDropdown } from "react-icons/io";
-import { Link, Outlet, Navigate } from 'react-router-dom';
+import { Link, Outlet, Navigate , NavLink } from 'react-router-dom';
 import {useSelector , useDispatch} from 'react-redux';
 import { fetchUserData } from "../../features/tokenFeatureSlice";
 function adminLayout() {
@@ -36,6 +36,8 @@ function adminLayout() {
                 <div className='w-full bg-red-500 h-20 flex justify-between px-20 items-center'>
                     <p>Admin Panel</p>
                     <p>User Name</p>
+                    <NavLink to={'/logout'} >Logout</NavLink>
+
                 </div>
                 <div className='flex'>
                     <div className='w-[15%] bg-blue-950 px-5'>

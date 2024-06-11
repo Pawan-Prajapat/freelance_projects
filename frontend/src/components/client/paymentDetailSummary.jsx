@@ -19,7 +19,7 @@ function paymentDetailSummary() {
   // for current product 
   const dispatch = useDispatch();
   const param = useParams()
-  let AddToCartData, myName,currentProduct;
+  let AddToCartData, myName, currentProduct;
 
   if (param.id !== "addToCartCheckout") {
     myName = useSelector((state) => state.ProductHairReducer);
@@ -31,7 +31,7 @@ function paymentDetailSummary() {
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
-  
+
   if (myName) {
     if (myName.data === null) {
       return <h1>Loading........</h1>
@@ -99,17 +99,24 @@ function paymentDetailSummary() {
   })
 
   // paise bhejne ka trika 
+  const productNamesArray = AddToCartData.map(item => ({
+    _id: item._id,
+    name: item.name,
+    qyt: item.qyt
+  }));
   const checkoutHandler = async (amount) => {
     const { data: { key } } = await axios.get(serverUrl + "/api/getkey")
     const { data: { order } } = await axios.post(serverUrl + "/api/checkout", {
-      amount
+      amount, productNamesArray
     })
     setBuyer((buyer) => ({ ...buyer, order_id: order.id }));
+    console.log("pawan" , buyer);
 
 
     const userFirstName = document.getElementById('firstName').value
     const userLastName = document.getElementById('lastName').value
     const userPhone = document.getElementById('phone').value
+
     const options = {
       key, // Enter the Key ID generated from the Dashboard
       amount: order.amount,
@@ -168,7 +175,7 @@ function paymentDetailSummary() {
     if (buyer.order_id !== " ") {
       buyerDataStore();
     }
-  }, [buyer]);
+  }, [buyer.order_id]);
 
   return (
 
@@ -294,12 +301,12 @@ function paymentDetailSummary() {
           {param.id === "addToCartCheckout" ? (
             <div>
               {AddToCartData.map((data) => (
-                <div key={data.id} className={`flex  justify-between items-center mt-5`}>
+                <div key={data._id} className={`flex  justify-between items-center mt-5`}>
                   <div className='relative'>
                     <LazyLoadImage className=' h-16 w-20 border border-gray-400 rounded-lg' src={`${serverUrl}/${data.image}`} alt="" />
                     <p className=" absolute -top-3 right-0 rounded-full bg-gray-700 flex justify-center items-center text-white w-5  h-5"> {data.qyt} </p>
                   </div>
-                  <div><p className='text-center'>{data.description}</p></div>
+                  <div><p className='text-center'>{data.name}</p></div>
                   <div>Rs. {data.price}</div>
                 </div>
               ))}

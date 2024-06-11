@@ -42,7 +42,6 @@ function Users() {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [subCategroies, setsubCategroies] = useState('');
-  const [image, setImage] = useState('');
   const [categroies, setcategroies] = useState('');
   const [qyt, setQyt] = useState('');
   const setProductIdUpdate = async (id) => {
@@ -51,7 +50,7 @@ function Users() {
       _id: id
     }).then(res => {
       const product = res.data.data;
-      setName(product.name); setDescription(product.description); setPrice(product.price); setsubCategroies(product.subCategroies); setImage(product.image); setcategroies(product.categroies); setQyt(product.qyt);
+      setName(product.name); setDescription(product.description); setPrice(product.price); setsubCategroies(product.subCategroies); setcategroies(product.categroies); setQyt(product.qyt);
     })
     setUpdateDisplay(true);
   }
@@ -202,12 +201,6 @@ function Users() {
               Sub categroies
             </label>
             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="subCategroies" type="text" value={subCategroies} onChange={e => setsubCategroies(e.target.value)} />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
-              Image
-            </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="image" type="text" value={image} onChange={e => setImage(e.target.value)} />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="categroies">

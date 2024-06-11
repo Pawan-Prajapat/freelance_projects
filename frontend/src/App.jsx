@@ -35,6 +35,7 @@ function App() {
       <Suspense fallback={<div className='w-full h-screen flex justify-center items-center'><DotLoader color="#36d7b7" loading={true} /></div>}>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/home' element={<Home />} />
           <Route path="/hair" element={<Hair which="hair" />} />
           <Route path="/hennas" element={<Hair which="hennas" />} />
           <Route path="/hairMask" element={<Hair which="hairMask" />} />

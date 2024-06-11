@@ -16,7 +16,6 @@ function UserDetail() {
             })
             .then(response => {
                 setData(response.data)
-                console.log(response.data)
             })
             .catch(error => console.error(error));
     }, []);
@@ -122,7 +121,7 @@ function UserDetail() {
                                                 <div className="text-sm leading-5">{user.order_id}</div>
                                             </td>
                                             <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                <div className="text-sm leading-5">{user.payment_data.length > 0 ? 'Done' : 'Pendding'}</div>
+                                                <div className="text-sm leading-5">{user.payment_data[0].razorpay_payment_id ? 'Done' : 'Pendding'}</div>
                                             </td>
 
                                         </tr>

@@ -2,15 +2,15 @@ import { IoCloseOutline } from "react-icons/io5";
 import { FaMinus } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 
-import React, {  useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from "react-router-dom"
 
-import { useSelector,useDispatch } from 'react-redux';
-import { updateProductQuantityIncrease } from "../../features/AddToCartSlice";
-import { updateProductQuantityDecrease } from "../../features/AddToCartSlice";
-import { removeProductCart } from "../../features/AddToCartSlice";
-import { calculateTotal } from "../../features/AddToCartSlice";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  updateProductQuantityDecrease, updateProductQuantityIncrease, removeProductCart
+  , calculateTotal
+} from "../../features/AddToCartSlice";
+import {LazyLoadImage } from 'react-lazy-load-image-component';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -20,7 +20,7 @@ function AddToCart() {
 
 
   useEffect(() => {
-    
+
     window.scrollTo(0, 0);
   }, [])
 
@@ -47,14 +47,14 @@ function AddToCart() {
           {
             AddToCartData.map((data) => (
 
-              <div key={data.id} className={` flex-col ${data.quantity === 0 ? dispatch(removeProductCart(data.id)) : 'flex'}`}>
+              <div key={data._id} className={` flex-col ${data.quantity === 0 ? dispatch(removeProductCart(data._id)) : 'flex'}`}>
                 <div className="border h-auto mt-5 ">
                   <div className="flex flex-col items-center lg:flex-row">
                     <div className="w-full lg:w-1/2 flex justify-center pe-5">
                       <div className="flex gap-3 pt-5">
                         <div className="h-24 w-24 ps-5 ">
                           <LazyLoadImage src={`${serverUrl}/${data.image}`} alt="" />
-                          
+
                         </div>
                         <div className="w-52">
                           <p className="w-52">{data.description}</p>
@@ -64,7 +64,7 @@ function AddToCart() {
                     <div className="w-full  lg:w-1/4 flex items-center justify-center font-semibold tracking-wider text-xl">Rs. {data.price}</div>
                     <div className="w-full  lg:w-1/4 flex justify-center items-center">
                       <div className=" flex items-center relative border border-gray-300 w-[120px] py-6 mt-2">
-                        <button className="font-bold py-3 px-4 rounded-l absolute -left-2 " onClick={() => dispatch(updateProductQuantityDecrease(data.id))}>
+                        <button className="font-bold py-3 px-4 rounded-l absolute -left-2 " onClick={() => dispatch(updateProductQuantityDecrease(data._id))}>
                           <FaMinus />
                         </button>
                         <input
@@ -72,16 +72,16 @@ function AddToCart() {
                           type="number"
                           className="focus:outline-none text-gray-700 py-3 w-[50px] bg-transparent absolute left-1/2"
                           value={data.qyt}
-                          onChange={(e) => setQuantity(parseInt(e.target.value,10))}
+                          onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
                         />
-                        <button className="text-gray-700 font-bold py-2 px-4 rounded-r absolute -right-2" onClick={() => dispatch(updateProductQuantityIncrease(data.id))}>
+                        <button className="text-gray-700 font-bold py-2 px-4 rounded-r absolute -right-2" onClick={() => dispatch(updateProductQuantityIncrease(data._id))}>
                           <FaPlus />
                         </button>
                       </div>
                     </div>
                     <div className="w-full  lg:w-1/4 my-2 lg:m-0 flex items-center justify-center gap-5">
-                      <span className={`${window.innerWidth>768 ? 'visible':'hidden'} font-semibold tracking-wider text-xl`} >Rs. {data.price * data.qyt}</span>
-                      <IoCloseOutline onClick={() => dispatch(removeProductCart(data.id))} className="h-6 w-6 cursor-pointer" />
+                      <span className={`${window.innerWidth > 768 ? 'visible' : 'hidden'} font-semibold tracking-wider text-xl`} >Rs. {data.price * data.qyt}</span>
+                      <IoCloseOutline onClick={() => dispatch(removeProductCart(data._id))} className="h-6 w-6 cursor-pointer" />
                     </div>
 
                   </div>
