@@ -9,10 +9,11 @@ function insertProducts() {
     const [price, setPrice] = useState('');
     const [subCategroies, setsubCategroies] = useState('');
     const [image, setImage] = useState('');
+    const [multipleImages, setMultipleImages] = useState([]);
     const [categroies, setcategroies] = useState([]);
-    const [qyt, setQyt] = useState('');
+    const [qty, setQyt] = useState('');
     // see categroies options on click
-    const [showCategroies , setShowCategroies] = useState(0);
+    const [showCategroies, setShowCategroies] = useState(0);
 
     const showTheSubmenuOnHoverFunc = () => {
         setShowCategroies(!showCategroies);
@@ -42,30 +43,38 @@ function insertProducts() {
     const onSubmit = async (e) => {
         e.preventDefault();
         const intPrice = parseInt(price.toString() + '.0');
-        const intQyt = parseInt(qyt.toString() + '.0');
+        const intQyt = parseInt(qty.toString() + '.0');
 
         const formData = new FormData()
         formData.append('name', name)
         formData.append('price', intPrice)
         formData.append('subCategroies', subCategroies)
         formData.append('image', image)
+        multipleImages.forEach(image => {
+            formData.append('multipleImages', image);
+        });
         formData.append('categroies', categroies)
-        formData.append('qyt', intQyt)
+        formData.append('qty', intQyt)
         formData.append('description', description)
         await axios.post(serverUrl + "/api/storeProductData", formData,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
                 }
             }
         )
             .then(res => {
-                setName(''); setDescription(''), setPrice(''); setsubCategroies(''); setImage(''); setcategroies([]); setQyt('');
+                setName(''); setDescription(''), setPrice(''); setsubCategroies(''); setImage(null); setMultipleImages([]); setcategroies([]); setQyt('');
             })
             .catch(err => {
                 console.log(err);
             });
     }
+
+    const handleMultipleImagesChange = (e) => {
+        setMultipleImages(Array.from(e.target.files));
+    };
 
     return (
         <form onSubmit={onSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -114,6 +123,12 @@ function insertProducts() {
                     Image
                 </label>
                 <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="image" type="file" onChange={e => setImage(e.target.files[0])} />
+            </div>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="multipleImages">
+                    Multiple Images
+                </label>
+                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="multipleImages" type="file" multiple onChange={handleMultipleImagesChange} />
             </div>
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="categroies">
@@ -168,10 +183,10 @@ function insertProducts() {
                 </div>
             </div>
             <div className="mb-4 ">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="qyt">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="qty">
                     Qyt
                 </label>
-                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="qyt" type="number" value={qyt} onChange={e => setQyt(e.target.value)} />
+                <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="qty" type="number" value={qty} onChange={e => setQyt(e.target.value)} />
             </div>
             <div className="flex items-center justify-between">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">

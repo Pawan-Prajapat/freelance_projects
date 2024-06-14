@@ -21,11 +21,15 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  multipleImages: {
+    type: [String],
+    required: true,
+  },
   categroies: {
     type: String,
     required: true,
   },
-  qyt: {
+  qty: {
     type: Number,
     required: true,
   },

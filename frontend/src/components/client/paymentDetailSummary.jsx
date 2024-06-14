@@ -18,28 +18,12 @@ function paymentDetailSummary() {
 
   // for current product 
   const dispatch = useDispatch();
-  const param = useParams()
-  let AddToCartData, myName, currentProduct;
+  const param = useParams();
+  let AddToCartData;
+  const myName = useSelector((state) => state.ProductHairReducer);
+  AddToCartData = useSelector(state => state.AddToCartReducer.addToCart);
 
-  if (param.id !== "addToCartCheckout") {
-    myName = useSelector((state) => state.ProductHairReducer);
-    currentProduct = myName.data.data.filter(element => element.subCategroies === param.id);
-  } else {
-    AddToCartData = useSelector(state => state.AddToCartReducer.addToCart);
-  }
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-
-  if (myName) {
-    if (myName.data === null) {
-      return <h1>Loading........</h1>
-    }
-  }
-
-
-
+  // use state top level
   const [inputState, setInputState] = useState({
     email: { visibleCheck: true, upLabel: false },
     countryName: { visibleCheck: true, upLabel: false },
@@ -54,63 +38,76 @@ function paymentDetailSummary() {
 
   // document se email ki value get nhi ho rhi tho state se karte hai
   const [email, setEmail] = useState('');
-
-  const checkUpLabel = (n, inputId) => {
-    if (n) {
-
-      if (inputId != "email") {
-        setInputState({
-          ...inputState,
-          [inputId]: { visibleCheck: true, upLabel: true },
-        });
-      }
-      else {
-        setEmail(n);
-        setInputState({
-          ...inputState,
-          [inputId]: { visibleCheck: false, upLabel: true },
-        });
-      }
-    }
-    else {
-      setInputState({
-        ...inputState,
-        [inputId]: { visibleCheck: false, upLabel: false },
-      });
-    }
-  }
-
   const [mail, setMail] = useState(true);
-  const validateEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (regex.test(email)) {
-      setMail(true);
-    }
-    else {
-      setMail(false);
-    }
-  }
-
-
-
-  // store the buyer data
   const [buyer, setBuyer] = useState({
     email: " ", country: " ", firstName: "", lastName: " ", city: "", state: "", pincode: " ", phone: " ", address: " ", order_id: " "
   })
 
-  // paise bhejne ka trika 
-  const productNamesArray = AddToCartData.map(item => ({
-    _id: item._id,
-    name: item.name,
-    qyt: item.qyt
-  }));
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+
+
+  const checkUpLabel = (n, inputId) => {
+    setInputState(prevState => ({
+      ...prevState,
+      [inputId]: { visibleCheck: !!n, upLabel: !!n }
+    }));
+
+    if (inputId === "email") setEmail(n);
+  };
+
+
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setMail(regex.test(email));
+  }
+
+
+
+
+  useEffect(() => {
+    if (buyer.order_id !== " ") {
+      buyerDataStore();
+    }
+  }, [buyer.order_id]);
+
+
+
+
+// store the buyer data
+  let currentProduct;
+  if(param.id !== "addToCartCheckout"){
+    currentProduct = myName?.data?.data?.filter(element => element._id === param.id); 
+  }
+    // paise bhejne ka trika 
+  const productNamesArray = param.id !== "addToCartCheckout"
+    ? myName?.data?.data?.filter(element => element._id === param.id).map(item => ({
+      _id: item._id,
+      name: item.name,
+      qyt: item.qyt
+    })) || []
+    : AddToCartData.map(item => ({
+      _id: item._id,
+      name: item.name,
+      qyt: item.qyt
+    }));
+
+
+
+
+
+
+  
+
+
   const checkoutHandler = async (amount) => {
     const { data: { key } } = await axios.get(serverUrl + "/api/getkey")
     const { data: { order } } = await axios.post(serverUrl + "/api/checkout", {
       amount, productNamesArray
     })
     setBuyer((buyer) => ({ ...buyer, order_id: order.id }));
-    console.log("pawan" , buyer);
 
 
     const userFirstName = document.getElementById('firstName').value
@@ -146,13 +143,20 @@ function paymentDetailSummary() {
 
 
   const buyerDataStore = async () => {
-    const { data } = await axios.post(serverUrl + "/api/storeBuyerData", buyer);
+   await axios.post(serverUrl + "/api/storeBuyerData", buyer);
   }
 
-  let name, value;
+ 
+   // when uesr click then page show on the top every time
+   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+
+  if (myName.data === null) {
+    return <h1>Loading........</h1>
+  }
   const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
+    const { name, value } = e.target;
     setBuyer({ ...buyer, [name]: value });
   }
 
@@ -166,16 +170,9 @@ function paymentDetailSummary() {
     return true;
   };
 
-  // when uesr click then page show on the top every time
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [])
+ 
 
-  useEffect(() => {
-    if (buyer.order_id !== " ") {
-      buyerDataStore();
-    }
-  }, [buyer.order_id]);
+
 
   return (
 

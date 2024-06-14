@@ -442,7 +442,7 @@ export default function Cart(props) {
                             records.map((data, i) => (
                                 <div key={i} className="    hover:-translate-y-5 transition ease-in-out duration-500 mt-10 ">
                                     <Link className="overflow-hidden" to={{
-                                        pathname: `/productDetail/${data.subCategroies}`
+                                        pathname: `/productDetail/${data._id}`
                                     }}
                                     >
                                         <LazyLoadImage alt={`${serverUrl} + hello + ${data.image}`} className={`object-cover object-center block ${window.innerWidth > 1024 ? image : ''}`} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
