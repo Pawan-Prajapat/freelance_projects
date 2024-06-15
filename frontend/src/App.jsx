@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 const Home = lazy(() => import('./components/client/home.jsx'));
 const Navbar = lazy(() => import('./components/client/Navbar.jsx'));
 const Skin = lazy(() => import('./components/client/skin.jsx'));
