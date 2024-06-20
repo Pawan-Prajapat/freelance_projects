@@ -86,7 +86,7 @@ function paymentDetailSummary() {
     ? myName?.data?.data?.filter(element => element._id === param.id).map(item => ({
       _id: item._id,
       name: item.name,
-      qyt: item.qyt
+      qyt: item.qty
     })) || []
     : AddToCartData.map(item => ({
       _id: item._id,
