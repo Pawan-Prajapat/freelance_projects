@@ -12,7 +12,7 @@ config({ path: "./config/config.env" });
 export const app = express();
 
 const corsOptions = {
-  origin: 'https://hennakart.in', // Replace with your allowed origin(s)
+  origin: process.env.FRONT_SITE, // Replace with your allowed origin(s)
   methods: 'GET, POST, PUT, DELETE, OPTIONS', // Allowed methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 };

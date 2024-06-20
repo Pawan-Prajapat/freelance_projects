@@ -1,7 +1,10 @@
 import { instance } from "../server.js";
 import crypto from "crypto";
+import {config} from 'dotenv';
 import { Payment } from "../models/pyamentModel.js";
-import { Buyer } from "../models/buyerModel.js"
+import { Buyer } from "../models/buyerModel.js";
+
+config({ path: "./config/config.env" });
 export const checkout = async (req, res) => {
   const { amount, productNamesArray } = req.body;
   const options = {
@@ -36,7 +39,7 @@ export const paymentVerification = async (req, res) => {
       }
     })
 
-    res.redirect(`http://localhost:5173/`)
+    res.redirect(process.env.FRONT_SITE);
   }
   else {
     res.status(400).json({
