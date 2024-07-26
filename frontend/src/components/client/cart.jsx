@@ -358,7 +358,7 @@ export default function Cart(props) {
                 <div className=" flex flex-col xl:w-3/4 w-full"> {/* container */}
                     <div className="w-full flex flex-col">
                         <div className="w-full h-auto overflow-hidden cursor-pointer ">
-                            <LazyLoadImage src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="" className=" w-full  transition-transform object-cover duration-700 hover:scale-110 " style={window.innerWidth < 1280 ? { height: `${window.innerWidth * 0.484}px` } : { height: '465px' }} />
+                            <LazyLoadImage src={props.image} alt="" className=" w-full  transition-transform object-cover duration-700 hover:scale-110 " style={window.innerWidth < 1280 ? { height: `${window.innerWidth * 0.484}px` } : { height: '465px' }} />
                         </div> {/* banner */}
                         <div className="uppercase font-bold text-2xl border-b-2 py-4 w-[100%]">skin care</div>
                     </div>

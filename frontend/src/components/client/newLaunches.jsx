@@ -42,7 +42,7 @@ export default function Newlaunches() {
   }
   return (
     <>
-      <Cart min={0} max={max} step={1} data={selectedComboData} productTypes={uniqueArray} />
+      <Cart min={0} max={max} step={1} data={selectedComboData} productTypes={uniqueArray} image="images/Hennakart/natural_essiensital_oil.jpg" />
     </>
   );
 }

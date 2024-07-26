@@ -130,15 +130,18 @@ function Home() {
 
     return (
         <React.Fragment>
-            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={8000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
+            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
                 <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/Hennakart Face Care-01.jpg" alt="" className=' ' />
+                    <LazyLoadImage src="/images/Hennakart/banner4.jpg" alt="" className=' ' />
                 </div>
                 <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/Hennakart Face Care-02.jpg" alt="" className='w-full' />
+                    <LazyLoadImage src="/images/Hennakart/banner1.jpg" alt="" className='w-full' />
                 </div>
                 <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/Hennakart Face Care-03.jpg" alt="" className='w-full' />
+                    <LazyLoadImage src="/images/Hennakart/banner2.jpg" alt="" className='w-full' />
+                </div>
+                <div className='w-full'>
+                    <LazyLoadImage src="/images/Hennakart/banner3.jpg" alt="" className='w-full' />
                 </div>
             </Carousel>
             <div className='mt-10'>
@@ -193,15 +196,15 @@ function Home() {
                     )
                 }
             </div>
-            <Carousel className='mt-10 lg:mt-20 lg:h-[500px]' responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={8000}  >
+            <Carousel className='mt-10 lg:mt-20 lg:h-[500px]' responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={2000}  >
                 <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/Hennakart Face Care-01.jpg" alt="" className=' ' />
+                    <LazyLoadImage src="/images/Hennakart/banner4.jpg" alt=""  height={100} />
                 </div>
                 <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/Hennakart Face Care-02.jpg" alt="" className='w-full' />
+                    <LazyLoadImage src="/images/Hennakart/banner1.jpg" alt="" height={100}  />
                 </div>
                 <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/Hennakart Face Care-03.jpg" alt="" className='w-full' />
+                    <LazyLoadImage src="/images/Hennakart/hair.jpg" alt="" height={100}/>
                 </div>
             </Carousel>
             <div className='my-10'>

@@ -53,7 +53,7 @@ export default function Hair(props) {
 
   return (
     <>
-      <Cart min={0} max={max} step={1} data={selectedHariData} productTypes={uniqueArray} />
+      <Cart min={0} max={max} step={1} data={selectedHariData} productTypes={uniqueArray} image = "/images/Hennakart/hair.jpg" />
     </>
   );
 }

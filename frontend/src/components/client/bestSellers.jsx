@@ -36,7 +36,7 @@ export default function BestSellers() {
 
     return (
         <>
-            <Cart min={0} max={max} step={1} data={selectedHariData} productTypes={uniqueArray} />
+            <Cart min={0} max={max} step={1} data={selectedHariData} productTypes={uniqueArray} image="images/Hennakart/natural_essiensital_oil.jpg"/>
         </>
     );
 }
