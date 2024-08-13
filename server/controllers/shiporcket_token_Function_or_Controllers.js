@@ -19,7 +19,7 @@ export const setToken = async () => {
                     headers: {
                         'Content-Type': 'application/json'
                     }
-                }
+                }   
             );
             const { token } = response.data;
             new_token = token;
