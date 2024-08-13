@@ -61,3 +61,30 @@ const tokenFeatureSlice = createSlice({
 
 export const { addTokenOnLocal, removeTokenOnLocal } = tokenFeatureSlice.actions;
 export default tokenFeatureSlice.reducer;
+
+
+// for remove the free return tag from product whole  page 
+
+
+import { IoShieldHalfSharp } from "react-icons/io5";
+
+{/* <div className="w-full">
+                    <div className='flex items-end gap-3 mt-3'>
+                        <IoShieldHalfSharp className='w-6 h-6' />
+                        <p className='text-green-700 mt-3 font-pawan font-semibold'>Free Returns</p>
+                        <FaQuestionCircle className='w-5 h-5 text-gray-300' />
+                    </div>
+                    <p className='text-gray-500 mt-2'>Learn More.</p>
+                </div> */}
+
+remove the review 
+
+import { IoIosStar } from "react-icons/io";
+ <div className='flex items-center gap-2'>
+                        <p className='flex text-gray-200 gap-1'>
+                            {Array.from({ length: 5 }, (_, i) => (
+                                <IoIosStar key={i} />
+                            ))}
+                        </p>
+                        <span className='text-gray-400'>No Review</span>
+                    </div>

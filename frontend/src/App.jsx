@@ -15,6 +15,13 @@ const Register = lazy(() => import("./components/client/register.jsx"))
 const Logout = lazy(() => import("./components/client/logout.jsx"))
 const BestSellers = lazy(() => import("./components/client/bestSellers.jsx"))
 const NewLaunches = lazy(() => import("./components/client/newLaunches.jsx"))
+const Refund_Return = lazy(() => import("./components/client/Refund_Return.jsx"))
+const Privacy_Policy = lazy(() => import("./components/client/privacy_policy.jsx"))
+const Shipping_Policy = lazy(() => import("./components/client/shipping_policy.jsx"))
+const Tearms_Service = lazy(() => import("./components/client/tearms_service.jsx"))
+const FAQ = lazy(() => import("./components/client/faq.jsx"))
+const Contact = lazy(() => import("./components/client/contact.jsx"))
+const About = lazy(() => import("./components/client/about.jsx"))
 import DotLoader from "react-spinners/DotLoader";
 
 // admin components
@@ -54,6 +61,19 @@ function App() {
           <Route path="/combopackHennaIndigo" element={<Combopack which={"comboHennaIndigo"} />} />
           <Route path="/combopackEssentialOil" element={<Combopack which={"comboEssentialOil"} />} />
           <Route path="/newLaunches" element={<NewLaunches />} />
+
+
+          <Route path="/Refund_Return" element={<Refund_Return />} />
+          <Route path="/Privacy_Policy" element={<Privacy_Policy />} />
+          <Route path="/Shipping_Policy" element={<Shipping_Policy />} />
+          <Route path="/Tearms_Service" element={<Tearms_Service />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/FAQ" element={<FAQ />} />
+          <Route path="/Contact" element={<Contact />} />
+
+
+
+
           <Route path="/deals" element={<Deals under = {0} />} />
           <Route path="/deals100" element={<Deals under = {100} />} />
           <Route path="/deals200" element={<Deals under = {200} />} />

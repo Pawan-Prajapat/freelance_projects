@@ -10,6 +10,9 @@ import { GoPerson } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData } from "../../features/tokenFeatureSlice";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { GoChevronDown } from "react-icons/go";
+import { FaFireFlameCurved } from "react-icons/fa6";
+
 
 export default function Navbar() {
 
@@ -54,11 +57,13 @@ export default function Navbar() {
     }
 
     // show the submenu on hover     
-    const [showTheSubmenuOnHover, setShowTheSubmenuOnHover] = useState([false, false, false, false]);
-    const showTheSubmenuOnHoverFunc = (number) => {
-        const newArray = [...showTheSubmenuOnHover];
-        newArray[number] = !newArray[number];
-        setShowTheSubmenuOnHover(newArray);
+    const [showTheSubmenuOnHover, setShowTheSubmenuOnHover] = useState(null);
+    const [activeLink, setActiveLink] = useState(null);
+    const showTheSubmenuOnHoverFunc = (index) => {
+        setShowTheSubmenuOnHover(prevIndex => prevIndex === index ? null : index);
+    }
+    const showTheActiveLinkFunc = (index) => {
+        setActiveLink(prevIndex => prevIndex === index ? index : index);
     }
 
     // show the how many product in add to cart
@@ -73,13 +78,74 @@ export default function Navbar() {
         return null;
     }
 
+    // carousel responsive
+
+    const responsive = {
+        superLargeDesktop: {
+            // the naming can be any, depends on you.
+            breakpoint: { max: 4000, min: 1024 },
+            items: 1
+        },
+        desktop: {
+            breakpoint: { max: 1024, min: 800 },
+            items: 1
+        },
+        tablet: {
+            breakpoint: { max: 800, min: 464 },
+            items: 1
+        },
+        mobile: {
+            breakpoint: { max: 464, min: 0 },
+            items: 1
+        }
+    };
+
     return (
         <>
             {/* login offcanvas  */}
             <Login openAndClose={offcanvasOpenAndClose} showOrNot={checkIsOffcanvasOpenForLogin} />
-
-
-            <nav className={`${navbar ? 'h-[50px]  pb-10 pt-3   bg-white   fixed top-0  ' : '  '} shadow-md xl:shadow-none w-full z-50 `}>
+            <div className='flex h-14 overflow-hidden gap-96 group bg-orange-300'>
+                <div className=' flex flex-shrink-0 items-center justify-around whitespace-nowrap w-full animate-slide gap-4 group-hover:paused'>
+                    <div className='inline-flex items-center justify-center'>
+                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                        <p >Official International Henna Store for Henna Artist and Henna Reseller</p>
+                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                    </div>
+                    <div className='inline-flex items-center justify-center'>
+                        <p >Managed By Hennahub India</p>
+                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                    </div>
+                    <div className='inline-flex items-center justify-center'>
+                        <p >Fast Shipping by DHL, Fedex and Aramex</p>
+                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                    </div>
+                    <div className='inline-flex items-center justify-center'>
+                        <p >Introductory Offer 10% Discount on all orders use "SAVE10" code</p>
+                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                    </div>
+                    
+                </div>
+                <div className=' flex flex-shrink-0 items-center justify-around whitespace-nowrap w-full animate-slide gap-4 group-hover:paused'>
+                    <div className='inline-flex items-center justify-center'>
+                        <p >Official International Henna Store for Henna Artist and Henna Reseller</p>
+                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                    </div>
+                    <div className='inline-flex items-center justify-center'>
+                        <p >Managed By Hennahub India</p>
+                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                    </div>
+                    <div className='inline-flex items-center justify-center'>
+                        <p >Fast Shipping by DHL, Fedex and Aramex</p>
+                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                    </div>
+                    <div className='inline-flex items-center justify-center'>
+                        <p >Introductory Offer 10% Discount on all orders use "SAVE10" code</p>
+                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                    </div>
+                    
+                </div>
+            </div>
+            <nav className={`${navbar ? 'h-[50px]  pb-10 pt-3   bg-white   fixed top-0  ' : '  '} shadow-md xl:shadow-none w-full z-[1001] `}>
                 <div className={`${navbar ? 'hidden' : 'w-full h-0 xl:h-[88px] items-center justify-between px-4  bg-[#f8f8f8] hidden xl:flex'}`}>
 
                     <div className='flex'>
@@ -110,11 +176,6 @@ export default function Navbar() {
                             }
                         </div>
 
-                        <div className='cursor-pointer w-6 h-11 mx-2'>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="40" fill="currentColor" className="hover:w-full hover:h-full duration-500  bi bi-heart" viewBox="0 0 16 16">
-                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
-                            </svg>
-                        </div>
                         <Link to={"/addtocart"}>
                             <div className='cursor-pointer w-7 h-11 mx-2 relative'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="40" fill="currentColor" className="hover:w-full hover:h-full duration-500  bi bi-cart3" viewBox="0 0 16 16">
@@ -125,7 +186,7 @@ export default function Navbar() {
                         </Link>
                     </div>
                 </div>
-                <div className={`${navbar ? 'flex  justify-between items-center bg-white shadow-md' : 'flex items-center justify-between xl:justify-center '} h-[100px]    xl:h-[67px] px-4  w-full`}>
+                <div className={`${navbar ? 'flex justify-between items-center bg-white shadow-md' : 'flex items-center justify-between xl:justify-center '} py-2  px-4  w-full`}>
                     <div className={`${navbar ? '' : '  xl:hidden'} flex gap-11`}>
                         <div className='xl:hidden'>
                             <FiMenu onClick={() => offcanvasOpenAndClose(0)} className=' w-6 h-6 cursor-pointer' />
@@ -134,76 +195,113 @@ export default function Navbar() {
                     </div>
                     {/* this is for desktop  */}
                     <div >
-                        <ul className={`${navbar ? '  ' : ' items-center  justify-center  '} hidden z-30  xl:inline-flex   `}>
-                            <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/bestSellers">bestsellers</Link></li>
-                            <li className=' relative uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer' onMouseEnter={() => showTheSubmenuOnHoverFunc(0)}
-                                onMouseLeave={() => showTheSubmenuOnHoverFunc(0)}><Link to="/hair">
-                                    hairCare
-                                    <div className={`${showTheSubmenuOnHover[0] ? 'border-t absolute w-52 top-[25px] left-1 flex flex-col bg-white z-50 text-black' : 'hidden'}`}>
-                                        <Link className=' mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/hennas">Hennas</Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4 ' to="/hairMask"><span>Hair Mask</span></Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4 ' to="/hair">Hair Care</Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4 ' to="/hairEssentialOil">Essential Oil For Hair</Link>
+                        <ul className={`${navbar ? ' flex flex-wrap justify-center h-auto py-4 ' : ' items-center  justify-center  '} hidden z-30  xl:flex   `}>
+                            <li className={`nav ${activeLink === 0 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(0)}><Link to="/bestSellers">bestsellers</Link></li>
+                            <li className={`relative nav ${activeLink === 1 ? 'navConditionClass' : ''} `} onMouseEnter={() => showTheSubmenuOnHoverFunc(0)}
+                                onClick={() => showTheActiveLinkFunc(1)}
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}><Link to="/hair">
+                                    HENNA
+                                    <div className={`${showTheSubmenuOnHover === 0 ? 'border-t absolute shadow-lg rounded-md w-52 top-[40px] left-1 flex flex-col bg-white z-50 text-black' : 'hidden'}`}>
+                                        <Link className='navSubMenuLink' to="/hennas">BAQ HENNA POWDER</Link>
+                                        <Link className='navSubMenuLink ' to="/hairMask"><span>HERBAL HENNA POWDER</span></Link>
+                                        <Link className='navSubMenuLink ' to="/hair">NATURAL HENNA POWDER</Link>
+                                        <Link className='navSubMenuLink ' to="/hairEssentialOil">HENNA BASED HAIR COLOUR</Link>
                                     </div>
                                 </Link>
                             </li>
-                            <li className=' relative uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer' onMouseEnter={() => showTheSubmenuOnHoverFunc(1)}
-                                onMouseLeave={() => showTheSubmenuOnHoverFunc(1)}><Link to="/skin">
-                                    SkinCare
-                                    <div className={`${showTheSubmenuOnHover[1] ? 'border-t absolute w-40 top-[25px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
-                                        <Link className='           mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/facePowder">fack powder</Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/facePack"><span>face pack</span></Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/faceSheet">face sheet</Link>
-                                        <Link className='border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/faceEssentialOil">Essential Oil </Link>
+                            <li className={`relative nav ${activeLink === 2 ? 'navConditionClass' : ''} `} onClick={() => showTheActiveLinkFunc(2)} onMouseEnter={() => showTheSubmenuOnHoverFunc(1)}
+                                
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}><Link to="/skin">
+                                    ESSENTIAL OIL
+                                    <div className={`${showTheSubmenuOnHover === 1 ? 'border-t shadow-lg rounded-md absolute w-40 top-[40px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
+                                        <Link className='navSubMenuLink' to="/facePowder">EUCALYPTUS OIL</Link>
+                                        <Link className='navSubMenuLink' to="/facePack">LAVENDER OIL</Link>
+                                        <Link className='navSubMenuLink' to="/facePack">TEA TREE OIL</Link>
+                                        <Link className='navSubMenuLink' to="/facePack">MEHANDI OIL</Link>
+                                        <Link className='navSubMenuLink' to="/facePack">CLOVE OIL</Link>
+                                        <Link className='navSubMenuLink' to="/facePack">CAJEPUT OIL</Link>
                                     </div>
                                 </Link>
                             </li>
-                            <li className='relative uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer' onMouseEnter={() => showTheSubmenuOnHoverFunc(2)}
-                                onMouseLeave={() => showTheSubmenuOnHoverFunc(2)}><Link to="/deals">
-                                    Deals
-                                    <div className={`${showTheSubmenuOnHover[2] ? 'border-t absolute w-40 ps-2 top-[25px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
-                                        <Link className='    mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/deals100">under 100</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/deals200">under 200</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/deals300">under 300</Link>
-                                    </div>
-                                </Link>
-                            </li>
-                            <li className='relative uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer' onMouseEnter={() => showTheSubmenuOnHoverFunc(3)}
-                                onMouseLeave={() => showTheSubmenuOnHoverFunc(3)}><Link to="/combopack">
+                            <li className={`nav ${activeLink === 3 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(3)}><Link to="/newLaunches">FACE CARE </Link></li>
+                            <li className={`nav ${activeLink === 4 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(4)}><Link to="/newLaunches">Hair CARE </Link></li>
+
+                            <li className={`relative nav ${activeLink === 5 ? ' navConditionClass' : ''} `} onClick={() => showTheActiveLinkFunc(5)} onMouseEnter={() => showTheSubmenuOnHoverFunc(2)}
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}><Link to="/combopack">
                                     combopack
-                                    <div className={`${showTheSubmenuOnHover[3] ? 'border-t absolute w-[15vw] text ps-2 top-[25px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
-                                        <Link className='    mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackHairMask">Hair mask combo</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackFaceCare">face mask combo</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackHennaIndigo">Henna Indigo combo</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackFaceSheet">face sheet combo</Link>
-                                        <Link className=' border-t mx-2 py-2 font-normal hover:underline hover:underline-offset-4' to="/combopackEssentialOil">Esential Oil combo</Link>
+                                    <div className={`${showTheSubmenuOnHover === 2 ? 'border-t shadow-lg rounded-md absolute w-[15vw] text ps-2 top-[40px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
+                                        <Link className='navSubMenuLink' to="/combopackHairMask">HENNA AND OIL COMBO</Link>
+                                        <Link className='navSubMenuLink' to="/combopackFaceCare">ESSENTIAL OIL COMBO</Link>
+                                        <Link className='navSubMenuLink' to="/combopackHennaIndigo">HENNA INDIGO COMBO</Link>
+                                        <Link className='navSubMenuLink' to="/combopackFaceSheet">FACE CARE COMBO</Link>
+                                        <Link className='navSubMenuLink' to="/combopackEssentialOil">SKIN CARE COMBO</Link>
                                     </div>
                                 </Link>
                             </li>
-                            <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/newLaunches">new launches </Link></li>
-                            <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/">review </Link></li>
-                            <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/">result </Link></li>
-                            <li className=' uppercase mx-3 text-green-700 font-bold text-base hover:underline hover:underline-offset-4 hover:text-black hover:decoration-black hover:cursor-pointer'><Link to="/">blog </Link></li>
+                            <li className={`nav ${activeLink === 6 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(6)}><Link to="/About">about us </Link></li>
+                            <li className={`nav ${activeLink === 7 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(7)}><Link to="/">results </Link></li>
+                            <li className={`nav ${activeLink === 8 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(8)}><Link to="/">blog </Link></li>
+                            <li className='px-3 py-3 font-medium text-center text-white bg-lime-800 rounded-full' ><Link to="/">Trak your order </Link></li>
                         </ul>
                     </div>
 
                     {/* menu  slidebar for the mobile */}
 
                     <div className={`${isOffcanvasOpen[0] ? 'translate-x-0' : 'translate-x-full hidden'} fixed  w-full xl:hidden bg-black/50 backdrop-blur-sm top-0 right-0 z-10`}>
-                        <section className={`text-black bg-white absolute left-0 top-0 h-screen p-8 gap-8 z-50 flex flex-col overflow-y-auto w-56 ${isOffcanvasOpen[0] ? 'translate-x-0' : 'translate-x-full'} transition-all duration-500 ease-in-out`}>
-                            <div className='flex justify-between items-center'>
-                                <h2>Menu</h2>
+                        <section className={`text-black bg-white absolute left-0 top-0 h-screen p-8 gap-1 z-50 flex flex-col overflow-y-auto w-56 ${isOffcanvasOpen[0] ? 'translate-x-0' : 'translate-x-full'} transition-all duration-500 ease-in-out`}>
+                            <div className='flex justify-end items-center '>
                                 <IoCloseOutline onClick={() => offcanvasOpenAndClose(0)} className=' mt-0 text-3xl cursor-pointer ' />
                             </div>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/bestSellers">bestsellers</Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/hair">haircare</Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/skin">skincare</Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/deals">deals </Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/combopack">combopack </Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/newLaunches">newlaunches </Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/">review </Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/">result </Link>
-                            <Link onClick={() => offcanvasOpenAndClose(0)} to="/">blog </Link>
+                            <Link onClick={() => {offcanvasOpenAndClose(0) , showTheActiveLinkFunc(9)}} className={`font-medium uppercase px-2 py-[10px] ${activeLink === 9 ? 'navConditionClass' : ''}`} to="/bestSellers">bestsellers</Link>
+                            <p className={`font-medium uppercase `} onClick={() => showTheActiveLinkFunc(10)} onMouseEnter={() => showTheSubmenuOnHoverFunc(0)}
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}>
+                                <div className={` flex justify-between px-2 py-[10px] ${activeLink === 10 ? 'navConditionClass' : ''}`}>
+                                    HENNA <GoChevronDown />
+                                </div>
+                                <div className={`${showTheSubmenuOnHover === 0 ? '  flex flex-col bg-white z-50 text-black' : 'hidden'}`}>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs  ' to="/hennas">BAQ HENNA POWDER</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs ' to="/hairMask"><span>HERBAL HENNA POWDER</span></Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs ' to="/hair">NATURAL HENNA POWDER</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs ' to="/hairEssentialOil">HENNA BASED HAIR COLOUR</Link>
+                                </div>
+                            </p>
+                            <p className='uppercase  font-medium text-base' onClick={() => showTheActiveLinkFunc(11)} onMouseEnter={() => showTheSubmenuOnHoverFunc(1)}
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}>
+                                <div className={` flex justify-between px-2 py-[10px] ${activeLink === 11 ? 'navConditionClass' : ''}`}>
+                                    ESSENTIAL OIL <GoChevronDown />
+                                </div>
+
+                                <div className={`${showTheSubmenuOnHover === 1 ? '  flex flex-col bg-white text-black z-50' : 'hidden'}`}>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs' to="/facePowder">EUCALYPTUS OIL</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs' to="/facePack">LAVENDER OIL</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs' to="/facePack">TEA TREE OIL</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs' to="/facePack">MEHANDI OIL</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs' to="/facePack">CLOVE OIL</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className='mx-2 py-2 font-normal text-xs' to="/facePack">CAJEPUT OIL</Link>
+                                </div>
+                            </p>
+                            <p className={`font-medium uppercase px-2 py-[10px] ${activeLink === 12 ? 'navConditionClass' : ''}`}><Link onClick={() => {offcanvasOpenAndClose(0) , showTheActiveLinkFunc(12)}} to="/newLaunches">FACE CARE </Link></p>
+                            <p className={`font-medium uppercase px-2 py-[10px] ${activeLink === 13 ? 'navConditionClass' : ''}`}><Link onClick={() => {offcanvasOpenAndClose(0) , showTheActiveLinkFunc(13)}} to="/newLaunches">Hair CARE </Link></p>
+
+                            <p className=' uppercase  font-medium text-base' onMouseEnter={() => showTheSubmenuOnHoverFunc(2)}
+                                onClick={() => showTheActiveLinkFunc(14)}
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}>
+                                <div className={` flex justify-between px-2 py-[10px] ${activeLink === 14 ? 'navConditionClass' : ''}`}>
+                                    combopack <GoChevronDown />
+                                </div>
+
+                                <div className={`${showTheSubmenuOnHover === 2 ? ' flex flex-col bg-white text-black z-50' : 'hidden'}`}>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className=' mx-2 py-2 font-normal text-xs' to="/combopackHairMask">HENNA AND OIL COMBO</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className=' mx-2 py-2 font-normal text-xs' to="/combopackFaceCare">ESSENTIAL OIL COMBO</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className=' mx-2 py-2 font-normal text-xs' to="/combopackHennaIndigo">HENNA INDIGO COMBO</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className=' mx-2 py-2 font-normal text-xs' to="/combopackFaceSheet">FACE CARE COMBO</Link>
+                                    <Link onClick={() => offcanvasOpenAndClose(0)} className=' mx-2 py-2 font-normal text-xs' to="/combopackEssentialOil">SKIN CARE COMBO</Link>
+                                </div>
+                            </p>
+                            <p className={`font-medium uppercase px-2 py-[10px] ${activeLink === 15 ? 'navConditionClass' : ''}`}><Link onClick={() => {offcanvasOpenAndClose(0) , showTheActiveLinkFunc(15)}} to="/">about us </Link></p>
+                            <p className={`font-medium uppercase px-2 py-[10px] ${activeLink === 16 ? 'navConditionClass' : ''}`}><Link onClick={() => {offcanvasOpenAndClose(0) , showTheActiveLinkFunc(16)}} to="/">results </Link></p>
+                            <p className={`font-medium uppercase px-2 py-[10px] ${activeLink === 17 ? 'navConditionClass' : ''}`}><Link onClick={() => {offcanvasOpenAndClose(0) , showTheActiveLinkFunc(17)}} to="/">blog </Link></p>
+                            <p className='px-3 py-3 font-medium text-center text-white bg-lime-800 rounded-full' ><Link to="/">Trak your order </Link></p>
                         </section>
                     </div>
                     <div className={`${navbar ? '' : ' xl:hidden'} flex gap-7  `}>

@@ -3,6 +3,7 @@ import crypto from "crypto";
 import {config} from 'dotenv';
 import { Payment } from "../models/pyamentModel.js";
 import { Buyer } from "../models/buyerModel.js";
+import { setToken, create_shiprocket_order } from "./shiporcket_token_Function_or_Controllers.js";
 
 config({ path: "./config/config.env" });
 export const checkout = async (req, res) => {
@@ -38,7 +39,8 @@ export const paymentVerification = async (req, res) => {
         razorpay_payment_id,razorpay_signature
       }
     })
-
+    await setToken();
+    await create_shiprocket_order(razorpay_order_id );
     res.redirect(process.env.FRONT_SITE);
   }
   else {

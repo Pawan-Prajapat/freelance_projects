@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link, NavLink } from 'react-router-dom';
@@ -7,6 +7,20 @@ import { addProductInCart } from "../../features/AddToCartSlice";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../features/productsFileHairSlice.js";
+import testVideo from "../../assets/testVideo.mp4";
+
+// result images
+import result1 from "../../assets/eaculyptus.webp";
+import result2 from "../../assets/herbal_henna_result_3.webp";
+import result3 from "../../assets/herbal_henna_result.webp";
+import result4 from "../../assets/natural_henna_result.webp";
+import result5 from "../../assets/tea_tree_result_2.webp";
+import result6 from "../../assets/tea_tree_result_2 (1).webp";
+import customer1 from "../../assets/customer1.jpg";
+import customer2 from "../../assets/customer2.jpg";
+import customer3 from "../../assets/customer3.jpg";
+import customer4 from "../../assets/customer4.jpg";
+import customer5 from "../../assets/customer5.jpg";
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const responsive = {
@@ -63,7 +77,7 @@ const responsiveVerifyLogo = {
     },
     mobile: {
         breakpoint: { max: 464, min: 0 },
-        items: 1
+        items: 2
     }
 };
 const responsiveForBanner = {
@@ -94,19 +108,20 @@ function Home() {
     const dispatch = useDispatch();
     const myName = useSelector((state) => state.ProductHairReducer);
     // for get the products from the store 
+
     useEffect(() => {
         dispatch(fetchProducts());
     }, [dispatch]);
 
     let records;
-    let recordsForBestSelling , recordsForTrend;
+    let recordsForBestSelling, recordsForTrend;
     if (myName.data !== null) {
         const recordsFace = myName.data.data.filter(element => element.categroies === "face").slice(0, 2);
         const recordsHair = myName.data.data.filter(element => element.categroies === "hair").slice(0, 2);
-        records = recordsFace.concat(recordsHair) ;
+        records = recordsFace.concat(recordsHair);
         recordsForBestSelling = myName.data.data.filter(element => element.categroies === "hair").slice(0, 4);
         recordsForTrend = myName.data.data.filter(element => element.categroies === "face").slice(0, 4);
-        
+
     }
     const images = [
         { url: "/images/Hennakart/Hennakart-01.jpg", name: "Hennas", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/" },
@@ -127,6 +142,16 @@ function Home() {
     const getWhatNew = (which) => {
         setWhatNewInHennaKart(newArray => newArray.map((value, index) => index === which));
     };
+
+
+    // for video
+
+    const videoRef = useRef(null);
+    const handleVideoPlayPause = () => {
+        const video = videoRef.current;
+        if (video.paused) video.play();
+        else video.pause();
+    }
 
     return (
         <React.Fragment>
@@ -196,15 +221,15 @@ function Home() {
                     )
                 }
             </div>
-            <Carousel className='mt-10 lg:mt-20 lg:h-[500px]' responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={2000}  >
+            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} >
                 <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/banner4.jpg" alt=""  height={100} />
+                    <LazyLoadImage src="/images/Hennakart/banner4.jpg" alt="" className=' ' />
                 </div>
                 <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/banner1.jpg" alt="" height={100}  />
+                    <LazyLoadImage src="/images/Hennakart/banner1.jpg" alt="" className='w-full' />
                 </div>
                 <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/hair.jpg" alt="" height={100}/>
+                    <LazyLoadImage src="/images/Hennakart/hair.jpg" alt="" className='w-full' />
                 </div>
             </Carousel>
             <div className='my-10'>
@@ -247,52 +272,52 @@ function Home() {
                 </div>
                 <div className={`${whatNewInHennaKart[1] ? 'visible' : 'hidden'} w-full grid gap-2 lg:gap-4 px-3 ${window.innerWidth < 1024 ? window.innerWidth < 770 ? window.innerWidth < 320 ? 'grid-cols-1' : 'grid-cols-2' : 'grid-cols-3' : 'grid-cols-4'}`}>
                     {
-                        recordsForBestSelling?(
-                        recordsForBestSelling.map((data, i) => (
-                            <div key={i} className='py-3'  >
-                                <Link className="overflow-hidden" to={{
-                                    pathname: `/productDetail/${data.name}`
-                                }} >
-                                    <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
-                                </Link>
-                                <div className="mt-4 text-center">
-                                    <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
-                                    <p className=" text-base">{data.name}</p>
-                                    <p className="font-bold mt-1">Rs. {data.price}</p>
-                                    <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
-                                        <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
-                                            Add To Cart
-                                        </button>
-                                    </NavLink>
+                        recordsForBestSelling ? (
+                            recordsForBestSelling.map((data, i) => (
+                                <div key={i} className='py-3'  >
+                                    <Link className="overflow-hidden" to={{
+                                        pathname: `/productDetail/${data.name}`
+                                    }} >
+                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
+                                    </Link>
+                                    <div className="mt-4 text-center">
+                                        <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
+                                        <p className=" text-base">{data.name}</p>
+                                        <p className="font-bold mt-1">Rs. {data.price}</p>
+                                        <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
+                                            <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
+                                                Add To Cart
+                                            </button>
+                                        </NavLink>
+                                    </div>
                                 </div>
-                            </div>
-                        ))):(
+                            ))) : (
                             <h1>Loading .........</h1>
                         )
                     }
                 </div>
                 <div className={`${whatNewInHennaKart[2] ? 'visible' : 'hidden'} w-full grid gap-2 lg:gap-4 px-3 ${window.innerWidth < 1024 ? window.innerWidth < 770 ? window.innerWidth < 320 ? 'grid-cols-1' : 'grid-cols-2' : 'grid-cols-3' : 'grid-cols-4'}`}>
                     {
-                        recordsForTrend?(
-                        recordsForTrend.map((data, i) => (
-                            <div key={i} className='py-3'  >
-                                <Link className="overflow-hidden" to={{
-                                    pathname: `/productDetail/${data.name}`
-                                }} >
-                                    <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
-                                </Link>
-                                <div className="mt-4 text-center">
-                                    <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
-                                    <p className=" text-base">{data.name}</p>
-                                    <p className="font-bold mt-1">Rs. {data.price}</p>
-                                    <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
-                                        <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
-                                            Add To Cart
-                                        </button>
-                                    </NavLink>
+                        recordsForTrend ? (
+                            recordsForTrend.map((data, i) => (
+                                <div key={i} className='py-3'  >
+                                    <Link className="overflow-hidden" to={{
+                                        pathname: `/productDetail/${data.name}`
+                                    }} >
+                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
+                                    </Link>
+                                    <div className="mt-4 text-center">
+                                        <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
+                                        <p className=" text-base">{data.name}</p>
+                                        <p className="font-bold mt-1">Rs. {data.price}</p>
+                                        <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
+                                            <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
+                                                Add To Cart
+                                            </button>
+                                        </NavLink>
+                                    </div>
                                 </div>
-                            </div>
-                        ))) : (
+                            ))) : (
                             <h1>Loading .........</h1>
                         )
                     }
@@ -308,7 +333,7 @@ function Home() {
 
             <div className='my-20 flex items-center flex-col'>
                 <p className='  font-bold mb-3 font-pawan text-[28px] text-[#4b7422] text-center capitalize'>Why hennakart</p>
-                <p className='text-center text-base lg:w-[63%] w-full px-5 tracking-wide'>HENNAKART INDIA is a Recognized Henna Manufacturers in churu, supplier and exporter of Henna, henna products, Hair care Herbs & Personal care herbs, We are a well-established Company with a state of an art Manufacturing facility with ISO 9001:2015 Certified unit.</p>
+                <p className='text-center text-lg lg:w-[63%] w-full px-5 tracking-wide'> <span className=' font-bold'> Yumi Mehandi </span> is a well-established manufacturer of henna, essential oils, and hair and skin care products. Our offerings are 100% organic, pure, and ISO certified, ensuring you receive only the highest quality natural products. Trust Yumi Mehandi for your beauty and wellness needs.</p>
             </div>
 
             <Carousel responsive={responsiveVerifyLogo} className=' bg-gray-100 py-5 lg:py-16 border-t'>
@@ -329,6 +354,48 @@ function Home() {
                 </div>
                 <div className='w-full px-5'>
                     <LazyLoadImage src="/images/logo/6.avif" alt="" className='w-full' />
+                </div>
+            </Carousel>
+
+            <div className='inline-flex justify-center font-bold font-pawan  text-2xl items-center text-center w-full h-20'>
+                <p >Handcrafted Henna</p>
+            </div>
+            <video ref={videoRef} muted loop autoPlay onClick={handleVideoPlayPause}>
+                <source src={testVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+
+
+            {/* result show carousel */}
+            <div className='flex flex-col my-10'>
+                <div className=' inline-flex gap-2 justify-between  items-center'>
+                    <hr className=' bg-black w-1/5 lg:w-1/3 h-[3px]' />
+                    <p className=' font-semibold capitalize font-pawan lg:text-3xl text-lg'>organic henna result</p>
+                    <hr className=' bg-black w-1/5 lg:w-1/3 h-[3px]' />
+                </div>
+                <div className='inline-flex justify-center'>
+                    <p className='text-gray-600 lg:w-2/3 text-center'>See the magic through their eyes! Explore our Organic Henna Powder's stellar reviews with captivating
+                        before-and-after pictures – where transformations speak louder than words.</p>
+                </div>
+            </div>
+            <Carousel responsive={responsiveVerifyLogo} className=' transition-transform duration-500 ease-in-out bg-gray-100 py-5 lg:py-16 border-t' infinite={true} autoPlay={true} autoPlaySpeed={1500} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]}>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result1} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result2} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result3} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result4} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result5} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result6} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
                 </div>
             </Carousel>
 
@@ -372,8 +439,36 @@ function Home() {
                     </div>
                 </Carousel>
             </div>
+            {/* result show carousel */}
+            <div className='flex flex-col my-10'>
+                <div className=' inline-flex gap-2 justify-between  items-center'>
+                    <hr className=' bg-black w-1/5 lg:w-1/3 h-[3px]' />
+                    <p className=' font-semibold capitalize font-pawan lg:text-3xl text-lg'>Costumer Reviews</p>
+                    <hr className=' bg-black w-1/5 lg:w-1/3 h-[3px]' />
+                </div>
+                <div className='inline-flex justify-center'>
+                    <p className='text-gray-600 lg:w-2/3 text-center'>See the magic through their eyes! Explore our Organic Henna Powder's stellar reviews with captivating
+                        before-and-after pictures – where transformations speak louder than words.</p>
+                </div>
+            </div>
+            <Carousel responsive={responsiveVerifyLogo} className=' transition-transform duration-500 ease-in-out bg-gray-100 py-5 lg:py-16 border-t' infinite={true} autoPlay={true} autoPlaySpeed={1500} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]}>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={customer1} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={customer2} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={customer3} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={customer4} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={customer5} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+            </Carousel>
         </React.Fragment >
     )
 }
-
-export default Home
+export default Home;

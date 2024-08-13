@@ -39,7 +39,12 @@ const buyerSchema =  new mongoose.Schema({
     },
     order_id:{
         type:String
+    },
+    razorpay_order_id:{
+        type:String
     }
+},{
+    timestamps:true
 });
 
 export const Buyer = mongoose.model("Buyer",buyerSchema);

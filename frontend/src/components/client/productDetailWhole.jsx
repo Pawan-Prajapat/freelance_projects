@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { IoIosStar } from "react-icons/io";
 import { FaFire, FaPlus, FaMinus, FaRegEye } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
 import { GoShareAndroid } from "react-icons/go";
 import { FaQuestionCircle } from "react-icons/fa";
-import { IoShieldHalfSharp } from "react-icons/io5";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -43,7 +41,7 @@ function ProductDetailWhole() {
     const myName = useSelector((state) => state.ProductHairReducer);
     const [quantity, setQuantity] = useState(1);
     const { id } = useParams();
-    
+
     useEffect(() => {
         dispatch(fetchProducts());
     }, [dispatch]);
@@ -72,7 +70,7 @@ function ProductDetailWhole() {
         setQuantity(quantity + 1);
     };
 
-    const multipleImages = [currentProduct[0].image , ...currentProduct[0].multipleImages];
+    const multipleImages = [currentProduct[0].image, ...currentProduct[0].multipleImages];
 
     const CustomDot = ({ onClick, ...rest }) => {
         const { index, active } = rest;
@@ -107,13 +105,13 @@ function ProductDetailWhole() {
         <div className='flex lg:my-10 flex-col lg:flex-row'>
             <div className='lg:w-[60%] lg:pe-6 lg:ps-14 ps-0 pe-0 w-full'>
                 <div className="pic w-full md:w-[100%] xl:w-[730.08] px-2 sm:px-5 lg:px-10 gap-y-10 flex">
-                    <Carousel responsive={responsive} infinite={true} showDots customDot={<CustomDot/>}  customRightArrow={<CustomRightArrow />} customLeftArrow={<CustomLeftArrow />}
+                    <Carousel responsive={responsive} infinite={true} showDots customDot={<CustomDot />} customRightArrow={<CustomRightArrow />} customLeftArrow={<CustomLeftArrow />}
                         className='w-full h-[600px] lg:h-auto'>
                         {multipleImages.map((image, index) => (
                             <div key={index} className='w-full lg:h-[900px] h-auto'>
                                 <LazyLoadImage src={`${serverUrl}/${image}`} alt="" className='lg:h-[631px] h-[350px]' />
                             </div>
-                         ))} 
+                        ))}
                     </Carousel>
                 </div>
             </div>
@@ -122,14 +120,7 @@ function ProductDetailWhole() {
                     <h1 className='capitalize lg:text-[26px] text-xl font-pawan font-semibold text-green-700'>{currentProduct[0].name}</h1>
                 </div>
                 <div className='flex justify-between flex-col gap-3 lg:gap-0 lg:flex-row w-full mt-3'>
-                    <div className='flex items-center gap-2'>
-                        <p className='flex text-gray-200 gap-1'>
-                            {Array.from({ length: 5 }, (_, i) => (
-                                <IoIosStar key={i} />
-                            ))}
-                        </p>
-                        <span className='text-gray-400'>No Review</span>
-                    </div>
+
                     <div className='flex items-center gap-2 text-red-400 font-semibold'>
                         <p><FaFire /></p>
                         <span>15 sold in last 15 hours</span>
@@ -165,6 +156,11 @@ function ProductDetailWhole() {
                         <CiHeart className='border border-gray-500 rounded-full p-2 h-10 w-10 lg:h-14 lg:w-14 cursor-pointer' />
                         <GoShareAndroid className='h-7 w-7 cursor-pointer' />
                     </div>
+                    <a href="https://wa.me/919256432475">
+                        <div className='text-center text-base uppercase hover:border-none border-2 border-gray-600 py-[12px] font-bold shadow-[5px_6px_rgb(166,222,205,1)] hover:text-blue-50 bg-white hover:bg-black text-black w-full mt-10'>
+                            Buy Bulk
+                        </div>
+                    </a>
                     <div className='text-center text-base uppercase hover:border-none border-2 border-gray-600 py-[12px] font-bold shadow-[5px_6px_rgb(166,222,205,1)] hover:text-blue-50 bg-white hover:bg-black text-black w-full mt-10'>
                         <Link to={`/paymentDetailSummary/${id}`}>Buy it Now</Link>
                     </div>
@@ -182,14 +178,7 @@ function ProductDetailWhole() {
                     <p className='text-gray-500 mt-2'>Free standard shipping on all orders</p>
                     <p className='text-gray-500 mt-2'>Estimated to be delivered on: 6-7 Days</p>
                 </div>
-                <div className="w-full">
-                    <div className='flex items-end gap-3 mt-3'>
-                        <IoShieldHalfSharp className='w-6 h-6' />
-                        <p className='text-green-700 mt-3 font-pawan font-semibold'>Free Returns</p>
-                        <FaQuestionCircle className='w-5 h-5 text-gray-300' />
-                    </div>
-                    <p className='text-gray-500 mt-2'>Learn More.</p>
-                </div>
+
             </div>
         </div>
     )

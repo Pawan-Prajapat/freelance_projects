@@ -5,6 +5,8 @@ import { GrPinterest } from "react-icons/gr";
 import { AiFillYoutube } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
+import logo from '../../img/YumiHerbalProduct.png';
+import { SiWhatsapp } from "react-icons/si";
 
 export default function Footer() {
   const location = useLocation();
@@ -16,26 +18,23 @@ export default function Footer() {
       <div className=" mx-auto flex flex-col md:flex-row justify-between px-5">
         <div className="w-full md:w-auto text-center md:text-left">
           <div>
-            <h2 className="text-2xl font-semibold mb-4 text-green-700 ">Yumi mehendi</h2>
+            <img src={logo} alt="" height={100} width={150} />
             <p className="leading-relaxed">
-              grow with organic <br />
-              Kile Ghati, Near Rajput Hostel <br />
-              Sojat, RJ 306104, <br />
-              India
+            BERA MAYLAT,SOJAT CITY (306104)
+            <br />
+            PALI RAJASTHAN INDIA.
+            <br />
             </p>
             <p className="mt-2">
-              Call us: (+91)-98274-62558 <br />
-              Email: support@Yumi mehendistore.com
+              Call us: <a href="tel:+919256432475">(+91) 92564-32475 </a> <br />
+              Email: <a href="mailto:CAREYUMIMEHANDI@GMAIL.COM">-CAREYUMIMEHANDI@GMAIL.COM</a>
             </p>
           </div>
           <div className='my-6' >
             <h1 className='text-green-800 uppercase font-bold text-lg py-4'>stay connected</h1>
-            <ul className='flex gap-7 my-5 justify-center'>
-              <li><Link to="/"><FaFacebookF className=' text-green-900 w-8 h-8' /></Link></li>
-              <li><Link to="/"><AiFillInstagram className='text-green-900 w-10 h-10' /></Link></li>
-              <li><Link to="/"><GrPinterest className='text-green-900 w-8 h-8' /></Link></li>
-              <li><Link to="/"><AiFillYoutube className='text-green-900 w-10 h-10' /></Link></li>
-              <li><Link to="/"><BsTwitter className=' text-green-900 w-10 h-10' /></Link></li>
+            <ul className='flex gap-7 my-5 justify-start'>
+              <li><a href="https://www.instagram.com/yumimehandi1/"><FaFacebookF className=' text-green-900 w-8 h-8' /></a></li>
+              <li><a href="https://www.facebook.com/share/AxaBm8gAJd7YEtKL/?mibextid=qi2Omg"><AiFillInstagram className='text-green-900 w-10 h-10' /></a></li>
             </ul>
           </div>
         </div>
@@ -65,11 +64,6 @@ export default function Footer() {
                 New Launched
               </a>
             </li>
-            <li className="my-3">
-              <a href="#" className="text-gray-800 hover:underline underline-offset-4">
-                Brands
-              </a>
-            </li>
           </ul>
         </div>
         <div className="w-full md:w-auto text-center md:text-left mt-5 md:mt-0">
@@ -77,15 +71,15 @@ export default function Footer() {
           <ul className=" ">
 
             <li className="my-3">
-              <a href="#" className=" text-gray-800  hover:underline underline-offset-4">
-                About Us
-              </a>
+            <Link to="/About" className="text-gray-800 hover:underline underline-offset-4">
+                About Us 
+              </Link>
             </li>
 
             <li className="my-3">
-              <a href="#" className="text-gray-800 hover:underline underline-offset-4">
+              <Link to="/faq" className="text-gray-800 hover:underline underline-offset-4">
                 FAQ
-              </a>
+              </Link>
             </li>
 
             <li className="my-3">
@@ -94,14 +88,9 @@ export default function Footer() {
               </a>
             </li>
             <li className="my-3">
-              <a href="#" className="text-gray-800 hover:underline underline-offset-4">
-                Careers
-              </a>
-            </li>
-            <li className="my-3">
-              <a href="#" className="text-gray-800 hover:underline underline-offset-4">
+              <Link to="Contact" className="text-gray-800 hover:underline underline-offset-4">
                 Contact Us
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -109,29 +98,24 @@ export default function Footer() {
           <h2 className="text-lg font-bold text-green-700 mb-4 uppercase">Customer service</h2>
           <ul className="list-unstyled ">
             <li className="my-3">
-              <a href="#" className=" text-gray-800 hover:underline underline-offset-4">
-                Search
-              </a>
-            </li>
-            <li className="my-3">
-              <a href="#" className=" text-gray-800 hover:underline underline-offset-4">
+              <Link to="/Tearms_Service" className=" text-gray-800 hover:underline underline-offset-4">
                 Terms Of Service
-              </a>
+              </Link>
             </li>
             <li className="my-3">
-              <a href="#" className=" text-gray-800 hover:underline underline-offset-4">
+              <Link to="/privacy_policy" className=" text-gray-800 hover:underline underline-offset-4">
                 Privacy Policy
-              </a>
+              </Link>
             </li>
             <li className="my-3">
-              <a href="#" className=" text-gray-800 hover:underline underline-offset-4">
+              <Link to="/Refund_Return" className=" text-gray-800 hover:underline underline-offset-4">
                 Refund & Return Policy
-              </a>
+              </Link>
             </li>
             <li className="my-3">
-              <a href="#" className=" text-gray-800 hover:underline underline-offset-4">
+              <Link to="/Shipping_Policy" className=" text-gray-800 hover:underline underline-offset-4">
                 Shipping Policy
-              </a>
+              </Link>
             </li>
 
           </ul>
@@ -151,9 +135,11 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <div className='bg-green-600 w-12 h-12 fixed bottom-5 right-5 rounded-full flex justify-center items-center'>
+        <a href="https://wa.me/919256432475"><SiWhatsapp className=' text-white w-8 h-8'/></a>
+      </div>
       <div className=" text-left text-green-700 text-base mt-16 px-3">
-        @ {new Date().getFullYear()} Yumi mehendi India. Powered By
-        Sociallab Pro.
+      &copy; {new Date().getFullYear()} Yumi mehendi India. 
       </div>
     </footer>
   )

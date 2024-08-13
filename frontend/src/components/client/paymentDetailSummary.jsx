@@ -40,7 +40,7 @@ function paymentDetailSummary() {
   const [email, setEmail] = useState('');
   const [mail, setMail] = useState(true);
   const [buyer, setBuyer] = useState({
-    email: " ", country: " ", firstName: "", lastName: " ", city: "", state: "", pincode: " ", phone: " ", address: " ", order_id: " "
+    email: " ", country: " ", firstName: "", lastName: " ", city: "", state: "", pincode: " ", phone: " ", address: " ", razorpay_order_id: " "
   })
 
   useEffect(() => {
@@ -68,10 +68,10 @@ function paymentDetailSummary() {
 
 
   useEffect(() => {
-    if (buyer.order_id !== " ") {
+    if (buyer.razorpay_order_id !== " ") {
       buyerDataStore();
     }
-  }, [buyer.order_id]);
+  }, [buyer.razorpay_order_id]);
 
 
 
@@ -107,7 +107,8 @@ function paymentDetailSummary() {
     const { data: { order } } = await axios.post(serverUrl + "/api/checkout", {
       amount, productNamesArray
     })
-    setBuyer((buyer) => ({ ...buyer, order_id: order.id }));
+    setBuyer((buyer) => ({ ...buyer, razorpay_order_id: order.id }));
+    console.log("pawan buyer id = " , order.id );
 
 
     const userFirstName = document.getElementById('firstName').value
@@ -143,6 +144,7 @@ function paymentDetailSummary() {
 
 
   const buyerDataStore = async () => {
+    console.log("pawan store buyer data call ho gya hai");
    await axios.post(serverUrl + "/api/storeBuyerData", buyer);
   }
 

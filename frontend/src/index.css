@@ -1,4 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @tailwind base;
 @tailwind components;
+
+
 @tailwind utilities;
+
+@layer utilities {
+  .paused {
+    animation-play-state: paused;
+  }
+
+  .nav {
+    @apply uppercase mx-3 text-green-700 font-bold text-base  hover:text-white  hover:cursor-pointer hover:bg-green-700 px-2 py-[10px] rounded-md  
+  }
+
+  .navConditionClass {
+    @apply bg-green-800 text-white rounded-md  
+  }
+  .navSubMenuLink {
+    @apply mx-2 py-2 font-normal hover:underline hover:underline-offset-4
+  }
+
+  .Question{
+    @apply text-base font-medium inline-flex justify-between items-center w-full cursor-pointer mb-2
+  }
+  .QuestionBox{
+    @apply mt-2 bg-neutral-100 pt-5 pb-3 px-6 rounded-lg
+  }
+}

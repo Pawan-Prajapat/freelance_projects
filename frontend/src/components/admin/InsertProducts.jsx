@@ -56,6 +56,7 @@ function insertProducts() {
         formData.append('categroies', categroies)
         formData.append('qty', intQyt)
         formData.append('description', description)
+        console.log("form data" , formData);
         await axios.post(serverUrl + "/api/storeProductData", formData,
             {
                 headers: {

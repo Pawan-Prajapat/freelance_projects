@@ -3,14 +3,13 @@ import fs from "fs";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-
 export const storeProductData = async (req, res) => {
     try {
         const { name, price, subCategroies, categroies, qty, description } = req.body;
         const image = req.files.image[0].path.replace('public', "");
         const multipleImages = req.files.multipleImages.map(file => file.path.replace('public', ""));
 
-        const id = name.replace(/\s/g, '') + subCategroies + categroies;
+        // sku add karna hai usi se identify hoga
 
         // Check if a product with the same ID already exists
         const existingProduct = await ProductData.findOne({ id });
@@ -19,7 +18,7 @@ export const storeProductData = async (req, res) => {
         }
 
         await ProductData.create({
-            id,
+            sku,
             name,
             price,
             subCategroies,
