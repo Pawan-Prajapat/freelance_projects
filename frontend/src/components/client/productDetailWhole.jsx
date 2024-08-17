@@ -12,35 +12,23 @@ import "react-multi-carousel/lib/styles.css";
 import { addProductInCart } from "../../features/AddToCartSlice";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { fetchProducts } from "../../features/productsFileHairSlice.js";
-
+import axios from 'axios';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const responsive = {
-    superLargeDesktop: {
-        breakpoint: { max: 4000, min: 1024 },
-        items: 1
-    },
-    desktop: {
-        breakpoint: { max: 1024, min: 800 },
-        items: 1
-    },
-    tablet: {
-        breakpoint: { max: 800, min: 464 },
-        items: 1
-    },
-    mobile: {
-        breakpoint: { max: 464, min: 0 },
-        items: 1
-    }
+    superLargeDesktop: { breakpoint: { max: 4000, min: 1024 }, items: 1 },
+    desktop: { breakpoint: { max: 1024, min: 800 }, items: 1 },
+    tablet: { breakpoint: { max: 800, min: 464 }, items: 1 },
+    mobile: { breakpoint: { max: 464, min: 0 }, items: 1 }
 };
-
 
 function ProductDetailWhole() {
     const dispatch = useDispatch();
     const myName = useSelector((state) => state.ProductHairReducer);
     const [quantity, setQuantity] = useState(1);
     const { id } = useParams();
+    const [otherImages, setOtherImages] = useState([]);
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -50,39 +38,36 @@ function ProductDetailWhole() {
         window.scrollTo(0, 0);
     }, []);
 
-    if (!myName.data) {
-        return <h1>Loading........ </h1>
-    }
+    // Fetch additional images
+    useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                const res = await axios.get(`${serverUrl}/api/getImagesWithoutHeadInPath/${id}`);
+                setOtherImages(res.data);
+            } catch (error) {
+                console.error("Error fetching images:", error);
+            }
+        };
 
-    const currentProduct = myName.data.data.filter(element => element._id === id);
+        fetchImage();
+    }, [id]);
 
-    if (!currentProduct[0]) {
-        return <h1>Product not found</h1>
-    }
+    // Early return if data is not yet loaded or product is not found
+    if (!myName.data) return <h1>Loading........ </h1>;
 
-    const handleMinusClick = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-        }
-    };
+    const currentProduct = myName.data.find(element => element._id === id);
+    if (!currentProduct) return <h1>Product not found</h1>;
 
-    const handlePlusClick = () => {
-        setQuantity(quantity + 1);
-    };
+    const multipleImages = [currentProduct.image, ...otherImages];
 
-    const multipleImages = [currentProduct[0].image, ...currentProduct[0].multipleImages];
+    const handleMinusClick = () => quantity > 1 && setQuantity(quantity - 1);
+    const handlePlusClick = () => setQuantity(quantity + 1);
 
-    const CustomDot = ({ onClick, ...rest }) => {
-        const { index, active } = rest;
-        const carouselItems = multipleImages.map((image, i) => (
-            <LazyLoadImage key={i} src={`${serverUrl}/${image}`} alt="" className='lg:h-[181px] lg:w-[181px] h-[70px] w-[70px]' />
-        ));
-        return (
-            <button className={`${active ? "active opacity-60" : "inactive"} mx-1`} onClick={() => onClick()}>
-                {carouselItems[index]}
-            </button>
-        );
-    };
+    const CustomDot = ({ onClick, index, active }) => (
+        <button className={`${active ? "active opacity-60" : "inactive"} mx-1`} onClick={() => onClick()}>
+            <LazyLoadImage src={`${serverUrl}/${multipleImages[index]}`} alt="" className='lg:h-[181px] lg:w-[181px] h-[70px] w-[70px]' />
+        </button>
+    );
 
     const CustomRightArrow = ({ onClick }) => (
         <button onClick={onClick} className='absolute right-0 lg:bottom-20 bottom-3 z-10'>
@@ -100,7 +85,6 @@ function ProductDetailWhole() {
         dispatch(addProductInCart(product));
     }
 
-
     return (
         <div className='flex lg:my-10 flex-col lg:flex-row'>
             <div className='lg:w-[60%] lg:pe-6 lg:ps-14 ps-0 pe-0 w-full'>
@@ -117,7 +101,7 @@ function ProductDetailWhole() {
             </div>
             <div className='lg:pe-24 px-4 mt-8 lg:mt-0 lg:w-[40%] flex items-center flex-col'>
                 <div className='w-full'>
-                    <h1 className='capitalize lg:text-[26px] text-xl font-pawan font-semibold text-green-700'>{currentProduct[0].name}</h1>
+                    <h1 className='capitalize lg:text-[26px] text-xl font-pawan font-semibold text-green-700'>{currentProduct.title}</h1>
                 </div>
                 <div className='flex justify-between flex-col gap-3 lg:gap-0 lg:flex-row w-full mt-3'>
 
@@ -127,11 +111,11 @@ function ProductDetailWhole() {
                     </div>
                 </div>
                 <div className='w-full text-gray-500 mt-3'>
-                    <p>{currentProduct[0].productDetailDescription}</p>
+                    <p>{currentProduct.title}</p>
                 </div>
                 <div className='w-full text-gray-500 mt-3'>
-                    <p>Vendor: {currentProduct[0].vendor} <br /> Availability: {currentProduct[0].availability} <br /> Product Type: {currentProduct[0].productType}</p>
-                    <p className='mt-3 font-bold text-black text-xl'>Rs. {currentProduct[0].price}</p>
+                    <p> Availability: {currentProduct.qty} <br /></p>
+                    <p className='mt-3 font-bold text-black text-xl'>Rs. {currentProduct.qty}</p>
                 </div>
                 <div className='flex flex-col w-full mt-4'>
                     <div>
@@ -145,12 +129,12 @@ function ProductDetailWhole() {
                                 <FaPlus />
                             </button>
                         </div>
-                        <p className='mt-2 text-gray-500'>Subtotal: <span className='text-black font-semibold text-lg'>Rs. {currentProduct[0].price * quantity}</span></p>
+                        <p className='mt-2 text-gray-500'>Subtotal: <span className='text-black font-semibold text-lg'>Rs. {currentProduct.price * quantity}</span></p>
                     </div>
                 </div>
                 <div className='w-full'>
                     <div className='flex items-center justify-between'>
-                        <NavLink to={"/addtocart"} className={"w-3/4"} onClick={() => handleAddToCart(currentProduct[0])}>
+                        <NavLink to={"/addtocart"} className={"w-3/4"} onClick={() => handleAddToCart(currentProduct)}>
                             <button className='w-full text-base uppercase hover:border-2 hover:border-black py-[12px] mt-3 font-bold bg-[#4b7422] shadow-[5px_6px_rgb(166,222,205,1)] text-blue-50 hover:bg-white hover:text-black hover:shadow-black hover:antialiased'>Add to Cart</button>
                         </NavLink>
                         <CiHeart className='border border-gray-500 rounded-full p-2 h-10 w-10 lg:h-14 lg:w-14 cursor-pointer' />
@@ -181,7 +165,7 @@ function ProductDetailWhole() {
 
             </div>
         </div>
-    )
+    );
 }
 
 export default ProductDetailWhole;

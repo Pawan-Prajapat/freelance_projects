@@ -76,14 +76,14 @@ function paymentDetailSummary() {
 
 
 
-// store the buyer data
+  // store the buyer data
   let currentProduct;
-  if(param.id !== "addToCartCheckout"){
-    currentProduct = myName?.data?.data?.filter(element => element._id === param.id); 
+  if (param.id !== "addToCartCheckout") {
+    currentProduct = myName?.data?.filter(element => element._id === param.id);
   }
-    // paise bhejne ka trika 
+  // paise bhejne ka trika 
   const productNamesArray = param.id !== "addToCartCheckout"
-    ? myName?.data?.data?.filter(element => element._id === param.id).map(item => ({
+    ? myName?.data?.filter(element => element._id === param.id).map(item => ({
       _id: item._id,
       name: item.name,
       qyt: item.qty
@@ -99,7 +99,7 @@ function paymentDetailSummary() {
 
 
 
-  
+
 
 
   const checkoutHandler = async (amount) => {
@@ -108,7 +108,7 @@ function paymentDetailSummary() {
       amount, productNamesArray
     })
     setBuyer((buyer) => ({ ...buyer, razorpay_order_id: order.id }));
-    console.log("pawan buyer id = " , order.id );
+    console.log("pawan buyer id = ", order.id);
 
 
     const userFirstName = document.getElementById('firstName').value
@@ -145,12 +145,12 @@ function paymentDetailSummary() {
 
   const buyerDataStore = async () => {
     console.log("pawan store buyer data call ho gya hai");
-   await axios.post(serverUrl + "/api/storeBuyerData", buyer);
+    await axios.post(serverUrl + "/api/storeBuyerData", buyer);
   }
 
- 
-   // when uesr click then page show on the top every time
-   useEffect(() => {
+
+  // when uesr click then page show on the top every time
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [])
 
@@ -172,9 +172,12 @@ function paymentDetailSummary() {
     return true;
   };
 
- 
 
+  console.log("currentProduct" , currentProduct)
 
+  if (!currentProduct || productNamesArray.length === 0) {
+    return <div>Loading...</div>; // You can customize the loading state
+  }
 
   return (
 
@@ -289,7 +292,7 @@ function paymentDetailSummary() {
 
               onClick={() => {
                 if (areAllFieldsFilled()) {
-                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : currentProduct[0].price);
+                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : 1);
                 }
               }}
             >Pay Now</button>
@@ -313,9 +316,9 @@ function paymentDetailSummary() {
           ) : (
             <div className={`flex  justify-between items-center`}>
               <div >
-                <LazyLoadImage className=' h-16 w-20 border border-gray-400 rounded-lg' src={`${serverUrl}/${currentProduct[0].image}`} alt="" />
+                <LazyLoadImage className=' h-16 w-20  border border-gray-400 rounded-lg' src={`${serverUrl}/${currentProduct[0].image}`} alt={`${serverUrl}/${currentProduct[0].image}`} />
               </div>
-              <div><p className='text-center'>{currentProduct[0].name}</p></div>
+              <div><p className='text-center'>{currentProduct[0].title}</p></div>
               <div>Rs. {currentProduct[0].price}</div>
             </div>
           )}
@@ -341,7 +344,7 @@ function paymentDetailSummary() {
             <button type='button' className='w-full bg-green-800 bg-opacity-50 text-xl text-white rounded-md hover:bg-opacity-70  py-5 font-bold'
               onClick={() => {
                 if (areAllFieldsFilled()) {
-                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : currentProduct[0].price);
+                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : 1);
                 }
               }}
             >Pay Now</button>

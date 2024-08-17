@@ -10,4 +10,11 @@ const categroiesSchema = ({
     }
 });
 
+const descriptionPhotoSchema = new mongoose.Schema ({
+    photo : {
+        type:String,
+        required : true
+    }
+});
 export const CategroiesData =  mongoose.model("categroie" , categroiesSchema);
+export const DescriptionPhotoData =  mongoose.model("descriptionPhoto" , descriptionPhotoSchema);

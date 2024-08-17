@@ -22,18 +22,18 @@ export default function Skin(props) {
 
   let selectedHariData;
   if (props.which === "skin") {
-    selectedHariData = myName.data.data.filter(element => element.categroies && element.categroies.indexOf("skin") !== -1);
+    selectedHariData = myName.data.filter(element => element.categroies && element.categroies.indexOf("skin") !== -1);
   } else if (props.which === "facePowder") {
-    selectedHariData = myName.data.data.filter(element => element.categroies && element.categroies.indexOf("facePowder") !== -1);
+    selectedHariData = myName.data.filter(element => element.categroies && element.categroies.indexOf("facePowder") !== -1);
   } else if (props.which === "facePack") {
-    selectedHariData = myName.data.data.filter(element => element.categroies && element.categroies.indexOf("facePack") !== -1);
+    selectedHariData = myName.data.filter(element => element.categroies && element.categroies.indexOf("facePack") !== -1);
   } else if (props.which === "faceEssentialOil") {
-    selectedHariData = myName.data.data.filter(element => element.categroies && element.categroies.indexOf("faceEssentialOil") !== -1);
+    selectedHariData = myName.data.filter(element => element.categroies && element.categroies.indexOf("faceEssentialOil") !== -1);
   } else if (props.which === "faceSheet") {
-    selectedHariData = myName.data.data.filter(element => element.categroies && element.categroies.indexOf("faceSheet") !== -1);
+    selectedHariData = myName.data.filter(element => element.categroies && element.categroies.indexOf("faceSheet") !== -1);
   }
   else {
-    selectedHariData = myName.data.data.filter(element => element.categroies && (element.categroies.indexOf("skin") !== -1 || element.categroies.indexOf("faceSheet") !== -1 || element.categroies.indexOf("facePack") !== -1 || element.categroies.indexOf("faceEssentialOil") !== -1) || (element.categroies.indexOf("facePowder") !== -1));
+    selectedHariData = myName.data.filter(element => element.categroies && (element.categroies.indexOf("skin") !== -1 || element.categroies.indexOf("faceSheet") !== -1 || element.categroies.indexOf("facePack") !== -1 || element.categroies.indexOf("faceEssentialOil") !== -1) || (element.categroies.indexOf("facePowder") !== -1));
   }
 
   const subcategoryCounts = selectedHariData.reduce((acc, current) => {
@@ -52,7 +52,8 @@ export default function Skin(props) {
   }
   return (
     <>
-      <Cart min={0} max={max} step={1} data={selectedHariData} productTypes={uniqueArray} image="images/Hennakart/natural_essiensital_oil.jpg" />
+      <Cart min={0} max={max} step={1} data={selectedHariData} productTypes={uniqueArray} image="images/Hennakart/natural_essiensital_oil.jpg"
+       />
     </>
   );
 }

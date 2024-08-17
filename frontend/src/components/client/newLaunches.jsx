@@ -22,7 +22,7 @@ export default function Newlaunches() {
   }
   let selectedComboData;
   if (myName.data !== null) {
-    selectedComboData = myName.data.data.filter(element => element.categroies && element.categroies.indexOf("newLaunches") !== -1);
+    selectedComboData = myName.data.filter(element => element.categroies && element.categroies.indexOf("newLaunches") !== -1);
   }
 
   const subcategoryCounts = selectedComboData.reduce((acc, current) => {

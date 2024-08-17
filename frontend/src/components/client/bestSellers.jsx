@@ -20,7 +20,7 @@ export default function BestSellers() {
     if (myName.data === null) {
         return
     }
-    const selectedHariData = myName.data.data.filter(element => element.categroies && element.categroies.indexOf("bestSellers") !== -1);
+    const selectedHariData = myName.data.filter(element => element.categroies && element.categroies.indexOf("bestSellers") !== -1);
     const subcategoryCounts = selectedHariData.reduce((acc, current) => {
         const subcategory = current.subCategroies;
         if (acc[subcategory]) {

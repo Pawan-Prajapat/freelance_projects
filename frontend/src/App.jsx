@@ -26,12 +26,13 @@ import DotLoader from "react-spinners/DotLoader";
 
 // admin components
 const Products = lazy(() => import('./components/admin/products.jsx'));
-const InsertProducts = lazy(() => import('./components/admin/InsertProducts.jsx'));
+const ProductForm = lazy(() => import('./components/admin/product_form.jsx'));
 const UserDetail = lazy(() => import('./components/admin/UserDetail.jsx'));
 const UserPaymentDetail = lazy(() => import('./components/admin/UserPaymentDetail.jsx'));
 const AdminLayout = lazy(() => import('./components/layouts/adminLayout.jsx'));
 const Categroies = lazy(() => import('./components/admin/categroies.jsx'));
 const Subcategroies = lazy(() => import('./components/admin/subCategroies.jsx'));
+const BannerAndTopSlider = lazy(() => import('./components/admin/bannerAndTopSlider.jsx'));
 
 function App() {
 
@@ -48,11 +49,11 @@ function App() {
           <Route path="/hairMask" element={<Hair which="hairMask" />} />
           <Route path="/hairEssentialOil" element={<Hair which="hairEssentialOil" />} />
           <Route path="/addtocart" element={<AddToCart />} />
-          <Route path="/skin" element={<Skin which = {"skin"} />} />
-          <Route path="/facePowder" element={<Skin which = {"facePowder"} />} />
-          <Route path="/facePack" element={<Skin which = {"facePack"} />} />
-          <Route path="/faceSheet" element={<Skin which = {"faceSheet"} />} />
-          <Route path="/faceEssentialOil" element={<Skin which = {"faceEssentialOil"} />} />
+          <Route path="/skin" element={<Skin which={"skin"} />} />
+          <Route path="/facePowder" element={<Skin which={"facePowder"} />} />
+          <Route path="/facePack" element={<Skin which={"facePack"} />} />
+          <Route path="/faceSheet" element={<Skin which={"faceSheet"} />} />
+          <Route path="/faceEssentialOil" element={<Skin which={"faceEssentialOil"} />} />
           <Route path="/bestSellers" element={<BestSellers />} />
           <Route path="/combopack" element={<Combopack which={"combo"} />} />
           <Route path="/combopackHairMask" element={<Combopack which={"comboHairMask"} />} />
@@ -74,21 +75,24 @@ function App() {
 
 
 
-          <Route path="/deals" element={<Deals under = {0} />} />
-          <Route path="/deals100" element={<Deals under = {100} />} />
-          <Route path="/deals200" element={<Deals under = {200} />} />
-          <Route path="/deals300" element={<Deals under = {300} />} />
+          <Route path="/deals" element={<Deals under={0} />} />
+          <Route path="/deals100" element={<Deals under={100} />} />
+          <Route path="/deals200" element={<Deals under={200} />} />
+          <Route path="/deals300" element={<Deals under={300} />} />
           <Route path='/productDetail/:id' element={<ProductDetail />} />
           <Route path='/paymentDetailSummary/:id' element={<PaymentDetailSummary />} />
           <Route path='/register' element={<Register />} />
           <Route path='/logout' element={<Logout />} />
           <Route path='/admin' element={<AdminLayout />} >
             <Route path='products' element={<Products />} />
-            <Route path='insertProduct' element={<InsertProducts />} />
+            <Route path='ProductForm' element={<ProductForm />} />
+            <Route path="ProductFormForUpdate/:productId" element={<ProductForm />} />
+
             <Route path='userDetail' element={<UserDetail />} />
             <Route path='userPaymentDetail' element={<UserPaymentDetail />} />
             <Route path='categroies' element={<Categroies />} />
             <Route path='subcategroies' element={<Subcategroies />} />
+            <Route path='bannerAndTopSlider' element={<BannerAndTopSlider />} />
           </Route>
         </Routes>
       </Suspense>

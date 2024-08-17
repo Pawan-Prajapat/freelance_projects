@@ -54,7 +54,7 @@ function adminLayout() {
                             <div className={`${dropDownArray[0] ? " pt-3 grid-rows-[0fr] opacity-100" : "grid-rows-[1fr]"} ps-5 pt-3 overflow-hidden grid duration-500 ease-in-out transition-all`}>
                                 <div className=" overflow-hidden flex flex-col">
                                     <Link className=' text-white hover:underline hover:underline-offset-4' to={'/admin/products'}>View Product</Link>
-                                    <Link className=' text-white hover:underline hover:underline-offset-4' to={'/admin/insertProduct'}>Insert Product</Link>
+                                    <Link className=' text-white hover:underline hover:underline-offset-4' to={'/admin/ProductForm'}>Product Form</Link>
                                 </div>
                             </div>
                         </div>
@@ -88,6 +88,11 @@ function adminLayout() {
                                     <Link className=' text-white hover:underline hover:underline-offset-4' to={'/admin/categroies'}>categroies</Link>
                                     <Link className=' text-white hover:underline hover:underline-offset-4' to={'/admin/subcategroies'}>subcategroies</Link>
                                 </div>
+                            </div>
+                        </div>
+                        <div className=" pt-0 w-full">
+                            <div className=" flex gap-2 items-center cursor-pointer " >
+                                <Link className=' text-base tracking-wide font-bold text-white hover:underline hover:underline-offset-4' to={'/admin/bannerAndTopSlider'}>Add Banner and Show Offer</Link>
                             </div>
                         </div>
                         

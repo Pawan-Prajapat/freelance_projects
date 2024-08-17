@@ -6,6 +6,7 @@ import buyerRoute from "./routes/buyerRoutes.js";
 import productRoute from "./routes/productRoutes.js";
 import authRoute from "./routes/authRoutes.js";
 import categroiesRoute from "./routes/categroiesRoutes.js";
+import banner_discount_topSlideRoute from "./routes/bannerAndSliderDiscountRoutes.js";
 
 config({ path: "./config/config.env" });
 
@@ -13,8 +14,8 @@ export const app = express();
 
 const corsOptions = {
   origin: process.env.FRONT_SITE, // Replace with your allowed origin(s)
-  methods: 'GET, POST, PUT, DELETE, OPTIONS', // Allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  methods: 'GET, POST, PUT, DELETE, OPTIONS, PATCH', // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization' , ], // Allowed headers
 };
 
 app.use(cors(corsOptions));
@@ -27,6 +28,7 @@ app.use("/api", buyerRoute);
 app.use("/api", productRoute);
 app.use("/api", authRoute);
 app.use("/api", categroiesRoute);
+app.use("/api", banner_discount_topSlideRoute);
 app.use(express.static('public'));
 
 app.get("/api/getkey", (req, res) => {

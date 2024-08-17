@@ -449,8 +449,8 @@ export default function Cart(props) {
                                     </Link>
                                     <div className=" mt-4 text-center  pt-3 ">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
-                                        <p className=" text-base">{data.name}</p>
-                                        <p className="font-bold mt-1">Rs. {data.price}</p>
+                                        <p className=" text-base">{data.title}</p>
+                                        {/* <p className="font-bold mt-1">Rs. {data.price}</p> */}
                                         <div >
                                             <NavLink to={"/addToCart"} >
                                                 <button onClick={() => addCartHandler(data)} className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">

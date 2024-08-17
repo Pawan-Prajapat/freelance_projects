@@ -21,6 +21,8 @@ import customer2 from "../../assets/customer2.jpg";
 import customer3 from "../../assets/customer3.jpg";
 import customer4 from "../../assets/customer4.jpg";
 import customer5 from "../../assets/customer5.jpg";
+
+import axios from 'axios';
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const responsive = {
@@ -107,20 +109,32 @@ const responsiveForBanner = {
 function Home() {
     const dispatch = useDispatch();
     const myName = useSelector((state) => state.ProductHairReducer);
-    // for get the products from the store 
+    // for get the products from the store
+    const [banners, setBanners] = useState([]);
 
     useEffect(() => {
         dispatch(fetchProducts());
+        // Fetch existing banners
+        const fetchBanners = async () => {
+            try {
+                const response = await axios.get(`${serverUrl}/api/get_banner`);
+                console.log(response.data.banner);
+                setBanners(response.data.banner);
+            } catch (error) {
+                console.error('Error fetching banners:', error);
+            }
+        };
+        fetchBanners();
     }, [dispatch]);
 
     let records;
     let recordsForBestSelling, recordsForTrend;
     if (myName.data !== null) {
-        const recordsFace = myName.data.data.filter(element => element.categroies === "face").slice(0, 2);
-        const recordsHair = myName.data.data.filter(element => element.categroies === "hair").slice(0, 2);
+        const recordsFace = myName.data.filter(element => element.categroies === "face").slice(0, 2);
+        const recordsHair = myName.data.filter(element => element.categroies === "hair").slice(0, 2);
         records = recordsFace.concat(recordsHair);
-        recordsForBestSelling = myName.data.data.filter(element => element.categroies === "hair").slice(0, 4);
-        recordsForTrend = myName.data.data.filter(element => element.categroies === "face").slice(0, 4);
+        recordsForBestSelling = myName.data.filter(element => element.categroies === "hair").slice(0, 4);
+        recordsForTrend = myName.data.filter(element => element.categroies === "face").slice(0, 4);
 
     }
     const images = [
@@ -156,18 +170,13 @@ function Home() {
     return (
         <React.Fragment>
             <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
-                <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/banner4.jpg" alt="" className=' ' />
-                </div>
-                <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/banner1.jpg" alt="" className='w-full' />
-                </div>
-                <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/banner2.jpg" alt="" className='w-full' />
-                </div>
-                <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/banner3.jpg" alt="" className='w-full' />
-                </div>
+                {banners.map((banner, index) => (
+                    <div key={index} className='w-full'>
+                        <a href={banner.link} target="_blank" rel="noopener noreferrer">
+                            <LazyLoadImage src={serverUrl + banner.banner} alt={`Banner ${index + 1}`} className='w-full' />
+                        </a>
+                    </div>
+                ))}
             </Carousel>
             <div className='mt-10'>
                 <p className='  font-bold font-pawan text-3xl tracking-normal text-[#4b7422] text-center'>Featured On Hennakart</p>

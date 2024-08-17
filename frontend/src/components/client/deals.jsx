@@ -22,11 +22,11 @@ export default function Deals(props) {
   }
   let selectedComboData;
   if (props.under === 100) {
-    selectedComboData = myName.data.data.filter(element => element.price <= 100);
+    selectedComboData = myName.data.filter(element => element.price <= 100);
   } else if (props.under === 200) {
-    selectedComboData = myName.data.data.filter(element => element.price > 100 && element.price <= 200);
+    selectedComboData = myName.data.filter(element => element.price > 100 && element.price <= 200);
   } else if (props.under === 300) {
-    selectedComboData = myName.data.data.filter(element => element.price > 200 && element.price <= 300);
+    selectedComboData = myName.data.filter(element => element.price > 200 && element.price <= 300);
   }
   else {
     selectedComboData = myName.data.data;
