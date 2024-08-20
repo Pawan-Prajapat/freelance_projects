@@ -4,27 +4,40 @@ import { fetchCategroies } from '../../features/categroiesSubCategroiesSlice.js'
 import Description_image_upload from './description_image_upload';
 import JoditEditor from 'jodit-react';
 import axios from 'axios';
-const serverUrl = import.meta.env.VITE_SERVER_URL;
 import { useParams } from 'react-router-dom';
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 function ProductForm() {
     const { productId } = useParams();
     const [product, setProduct] = useState([]);
     const [isEditMode, setEditMode] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+
     useEffect(() => {
-        // Fetch data using productId and set to state
         const fetchProduct = async () => {
             await axios.post(serverUrl + "/api/getSingleProductData", {
                 _id: productId
             }).then(res => {
                 setProduct(res.data.data);
                 setEditMode(true);
-            })
+            });
         };
         if (productId) {
             fetchProduct();
         }
-
     }, [productId]);
+
+    useEffect(()=>{
+        if(errorMessage || successMessage){
+            const timer = setTimeout(()=>{
+                setErrorMessage('');
+                setSuccessMessage('');
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    },[errorMessage,successMessage])
+
     const titleRef = useRef(null);
     const categoryRef = useRef(null);
     const editor = useRef(null);
@@ -36,9 +49,6 @@ function ProductForm() {
     const [categroies, setcategroies] = useState([]);
     const [showCategroies, setShowCategroies] = useState(false);
 
-    // Determine if the form is in create or update mode
-
-    // Fetch categories and subcategories using Redux
     const dispatch = useDispatch();
     const myName = useSelector((state) => state.CategroiesReducer);
 
@@ -53,9 +63,6 @@ function ProductForm() {
         if (isEditMode) {
             titleRef.current.value = product.title;
             categoryRef.current.value = product.category;
-            console.log("category check kro " , categoryRef.current.value);
-            console.log("category check kro " , product.category);
-            console.log("title check kro " , titleRef.current.value);
             setDesc_Content(product.description || '');
             setVariants(product.variants || []);
             setMedia(product.media || []);
@@ -69,11 +76,31 @@ function ProductForm() {
         subcategroiesFromSlice = myName.data.data.filter((element) => element.which === "subCategroies");
     }
 
-    // Get the token for authorization
     const token = useSelector((state) => state.TokenReducer.token);
-
     const handleFormSubmit = (e) => {
         e.preventDefault();
+        // Validation checks
+        if (!titleRef.current.value.trim()) {
+            setErrorMessage('Please fill out the title.');
+            return;
+        }
+
+        if (categroies.length === 0) {
+            setErrorMessage('Please select at least one category.');
+            return;
+        }
+
+        if (!categoryRef.current.value) {
+            setErrorMessage('Please select a subcategory.');
+            return;
+        }
+
+        if (variants.length === 0) {
+            setErrorMessage('Please add at least one variant.');
+            return;
+        }
+
+        setErrorMessage('');
 
         const productData = new FormData();
         productData.append('title', titleRef.current.value);
@@ -86,8 +113,8 @@ function ProductForm() {
             productData.append(`variants[${index}][price]`, variant.price);
             productData.append(`variants[${index}][qty]`, variant.qty);
             productData.append(`variants[${index}][weight]`, variant.weight);
-            if(isEditMode){
-                productData.append(`variants[${index}][_id]` , variant._id);
+            if (isEditMode) {
+                productData.append(`variants[${index}][_id]`, variant._id);
             }
         });
 
@@ -99,10 +126,11 @@ function ProductForm() {
 
             axios.patch(`${serverUrl}/api/product`, productData)
                 .then(response => {
-                    console.log('Success: update the product');
+                    setSuccessMessage('Product updated successfully!');
+                    setButtonShow(false);
                 })
                 .catch(error => {
-                    console.error('Error:', error.response?.data || error.message);
+                    setErrorMessage('Server error on product update!');
                 });
 
         } else {
@@ -112,10 +140,17 @@ function ProductForm() {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-                .then(res => console.log(res))
-                .catch(err => console.log(err));
+                .then(res => {
+                    setSuccessMessage('Product created successfully!');
+                    setButtonShow(false);
+                })
+                .catch(err => {
+                    setErrorMessage('Server error on product created!');
+                });
         }
     };
+
+
 
     const handleVariantChange = (index, event) => {
         const { name, value } = event.target;
@@ -166,6 +201,17 @@ function ProductForm() {
 
     return (
         <form onSubmit={handleFormSubmit} className="space-y-8 p-8 bg-white shadow-lg rounded-lg">
+            {errorMessage && (
+                <div className="bg-red-500 text-white p-3 rounded-lg fixed top-7 right-5 z-20">
+                    {errorMessage}
+                </div>
+            )}
+            {successMessage && (
+                <div className="bg-green-500 text-white p-3 rounded-lg fixed top-7 right-5 z-20">
+                    {successMessage}
+                </div>
+            )}
+
             {/* Product Title */}
             <div className="space-y-2">
                 <label className="block text-gray-700 text-sm font-semibold" htmlFor="title">
@@ -212,16 +258,10 @@ function ProductForm() {
                 </div>
                 <div className="mt-2 flex flex-wrap gap-2">
                     {categroies.map((category, index) => (
-                        <span key={index} className="inline-flex items-center bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+                        <span key={index} className="inline-flex items-center px-3 py-1 bg-indigo-500 text-white text-sm rounded-full">
                             {category}
-                            <button
-                                type="button"
-                                className="ml-2 text-gray-600 hover:text-gray-900"
-                                onClick={() => handleCategoryRemove(category)}
-                            >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
+                            <button type="button" className="ml-2 text-white" onClick={() => handleCategoryRemove(category)}>
+                                &times;
                             </button>
                         </span>
                     ))}
@@ -230,151 +270,134 @@ function ProductForm() {
 
             {/* Product Subcategory */}
             <div className="space-y-2">
-                <label className="block text-gray-700 text-sm font-semibold" htmlFor="subcategory">
+                <label className="block text-gray-700 text-sm font-semibold" htmlFor="subCategory">
                     Subcategory
                 </label>
                 <select
-                    name="subcategory"
+                    name="subCategory"
                     ref={categoryRef}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                    <option value="" disabled>Select a subcategory</option>
-                    {subcategroiesFromSlice.length > 0 ? (
-                        subcategroiesFromSlice.map((subcategroy, index) => (
-                            <option key={index} value={subcategroy.value}>
-                                {subcategroy.value}
-                            </option>
-                        ))
-                    ) : (
-                        <option value="" disabled>No subcategories available</option>
-                    )}
-                </select>
-            </div>
-
-            {/* Product Media */}
-            <div className="space-y-2">
-                <label className="block text-gray-700 text-sm font-semibold" htmlFor="media">
-                    Media
-                </label>
-                <input
-                    type="file"
-                    name="media"
-                    multiple
-                    onChange={handleMediaChange}
-                    className="w-full text-sm text-gray-500 border border-gray-300 rounded-lg file:border-0 file:bg-gray-100 file:text-gray-700 file:py-2 file:px-4 file:rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <div className="flex flex-wrap gap-2 mt-2">
-                    {media.map((file, index) => (
-                        <div key={index} className="relative">
-                            {/* <img
-                                src={URL.createObjectURL(file)}
-                                alt={`media-preview-${index}`}
-                                className="w-24 h-24 object-cover rounded-lg"
-                            /> */}
-                            <button
-                                type="button"
-                                onClick={() => removeMedia(index)}
-                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-                            >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
+                    <option value="">Select Subcategory</option>
+                    {subcategroiesFromSlice.map((subcategory, index) => (
+                        <option key={index} value={subcategory.value}>
+                            {subcategory.value}
+                        </option>
                     ))}
-                </div>
+                </select>
             </div>
 
             {/* Product Variants */}
             <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">Variants</h3>
+                <label className="block text-gray-700 text-sm font-semibold">Variants</label>
                 {variants.map((variant, index) => (
-                    <div key={index} className="p-4 border border-gray-300 rounded-lg shadow-sm space-y-2">
-                        <label className="block text-gray-700 text-sm font-semibold">
-                            Variant SKU
-                            <input
-                                type="text"
-                                name="sku"
-                                value={variant.sku}
-                                onChange={(event) => handleVariantChange(index, event)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            />
-                        </label>
-                        <label className="block text-gray-700 text-sm font-semibold">
-                            Variant Price
-                            <input
-                                type="text"
-                                name="price"
-                                value={variant.price}
-                                onChange={(event) => handleVariantChange(index, event)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            />
-                        </label>
-                        <label className="block text-gray-700 text-sm font-semibold">
-                            Variant Qty
-                            <input
-                                type="text"
-                                name="qty"
-                                value={variant.qty}
-                                onChange={(event) => handleVariantChange(index, event)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            />
-                        </label>
-                        <label className="block text-gray-700 text-sm font-semibold">
-                            Variant Weight
-                            <input
-                                type="text"
-                                name="weight"
-                                value={variant.weight}
-                                onChange={(event) => handleVariantChange(index, event)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            />
-                        </label>
+                    <div key={index} className="grid grid-cols-4 gap-4 items-end">
+                        <input
+                            type="text"
+                            name="sku"
+                            value={variant.sku}
+                            onChange={(e) => handleVariantChange(index, e)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="SKU"
+                        />
+                        <input
+                            type="number"
+                            name="price"
+                            value={variant.price}
+                            onChange={(e) => handleVariantChange(index, e)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Price"
+                        />
+                        <input
+                            type="number"
+                            name="qty"
+                            value={variant.qty}
+                            onChange={(e) => handleVariantChange(index, e)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Quantity"
+                        />
+                        <input
+                            type="text"
+                            name="weight"
+                            value={variant.weight}
+                            onChange={(e) => handleVariantChange(index, e)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Weight"
+                        />
                         <button
                             type="button"
                             onClick={() => removeVariant(index)}
-                            className="text-red-500 hover:text-red-700"
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg"
                         >
-                            Remove Variant
+                            Remove
                         </button>
                     </div>
                 ))}
                 <button
                     type="button"
                     onClick={addVariant}
-                    className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600"
+                    className="px-4 py-2 bg-green-500 text-white rounded-lg"
                 >
                     Add Variant
                 </button>
             </div>
 
-            {/* Description Image Upload */}
-            <Description_image_upload />
+            {/* Product Media */}
+            <div className="space-y-2">
+                <label className="block text-gray-700 text-sm font-semibold">Upload Media</label>
+                <input
+                    type="file"
+                    onChange={handleMediaChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    multiple
+                />
+                <div className="mt-2 flex flex-wrap gap-2">
+                    {media.map((file, index) => (
+                        <div key={index} className="relative">
+                            <img
+                                // src={URL.createObjectURL(file)}
+                                alt={`media-${index}`}
+                                className="h-20 w-20 object-cover rounded-lg"
+                            />
+                            <button
+                                type="button"
+                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center"
+                                onClick={() => removeMedia(index)}
+                            >
+                                &times;
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Image and Video Upload */}
+            <div className=' flex flex-col gap-5'>
+                <h2 className='font-sans text-xl font-semibold text-gray-800'>Upload the image and get the url  to insert in the description </h2>
+                <Description_image_upload media={media} removeMedia={removeMedia} handleMediaChange={handleMediaChange} />
+            </div>
 
             {/* Product Description */}
-            <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-800">Description</h2>
+            <div className="space-y-2">
+                <label className="block text-gray-700 text-sm font-semibold">Description</label>
                 <JoditEditor
-                    className='h-64'
                     ref={editor}
                     value={desc_content}
                     config={config}
-                    tabIndex={1}
-                    onBlur={(newContent) => setDesc_Content(newContent)}
-                    onChange={(newContent) => { setDesc_Content(newContent) }}
+                    onBlur={newContent => setDesc_Content(newContent)}
                 />
             </div>
 
-            {/* Submit Button */}
-            <div className="mt-6 flex justify-center">
-                <button
-                    className={`bg-gray-800 text-white px-6 py-3 rounded-full hover:bg-gray-700 ${buttonShow ? '' : 'hidden'}`}
-                    onClick={() => setButtonShow(!buttonShow)}
-                    type="submit"
-                >
-                    {isEditMode ? 'Update Product' : 'Create Product'}
-                </button>
-            </div>
+            {buttonShow && (
+                <div className="space-y-4">
+                    <button
+                        type="submit"
+                        className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    >
+                        {isEditMode ? 'Update Product' : 'Create Product'}
+                    </button>
+                </div>
+            )}
         </form>
     );
 }

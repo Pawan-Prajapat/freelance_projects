@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { storeProductData, updateProductData, deleteProductData, getAllProductData, getSingleProductData , getAllProductHeadImage ,getImagesWithoutHeadInPath } from "../controllers/productControllers.js";
+import { storeProductData, updateProductData, deleteProductData, getAllProductData, getSingleProductData , getAllProductHeadImage ,getImagesWithoutHeadInPath , getVariant , getVariantDetail } from "../controllers/productControllers.js";
 import { add_description_image } from "../controllers/otherPhotoControllers.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { adminMiddleware } from "../middlewares/adminMiddleware.js";
@@ -42,5 +42,7 @@ router.route("/getAllProductData").get(getAllProductData);
 router.route("/getSingleProductData").post(getSingleProductData);
 router.route("/getAllProductHeadImage").get(getAllProductHeadImage);
 router.route("/getImagesWithoutHeadInPath/:productId").get(getImagesWithoutHeadInPath);
+router.route("/getVariant/:productId").get(getVariant);
+router.route("/getVariantData/:variantId").get(getVariantDetail);
 
 export default router;

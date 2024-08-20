@@ -1,13 +1,13 @@
 import { instance } from "../server.js";
 import crypto from "crypto";
-import {config} from 'dotenv';
+import { config } from 'dotenv';
 import { Payment } from "../models/pyamentModel.js";
 import { Buyer } from "../models/buyerModel.js";
 import { setToken, create_shiprocket_order } from "./shiporcket_token_Function_or_Controllers.js";
 
 config({ path: "./config/config.env" });
 export const checkout = async (req, res) => {
-  const { amount, productNamesArray } = req.body;
+  const { amount } = req.body;
   const options = {
     amount: Number(amount * 100),  // amount in the smallest currency unit
     currency: "INR",
@@ -15,8 +15,7 @@ export const checkout = async (req, res) => {
   const order = await instance.orders.create(options);
   await Payment.create({
     razorpay_order_id: order.id,
-    amount,
-    names: productNamesArray
+    amount
   })
 
   res.status(200).json({
@@ -34,13 +33,13 @@ export const paymentVerification = async (req, res) => {
   if (isAuthentic) {
     // databse comes here 
 
-    await Payment.findOneAndUpdate({razorpay_order_id}, {
-      $set:{
-        razorpay_payment_id,razorpay_signature
+    await Payment.findOneAndUpdate({ razorpay_order_id }, {
+      $set: {
+        razorpay_payment_id, razorpay_signature
       }
     })
     await setToken();
-    await create_shiprocket_order(razorpay_order_id );
+    await create_shiprocket_order(razorpay_order_id);
     res.redirect(process.env.FRONT_SITE);
   }
   else {
@@ -58,7 +57,7 @@ export const checkPaymentStatus = async (req, res) => {
         $lookup: {
           from: "payments",
           foreignField: "razorpay_order_id",
-          localField: "order_id", 
+          localField: "order_id",
           as: "payment_data"
         }
       }

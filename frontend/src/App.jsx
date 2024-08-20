@@ -80,7 +80,7 @@ function App() {
           <Route path="/deals200" element={<Deals under={200} />} />
           <Route path="/deals300" element={<Deals under={300} />} />
           <Route path='/productDetail/:id' element={<ProductDetail />} />
-          <Route path='/paymentDetailSummary/:id' element={<PaymentDetailSummary />} />
+          <Route path='/paymentDetailSummary/:id/:variantId' element={<PaymentDetailSummary />} />
           <Route path='/register' element={<Register />} />
           <Route path='/logout' element={<Logout />} />
           <Route path='/admin' element={<AdminLayout />} >

@@ -214,3 +214,132 @@ insert product
                 </button>
             </div>
         </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // check this code and select in porduct form jsx file 
+        const handleFormSubmit = (e) => {
+        e.preventDefault();
+
+        const productData = new FormData();
+        productData.append('title', titleRef.current.value);
+        productData.append('description', desc_content);
+        productData.append('subCategory', categoryRef.current.value);
+        productData.append('category', categroies);
+
+        variants.forEach((variant, index) => {
+            productData.append(`variants[${index}][sku]`, variant.sku);
+            productData.append(`variants[${index}][price]`, variant.price);
+            productData.append(`variants[${index}][qty]`, variant.qty);
+            productData.append(`variants[${index}][weight]`, variant.weight);
+            if(isEditMode){
+                productData.append(`variants[${index}][_id]` , variant._id);
+            }
+        });
+
+        media.forEach((file, index) => {
+            productData.append(`media`, file);
+        });
+        if (isEditMode) {
+            productData.append('_id', productId);
+
+            axios.patch(`${serverUrl}/api/product`, productData)
+                .then(response => {
+                    console.log('Success: update the product');
+                })
+                .catch(error => {
+                    console.error('Error:', error.response?.data || error.message);
+                });
+
+        } else {
+            axios.post(`${serverUrl}/api/product`, productData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
+        }
+    };
+
+
+and compare with 
+
+const handleFormSubmit = (e) => {
+        e.preventDefault();
+
+        // Validation checks
+        if (!titleRef.current.value.trim()) {
+            setErrorMessage('Please fill out the title.');
+            return;
+        }
+
+        if (categroies.length === 0) {
+            setErrorMessage('Please select at least one category.');
+            return;
+        }
+
+        if (!categoryRef.current.value) {
+            setErrorMessage('Please select a subcategory.');
+            return;
+        }
+
+        if (variants.length === 0) {
+            setErrorMessage('Please add at least one variant.');
+            return;
+        }
+
+        setErrorMessage('');
+
+        const productData = new FormData();
+        productData.append('title', titleRef.current.value);
+        productData.append('description', desc_content);
+        productData.append('subCategory', categoryRef.current.value);
+        productData.append('category', categroies);
+
+        variants.forEach((variant, index) => {
+            productData.append(`variants[${index}][sku]`, variant.sku);
+            productData.append(`variants[${index}][price]`, variant.price);
+            productData.append(`variants[${index}][qty]`, variant.qty);
+            productData.append(`variants[${index}][weight]`, variant.weight);
+            if (isEditMode) {
+                productData.append(`variants[${index}][_id]`, variant._id);
+            }
+        });
+
+        media.forEach((file, index) => {
+            productData.append(`media`, file);
+        });
+
+        const submitRequest = isEditMode
+            ? axios.patch(`${serverUrl}/api/product`, productData)
+            : axios.post(`${serverUrl}/api/product`, productData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+        submitRequest
+            .then(response => {
+                setSuccessMessage(isEditMode ? 'Product updated successfully!' : 'Product created successfully!');
+                setButtonShow(false);
+            })
+            .catch(error => {
+                console.error('Error:', error.response?.data || error.message);
+                setErrorMessage('An error occurred while submitting the form.');
+            });
+    };

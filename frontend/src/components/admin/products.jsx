@@ -106,7 +106,7 @@ function Users() {
                           <div className="text-sm leading-5">{product.subCategory}</div>
                         </td>
                         <td className=" text-left ps-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                          <div className="text-sm leading-5">{product.qty}</div>
+                          <div className="text-sm leading-5">{product.totalStock}</div>
                         </td>
                         <td className="pe-3 py-4 whitespace-no-wrap gap-5 flex border-gray-200">
                           <div className="text-sm cursor-pointer leading-5"><Link to={`/admin/ProductFormForUpdate/${product._id}`}>

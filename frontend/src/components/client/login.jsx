@@ -48,7 +48,7 @@ function Login(props) {
 
   return (
     <>
-      <div className={`${props.showOrNot(1) ? 'translate-x-0' : 'translate-x-full hidden'} fixed h-full w-full bg-black/50 backdrop-blur-sm top-0 z-[60] transition-all duration-150`}>
+      <div className={`${props.showOrNot(1) ? 'translate-x-0' : 'translate-x-full hidden'} fixed h-full w-full bg-black/50 backdrop-blur-sm top-0 z-[1002] transition-all duration-150`}>
         <section className={`text-black bg-white absolute right-0 top-0 h-screen px-8 gap-8 z-50 flex flex-col overflow-y-auto w-[370px] transition-all duration-500 ease-in-out`}>
           <div className='flex justify-between items-center mt-4'>
             <p className='font-medium text-xl'>Login</p>

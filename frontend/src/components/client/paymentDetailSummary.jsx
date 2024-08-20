@@ -19,6 +19,7 @@ function paymentDetailSummary() {
   // for current product 
   const dispatch = useDispatch();
   const param = useParams();
+  console.log("param.variantId, ", param.variantId);
   let AddToCartData;
   const myName = useSelector((state) => state.ProductHairReducer);
   AddToCartData = useSelector(state => state.AddToCartReducer.addToCart);
@@ -39,15 +40,34 @@ function paymentDetailSummary() {
   // document se email ki value get nhi ho rhi tho state se karte hai
   const [email, setEmail] = useState('');
   const [mail, setMail] = useState(true);
+  const [variantDataFront, setVariantDataFront] = useState([]);
+  const [variantIds, setVariantIds] = useState([]);
   const [buyer, setBuyer] = useState({
-    email: " ", country: " ", firstName: "", lastName: " ", city: "", state: "", pincode: " ", phone: " ", address: " ", razorpay_order_id: " "
+    email: " ", country: " ", firstName: "", lastName: " ", city: "", state: "", pincode: " ", phone: " ", address: " ", razorpay_order_id: " ", variantId: param.variantId
   })
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
+  // get the variant data 
 
+  useEffect(() => {
+    const fetchVariant = async () => {
+      try {
+        const res = await axios.get(`${serverUrl}/api/getVariantData/${param.variantId}`);
+        const variantData = res.data.variantData;
+        console.log(res.data.variantData);
+        setVariantDataFront(variantData);
+        // setSelectedVariant(variants[0]);  // Set the first variant as default
+      } catch (error) {
+        console.error("Error in fetching the variants of the product");
+      }
+    };
+    fetchVariant();
+  }, [])
+
+  console.log("variant data" , variantDataFront);
 
   const checkUpLabel = (n, inputId) => {
     setInputState(prevState => ({
@@ -105,7 +125,7 @@ function paymentDetailSummary() {
   const checkoutHandler = async (amount) => {
     const { data: { key } } = await axios.get(serverUrl + "/api/getkey")
     const { data: { order } } = await axios.post(serverUrl + "/api/checkout", {
-      amount, productNamesArray
+      amount
     })
     setBuyer((buyer) => ({ ...buyer, razorpay_order_id: order.id }));
     console.log("pawan buyer id = ", order.id);
@@ -173,7 +193,7 @@ function paymentDetailSummary() {
   };
 
 
-  console.log("currentProduct" , currentProduct)
+  console.log("currentProduct", currentProduct)
 
   if (!currentProduct || productNamesArray.length === 0) {
     return <div>Loading...</div>; // You can customize the loading state
@@ -292,7 +312,7 @@ function paymentDetailSummary() {
 
               onClick={() => {
                 if (areAllFieldsFilled()) {
-                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : 1);
+                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) :variantDataFront[0].price );
                 }
               }}
             >Pay Now</button>
@@ -319,7 +339,7 @@ function paymentDetailSummary() {
                 <LazyLoadImage className=' h-16 w-20  border border-gray-400 rounded-lg' src={`${serverUrl}/${currentProduct[0].image}`} alt={`${serverUrl}/${currentProduct[0].image}`} />
               </div>
               <div><p className='text-center'>{currentProduct[0].title}</p></div>
-              <div>Rs. {currentProduct[0].price}</div>
+              <div>Rs. {variantDataFront[0].price}</div>
             </div>
           )}
 
@@ -335,16 +355,16 @@ function paymentDetailSummary() {
               <p className=' text-sm text-gray-500'>Including Rs. 53.67 in taxes</p>
             </div>
             <div className='flex flex-col gap-y-2 text-end'>
-              <p className='font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : currentProduct[0].price}</p>
+              <p className='font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront[0].price}</p>
               <p className='text-gray-500'>Enter shipping address</p>
-              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : currentProduct[0].price}</span></p>
+              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront[0].price}</span></p>
             </div>
           </div>
           <div className='visible lg:hidden mt-6' >
             <button type='button' className='w-full bg-green-800 bg-opacity-50 text-xl text-white rounded-md hover:bg-opacity-70  py-5 font-bold'
               onClick={() => {
                 if (areAllFieldsFilled()) {
-                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : 1);
+                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront[0].price);
                 }
               }}
             >Pay Now</button>
