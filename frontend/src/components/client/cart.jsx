@@ -12,7 +12,6 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 import { useDispatch } from "react-redux"
 import { addProductInCart } from "../../features/AddToCartSlice"
 export default function Cart(props) {
-
     const [gridCart, setGridCart] = useState(window.innerWidth < 1024 ? 'grid-cols-2' : 'grid-cols-4');  // gird images
     const [image, setImage] = useState(' w-full  h-[218px]'); // image size on grid 
     const [selectedOption, setSelectedOption] = useState('10');
@@ -236,7 +235,6 @@ export default function Cart(props) {
     return (
         <>
             <section className=" mt-14 flex mx-2 lg:mx-3 xl:mx-0 xl:container">
-
                 <div className={` ${offcanvasUse ? (isOffcanvasOpen[0] ? 'fixed h-full w-full  bg-black/50 backdrop-blur-sm top-0 right-0 z-50' : ' hidden') : 'flex flex-col items-end justify-start pe-10 w-1/4'}   `}>
                     {/* for price dropdown  */}
                     <div className={`${isOffcanvasOpen[0] ? 'text-black bg-white absolute left-0 top-0 h-screen p-8 gap-8 z-50 flex flex-col overflow-y-auto w-80' : 'w-3/4'}`}>
@@ -358,7 +356,7 @@ export default function Cart(props) {
                 <div className=" flex flex-col xl:w-3/4 w-full"> {/* container */}
                     <div className="w-full flex flex-col">
                         <div className="w-full h-auto overflow-hidden cursor-pointer ">
-                            <LazyLoadImage src={props.image} alt="" className=" w-full  transition-transform object-cover duration-700 hover:scale-110 " style={window.innerWidth < 1280 ? { height: `${window.innerWidth * 0.484}px` } : { height: '465px' }} />
+                            <LazyLoadImage src={`/${props.image}`} alt="" className=" w-full  transition-transform object-cover duration-700 hover:scale-110 " style={window.innerWidth < 1280 ? { height: `${window.innerWidth * 0.484}px` } : { height: '465px' }} />
                         </div> {/* banner */}
                         <div className="uppercase font-bold text-2xl border-b-2 py-4 w-[100%]">skin care</div>
                     </div>
@@ -369,10 +367,10 @@ export default function Cart(props) {
                         </div>
                         <div className="flex justify-center items-center"> {/* images lgani hai line wali */}
                             <p className="uppercase font-medium pr-5 hidden lg:block">view as</p>
-                            <button className="mx-2 " onClick={() => gridCartValue(1)}><LazyLoadImage src="images/A.webp" alt="" className="w-7 h-7" /> </button>
-                            <button className="mx-2 " onClick={() => gridCartValue(2)}><LazyLoadImage src="images/B.webp" alt="" className="w-7 h-7" /></button>
-                            <button className="mx-2 hidden lg:block" onClick={() => gridCartValue(3)}><LazyLoadImage src="images/C.webp" alt="" className="w-7 h-7" /></button>
-                            <button className="mx-2 hidden lg:block" onClick={() => gridCartValue(4)}><LazyLoadImage src="images/D.webp" alt="" className="w-7 h-7" /></button>
+                            <button className="mx-2 " onClick={() => gridCartValue(1)}><LazyLoadImage src="/images/A.webp" alt="" className="w-7 h-7" /> </button>
+                            <button className="mx-2 " onClick={() => gridCartValue(2)}><LazyLoadImage src="/images/B.webp" alt="" className="w-7 h-7" /></button>
+                            <button className="mx-2 hidden lg:block" onClick={() => gridCartValue(3)}><LazyLoadImage src="/images/C.webp" alt="" className="w-7 h-7" /></button>
+                            <button className="mx-2 hidden lg:block" onClick={() => gridCartValue(4)}><LazyLoadImage src="/images/D.webp" alt="" className="w-7 h-7" /></button>
                         </div>
                         <div className="flex gap-12 ">
                             <div className="hidden lg:block">
