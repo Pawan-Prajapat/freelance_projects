@@ -20,10 +20,10 @@ export default function BestSellers() {
     if (myName.data === null) {
         return
     }
-    const selectedHairData = myName.data.filter(element =>
-        element.category && element.category.split(',').some(cat => cat.trim() === "hair_care")
+    const selectedFaceData = myName.data.filter(element =>
+        element.category && element.category.split(',').some(cat => cat.trim() === "face_care")
     );
-    const subcategoryCounts = selectedHairData.reduce((acc, current) => {
+    const subcategoryCounts = selectedFaceData.reduce((acc, current) => {
         const subcategory = current.subCategroies;
         if (acc[subcategory]) {
             acc[subcategory]++;
@@ -34,11 +34,11 @@ export default function BestSellers() {
     }, {});
 
     const uniqueArray = Object.entries(subcategoryCounts).map(([subcategory, count]) => ({ subcategory, count }));
-    const max = Math.max(...selectedHairData.map(item => item.price));
+    const max = Math.max(...selectedFaceData.map(item => item.price));
 
     return (
         <>
-            <Cart min={0} max={max} step={1} data={selectedHairData} productTypes={uniqueArray} image="images/Hennakart/natural_essiensital_oil.jpg" />
+            <Cart min={0} max={max} step={1} data={selectedFaceData} productTypes={uniqueArray} image="images/Hennakart/natural_essiensital_oil.jpg" />
         </>
     );
 }

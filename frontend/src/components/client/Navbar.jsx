@@ -199,42 +199,42 @@ export default function Navbar() {
                             <li className={`nav ${activeLink === 0 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(0)}><Link to="/bestSellers">bestsellers</Link></li>
                             <li className={`relative nav ${activeLink === 1 ? 'navConditionClass' : ''} `} onMouseEnter={() => showTheSubmenuOnHoverFunc(0)}
                                 onClick={() => showTheActiveLinkFunc(1)}
-                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}><Link to="/hair">
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}><Link to="/henna/all_henna">
                                     HENNA
                                     <div className={`${showTheSubmenuOnHover === 0 ? 'border-t absolute shadow-lg rounded-md w-52 top-[40px] left-1 flex flex-col bg-white z-50 text-black' : 'hidden'}`}>
-                                        <Link className='navSubMenuLink' to="/hennas">BAQ HENNA POWDER</Link>
-                                        <Link className='navSubMenuLink ' to="/hairMask"><span>HERBAL HENNA POWDER</span></Link>
-                                        <Link className='navSubMenuLink ' to="/hair">NATURAL HENNA POWDER</Link>
-                                        <Link className='navSubMenuLink ' to="/hairEssentialOil">HENNA BASED HAIR COLOUR</Link>
+                                        <Link className='navSubMenuLink'  to="/henna/baq_henna">BAQ HENNA POWDER</Link>
+                                        <Link className='navSubMenuLink ' to="/henna/herbal_henna"><span>HERBAL HENNA POWDER</span></Link>
+                                        <Link className='navSubMenuLink ' to="/henna/natural_henna">NATURAL HENNA POWDER</Link>
+                                        <Link className='navSubMenuLink ' to="/henna/henna_based_hair_color">HENNA BASED HAIR COLOUR</Link>
                                     </div>
                                 </Link>
                             </li>
                             <li className={`relative nav ${activeLink === 2 ? 'navConditionClass' : ''} `} onClick={() => showTheActiveLinkFunc(2)} onMouseEnter={() => showTheSubmenuOnHoverFunc(1)}
                                 
-                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}><Link to="/skin">
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}><Link to="/essentialOil/all_oil">
                                     ESSENTIAL OIL
                                     <div className={`${showTheSubmenuOnHover === 1 ? 'border-t shadow-lg rounded-md absolute w-40 top-[40px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
-                                        <Link className='navSubMenuLink' to="/facePowder">EUCALYPTUS OIL</Link>
-                                        <Link className='navSubMenuLink' to="/facePack">LAVENDER OIL</Link>
-                                        <Link className='navSubMenuLink' to="/facePack">TEA TREE OIL</Link>
-                                        <Link className='navSubMenuLink' to="/facePack">MEHANDI OIL</Link>
-                                        <Link className='navSubMenuLink' to="/facePack">CLOVE OIL</Link>
-                                        <Link className='navSubMenuLink' to="/facePack">CAJEPUT OIL</Link>
+                                        <Link className='navSubMenuLink' to="/essentialOil/eucalyptus_oil">EUCALYPTUS OIL</Link>
+                                        <Link className='navSubMenuLink' to="/essentialOil/lavender_oil">LAVENDER OIL</Link>
+                                        <Link className='navSubMenuLink' to="/essentialOil/tea_tree_oil">TEA TREE OIL</Link>
+                                        <Link className='navSubMenuLink' to="/essentialOil/mehandi_oil">MEHANDI OIL</Link>
+                                        <Link className='navSubMenuLink' to="/essentialOil/clove_oil">CLOVE OIL</Link>
+                                        <Link className='navSubMenuLink' to="/essentialOil/cajeput_oil">CAJEPUT OIL</Link>
                                     </div>
                                 </Link>
                             </li>
-                            <li className={`nav ${activeLink === 3 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(3)}><Link to="/newLaunches">FACE CARE </Link></li>
-                            <li className={`nav ${activeLink === 4 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(4)}><Link to="/newLaunches">Hair CARE </Link></li>
+                            <li className={`nav ${activeLink === 3 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(3)}><Link to="/face_care">FACE CARE </Link></li>
+                            <li className={`nav ${activeLink === 4 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(4)}><Link to="/hair_care">Hair CARE </Link></li>
 
                             <li className={`relative nav ${activeLink === 5 ? ' navConditionClass' : ''} `} onClick={() => showTheActiveLinkFunc(5)} onMouseEnter={() => showTheSubmenuOnHoverFunc(2)}
-                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}><Link to="/combopack">
+                                onMouseLeave={() => showTheSubmenuOnHoverFunc(null)}><Link to="/combopack/all_combo">
                                     combopack
                                     <div className={`${showTheSubmenuOnHover === 2 ? 'border-t shadow-lg rounded-md absolute w-[15vw] text ps-2 top-[40px] flex flex-col bg-white text-black z-50' : 'hidden'}`}>
-                                        <Link className='navSubMenuLink' to="/combopackHairMask">HENNA AND OIL COMBO</Link>
-                                        <Link className='navSubMenuLink' to="/combopackFaceCare">ESSENTIAL OIL COMBO</Link>
-                                        <Link className='navSubMenuLink' to="/combopackHennaIndigo">HENNA INDIGO COMBO</Link>
-                                        <Link className='navSubMenuLink' to="/combopackFaceSheet">FACE CARE COMBO</Link>
-                                        <Link className='navSubMenuLink' to="/combopackEssentialOil">SKIN CARE COMBO</Link>
+                                        <Link className='navSubMenuLink' to="/combopack/henna_and_oil_combo">HENNA AND OIL COMBO</Link>
+                                        <Link className='navSubMenuLink' to="/combopack/essential_oil_combo">ESSENTIAL OIL COMBO</Link>
+                                        <Link className='navSubMenuLink' to="/combopack/henna_indigo_combo">HENNA INDIGO COMBO</Link>
+                                        <Link className='navSubMenuLink' to="/combopack/face_care_combo">FACE CARE COMBO</Link>
+                                        <Link className='navSubMenuLink' to="/combopack/skin_care_combo">SKIN CARE COMBO</Link>
                                     </div>
                                 </Link>
                             </li>

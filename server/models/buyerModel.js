@@ -41,7 +41,16 @@ const buyerSchema =  new mongoose.Schema({
         type:String
     },
     razorpay_order_id:{
-        type:String
+        type:String,
+        default : ""
+    }, 
+    variantId : {
+        type : String,
+        required : true
+    }, 
+    productId : {
+        type : String,
+        required : true
     }
 },{
     timestamps:true

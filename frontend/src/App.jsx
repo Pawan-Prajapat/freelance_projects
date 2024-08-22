@@ -3,10 +3,10 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 const Home = lazy(() => import('./components/client/home.jsx'));
 const Navbar = lazy(() => import('./components/client/Navbar.jsx'));
-const Skin = lazy(() => import('./components/client/skin.jsx'));
+const Face = lazy(() => import('./components/client/face.jsx'));
 const Hair = lazy(() => import('./components/client/hair.jsx'));
 const Combopack = lazy(() => import('./components/client/combopack.jsx'));
-const Deals = lazy(() => import('./components/client/deals.jsx'));
+const Henna = lazy(() => import('./components/client/henna.jsx'));
 const ProductDetail = lazy(() => import('./components/client/productDetailWhole.jsx'))
 const Footer = lazy(() => import("./components/client/footer.jsx"));
 const PaymentDetailSummary = lazy(() => import("./components/client/paymentDetailSummary.jsx"));
@@ -14,7 +14,7 @@ const AddToCart = lazy(() => import("./components/client/addToCart.jsx"))
 const Register = lazy(() => import("./components/client/register.jsx"))
 const Logout = lazy(() => import("./components/client/logout.jsx"))
 const BestSellers = lazy(() => import("./components/client/bestSellers.jsx"))
-const NewLaunches = lazy(() => import("./components/client/newLaunches.jsx"))
+const EssentialOil = lazy(() => import("./components/client/essentialOil.jsx"))
 const Refund_Return = lazy(() => import("./components/client/Refund_Return.jsx"))
 const Privacy_Policy = lazy(() => import("./components/client/privacy_policy.jsx"))
 const Shipping_Policy = lazy(() => import("./components/client/shipping_policy.jsx"))
@@ -44,45 +44,33 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/home' element={<Home />} />
-          <Route path="/hair" element={<Hair which="hair" />} />
-          <Route path="/hennas" element={<Hair which="hennas" />} />
-          <Route path="/hairMask" element={<Hair which="hairMask" />} />
-          <Route path="/hairEssentialOil" element={<Hair which="hairEssentialOil" />} />
-          <Route path="/addtocart" element={<AddToCart />} />
-          <Route path="/skin" element={<Skin which={"skin"} />} />
-          <Route path="/facePowder" element={<Skin which={"facePowder"} />} />
-          <Route path="/facePack" element={<Skin which={"facePack"} />} />
-          <Route path="/faceSheet" element={<Skin which={"faceSheet"} />} />
-          <Route path="/faceEssentialOil" element={<Skin which={"faceEssentialOil"} />} />
           <Route path="/bestSellers" element={<BestSellers />} />
-          <Route path="/combopack" element={<Combopack which={"combo"} />} />
-          <Route path="/combopackHairMask" element={<Combopack which={"comboHairMask"} />} />
-          <Route path="/combopackFaceCare" element={<Combopack which={"comboFaceMask"} />} />
-          <Route path="/combopackFaceSheet" element={<Combopack which={"comboFaceSheet"} />} />
-          <Route path="/combopackHennaIndigo" element={<Combopack which={"comboHennaIndigo"} />} />
-          <Route path="/combopackEssentialOil" element={<Combopack which={"comboEssentialOil"} />} />
-          <Route path="/newLaunches" element={<NewLaunches />} />
+          <Route path="/henna/:subHenna" element={<Henna />} />
+          <Route path="/essentialOil/:subEssentialOil" element={<EssentialOil />} />
+          <Route path="/face_care" element={<Face  />} />
+          <Route path="/hair_care" element={<Hair  />} />
+          <Route path="/combopack/:subCombo" element={<Combopack  />} />
+          <Route path="/About" element={<About />} />
+
+
+          <Route path="/addtocart" element={<AddToCart />} />
 
 
           <Route path="/Refund_Return" element={<Refund_Return />} />
           <Route path="/Privacy_Policy" element={<Privacy_Policy />} />
           <Route path="/Shipping_Policy" element={<Shipping_Policy />} />
           <Route path="/Tearms_Service" element={<Tearms_Service />} />
-          <Route path="/About" element={<About />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/Contact" element={<Contact />} />
 
 
 
-
-          <Route path="/deals" element={<Deals under={0} />} />
-          <Route path="/deals100" element={<Deals under={100} />} />
-          <Route path="/deals200" element={<Deals under={200} />} />
-          <Route path="/deals300" element={<Deals under={300} />} />
           <Route path='/productDetail/:id' element={<ProductDetail />} />
           <Route path='/paymentDetailSummary/:id/:variantId' element={<PaymentDetailSummary />} />
           <Route path='/register' element={<Register />} />
           <Route path='/logout' element={<Logout />} />
+
+          {/* admin routes */}
           <Route path='/admin' element={<AdminLayout />} >
             <Route path='products' element={<Products />} />
             <Route path='ProductForm' element={<ProductForm />} />

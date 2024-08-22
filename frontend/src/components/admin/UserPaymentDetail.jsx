@@ -37,12 +37,7 @@ function UserPaymentDetail() {
                   >
                     Payment id
                   </th>
-                  <th
-                    scope="col"
-                    className="ps-10 py-3 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Products
-                  </th>
+                 
                   <th
                     scope="col"
                     className="ps-10 py-3 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
@@ -63,21 +58,7 @@ function UserPaymentDetail() {
                       <td className="ps-10 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div className="text-sm leading-5">{user.razorpay_payment_id}</div>
                       </td>
-                      <td className="ps-10 py-4 whitespace-no-wrap border-b border-gray-200">
-                        <div className="text-sm leading-5">
-                          {
-                            user.names.reduce((result, product, index) => {
-                              if (index % 4 === 0 && index !== 0) {
-                                result.push([]);
-                              }
-                              result[result.length - 1].push(product);
-                              return result;
-                            }, [[]]).map((productChunk, chunkIndex) => (
-                              <p key={chunkIndex}>{productChunk.map(product => `${product.name}(${product.qyt})`).join(', ')}</p>
-                            ))
-                          }
-                        </div>
-                      </td>
+                     
                       <td className="ps-10 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div className="text-sm leading-5">{user.amount}</div>
                       </td>

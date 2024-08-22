@@ -180,7 +180,13 @@ function ProductDetailWhole() {
                             </div>
                         </a>
                         <div className='text-center text-base uppercase hover:border-none border-2 border-gray-600 py-[12px] font-bold shadow-[5px_6px_rgb(166,222,205,1)] hover:text-blue-50 bg-white hover:bg-black text-black w-full mt-10'>
-                            <Link to={`/paymentDetailSummary/${id}/${selectedVariant._id}`}>Buy it Now</Link>
+                            { selectedVariant && selectedVariant.length != 0 ? (
+                                <Link to={`/paymentDetailSummary/${id}/${selectedVariant._id}`}>Buy it Now</Link>
+                            ) : (
+                                <p>Selected variant nhi dala </p>
+                            )
+
+                            }
                         </div>
                     </div>
                     <div className="w-full flex items-center mt-10 gap-5">

@@ -41,10 +41,19 @@ function paymentDetailSummary() {
   const [email, setEmail] = useState('');
   const [mail, setMail] = useState(true);
   const [variantDataFront, setVariantDataFront] = useState([]);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(true); // Default to Razorpay
+
   const [variantIds, setVariantIds] = useState([]);
   const [buyer, setBuyer] = useState({
-    email: " ", country: " ", firstName: "", lastName: " ", city: "", state: "", pincode: " ", phone: " ", address: " ", razorpay_order_id: " ", variantId: param.variantId
+    email: " ", country: " ", firstName: "", lastName: " ", city: "", state: "", pincode: " ", phone: " ", address: " ", razorpay_order_id: " ", variantId: param.variantId, productId: param.id, payment_method: selectedPaymentMethod
   })
+
+
+
+  const handlePaymentChange = (event) => {
+    const value = event.target.value === 'true';
+    setSelectedPaymentMethod(value);
+  };
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -56,18 +65,15 @@ function paymentDetailSummary() {
     const fetchVariant = async () => {
       try {
         const res = await axios.get(`${serverUrl}/api/getVariantData/${param.variantId}`);
-        const variantData = res.data.variantData;
-        console.log(res.data.variantData);
-        setVariantDataFront(variantData);
-        // setSelectedVariant(variants[0]);  // Set the first variant as default
+        setVariantDataFront(res.data.variantData[0]);
       } catch (error) {
         console.error("Error in fetching the variants of the product");
       }
     };
     fetchVariant();
-  }, [])
+  }, [param.variantId])
 
-  console.log("variant data" , variantDataFront);
+  console.log("variant data", variantDataFront);
 
   const checkUpLabel = (n, inputId) => {
     setInputState(prevState => ({
@@ -269,56 +275,74 @@ function paymentDetailSummary() {
               <p className={`text-red-500 text-sm  ${inputState.phoneNumber.visibleCheck ? "hidden" : "visible"}`}>Enter a phone number</p>
 
             </div>
-            <div className='flex gap-3'>
+            {/* <div className='flex gap-3'>
               <input type="checkbox" name="saveInfo" id="saveInfo" />
               <label htmlFor="saveInfo">Save the information for the next time</label>
-            </div>
+            </div> */}
           </div>
 
           {/* this is for shipping address */}
-          <div>
+          {/* <div>
             <h1 className="text-2xl font-semibold mb-4">Shipping method</h1>
             <div className='relative'>
               <label htmlFor="shippingAdd" className={`top-[22px] text-sm absolute left-4 block   text-gray-700`}>Enter your shipping address to view available shipping methods</label>
               <input onChange={(e) => checkUpLabel(e.target.value, "shippingAdd")} type="text" id="shippingAdd" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" readOnly />
             </div>
-          </div>
+          </div> */}
           {/* this is for payment */}
+
           <div className='mt-5'>
             <h1 className="text-2xl font-semibold mt-2">Payment</h1>
             <p className='mb-3'>All transactions are secure and encrypted</p>
-            <div className='border border-gray-200 '>
-              <div className=' py-6 px-4 flex gap-3 border border-green-500 bg-gray-50'>
-                <div className='flex gap-2'>
-                  <input type="radio" name="selectPayment" id="selectPayment" />
-                  <label htmlFor="selectPayment">Razorpay Secure (UPI, Cards, Wallets, NetBanking)</label>
-                </div>
-                <div>
 
-                </div>
+            <label>
+              <div className={`py-6 px-4 flex gap-3 border ${selectedPaymentMethod ? 'border-green-500' : ''}  bg-gray-50`}>
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value={true}
+                  checked={selectedPaymentMethod === true}
+                  onChange={handlePaymentChange}
+                />
+                <p>Razorpay Secure (UPI, Cards, Wallets, NetBanking)</p>
               </div>
-              <div className=' flex flex-col justify-center items-center bg-gray-100 gap-6 pt-4'>
+              <div className={`${selectedPaymentMethod ? '' : 'hidden'} flex flex-col justify-center items-center bg-gray-100 gap-6 pt-4`}>
                 <div>
                   <LazyLoadImage src="/images/Hennakart/creditCard.png" alt="" />
                 </div>
 
                 <p className='w-1/2 text-center text-sm pb-4'>After clicking “Pay now”, you will be redirected to Razorpay Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
               </div>
-            </div>
+            </label>
+            <label>
+              <div className={`py-6 px-4 flex gap-3 border ${selectedPaymentMethod ? '' : 'border-green-500'}  bg-gray-50`}>
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value={false}
+                  checked={selectedPaymentMethod === false}
+                  onChange={handlePaymentChange}
+                />
+                <p>Cash on Delivery (COD)</p>
+              </div>
+            </label>
           </div>
+
+
           {/* pay now button  */}
           <div className={`${window.innerWidth > 778 ? 'visible' : 'hidden'}`}>
-            <button type='button' className='  w-full bg-green-800 bg-opacity-50 text-xl text-white rounded-md hover:bg-opacity-70  py-5 font-bold'
-
+            <button type='button' className={` w-full bg-green-800 bg-opacity-50 text-xl text-white rounded-md hover:bg-opacity-70  py-5 font-bold ${!areAllFieldsFilled() ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled = {!areAllFieldsFilled()}
               onClick={() => {
                 if (areAllFieldsFilled()) {
-                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) :variantDataFront[0].price );
+                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront?.price);
                 }
               }}
             >Pay Now</button>
           </div>
         </div>
 
+              {/* for mobile */}
         <div className='lg:ps-10 lg:pe-32 px-3 lg:bg-gray-100 bg-white  pt-6'>
           {param.id === "addToCartCheckout" ? (
             <div>
@@ -339,7 +363,7 @@ function paymentDetailSummary() {
                 <LazyLoadImage className=' h-16 w-20  border border-gray-400 rounded-lg' src={`${serverUrl}/${currentProduct[0].image}`} alt={`${serverUrl}/${currentProduct[0].image}`} />
               </div>
               <div><p className='text-center'>{currentProduct[0].title}</p></div>
-              <div>Rs. {variantDataFront[0].price}</div>
+              <div>Rs. {variantDataFront?.price}</div>
             </div>
           )}
 
@@ -355,16 +379,16 @@ function paymentDetailSummary() {
               <p className=' text-sm text-gray-500'>Including Rs. 53.67 in taxes</p>
             </div>
             <div className='flex flex-col gap-y-2 text-end'>
-              <p className='font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront[0].price}</p>
+              <p className='font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront?.price}</p>
               <p className='text-gray-500'>Enter shipping address</p>
-              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront[0].price}</span></p>
+              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront?.price}</span></p>
             </div>
           </div>
           <div className='visible lg:hidden mt-6' >
             <button type='button' className='w-full bg-green-800 bg-opacity-50 text-xl text-white rounded-md hover:bg-opacity-70  py-5 font-bold'
               onClick={() => {
                 if (areAllFieldsFilled()) {
-                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront[0].price);
+                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront?.price);
                 }
               }}
             >Pay Now</button>

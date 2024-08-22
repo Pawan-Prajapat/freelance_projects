@@ -5,7 +5,7 @@ import { fetchProducts } from "../../features/productsFileHairSlice.js";
 
 import { useParams } from "react-router-dom";
 
-export default function Combopack() {
+export default function Essential() {
   const dispatch = useDispatch();
   const param = useParams();
   const myName = useSelector((state) => state.ProductHairReducer);
@@ -26,15 +26,15 @@ export default function Combopack() {
 
   // Select products with category "combopack"
 
-  const selectedComboData = myName.data.filter((element) =>
-    (param.subCombo !== 'all_combo') ? (
-      element.category && element.category.split(',').some(cat => cat.trim() === param.subCombo)
+  const selectedEssentialData = myName.data.filter((element) =>
+    (param.subEssentialOil !== 'all_oil') ? (
+      element.category && element.category.split(',').some(cat => cat.trim() === param.subEssentialOil)
     ) : (
-      element.category && ['henna_and_oil_combo', 'essential_oil_combo', 'henna_indigo_combo', 'face_care_combo', 'skin_care_combo'].some(combo => element.category.split(',').includes(combo))
+      element.category && ['eucalyptus_oil', 'lavender_oil', 'tea_tree_oil', 'mehandi_oil','clove_oil','cajeput_oil'].some(combo => element.category.split(',').includes(combo))
     )
   );
   // Count occurrences of each subcategory
-  const subcategoryCounts = selectedComboData.reduce((acc, current) => {
+  const subcategoryCounts = selectedEssentialData.reduce((acc, current) => {
     const subcategory = current.subCategories;
     if (acc[subcategory]) {
       acc[subcategory]++;
@@ -51,7 +51,7 @@ export default function Combopack() {
   }));
 
   // Find the maximum price in the selected data
-  let max = Math.max(...selectedComboData.map((item) => item.price));
+  let max = Math.max(...selectedEssentialData.map((item) => item.price));
   if (max === -Infinity) {
     max = 0;
   }
@@ -62,7 +62,7 @@ export default function Combopack() {
         min={0}
         max={max}
         step={1}
-        data={selectedComboData}
+        data={selectedEssentialData}
         productTypes={uniqueArray}
         image="images/Hennakart/natural_essiensital_oil.jpg"
       />

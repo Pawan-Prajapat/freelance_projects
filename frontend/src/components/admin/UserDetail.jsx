@@ -5,7 +5,7 @@ import axios from 'axios';
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 function UserDetail() {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const token = useSelector((state) => state.TokenReducer.token);
     useEffect(() => {
         axios.get(serverUrl + "/api/checkPaymentStatus",
@@ -19,6 +19,22 @@ function UserDetail() {
             })
             .catch(error => console.error(error));
     }, []);
+
+    function formatDate(mongoDateStr) {
+        const date = new Date(mongoDateStr);
+        const options = {
+            month: 'short', // Abbreviated month (e.g., "Aug")
+            day: 'numeric', // Day of the month (e.g., "20")
+            hour: 'numeric', // Hour (e.g., "3")
+            minute: 'numeric', // Minute (e.g., "46")
+            hour12: true, // 12-hour clock (true for AM/PM)
+        };
+
+        const formattedDate = date.toLocaleString('en-US', options);
+        return formattedDate.replace(',', ' at'); // Replace comma with " at"
+    }
+
+    console.log("user data", data);
     return (
         <div className={`flex flex-col`}>
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -31,68 +47,51 @@ function UserDetail() {
                                         scope="col"
                                         className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Name
+                                        Order
                                     </th>
                                     <th
                                         scope="col"
                                         className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Email
+                                        Date
                                     </th>
                                     <th
                                         scope="col"
                                         className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Address
+                                        Customer 
                                     </th>
                                     <th
                                         scope="col"
                                         className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Pincode
+                                        Total
                                     </th>
                                     <th
                                         scope="col"
                                         className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        City
+                                        Payment status
                                     </th>
                                     <th
                                         scope="col"
                                         className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        State
+                                        Fulfillment status
                                     </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Country
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Phone
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Order Id
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Payment Status
-                                    </th>
+                                    
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {data &&
                                     data.map((user, index) => (
                                         <tr key={index}>
+                                            <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
+                                                <div className="text-sm leading-5">{user.order_id}</div>
+                                            </td>
+                                            <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
+                                                <div className="text-sm leading-5">{formatDate(user.createdAt)}</div>
+                                            </td>
                                             <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
                                                 <div className="text-sm leading-5">{user.firstName + " " + user.lastName}</div>
                                             </td>
@@ -121,7 +120,7 @@ function UserDetail() {
                                                 <div className="text-sm leading-5">{user.order_id}</div>
                                             </td>
                                             <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                <div className="text-sm leading-5">{user.payment_data[0].razorpay_payment_id ? 'Done' : 'Pendding'}</div>
+                                                <div className="text-sm leading-5">{user.payment_data.razorpay_payment_id ? 'Done' : 'Pendding'}</div>
                                             </td>
 
                                         </tr>
