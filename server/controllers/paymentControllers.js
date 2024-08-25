@@ -1,27 +1,20 @@
 import { instance } from "../server.js";
 import crypto from "crypto";
 import { config } from 'dotenv';
-import { Payment } from "../models/pyamentModel.js";
-import { Buyer } from "../models/buyerModel.js";  
+import { Order } from "../models/buyerModel.js";
 
 config({ path: "./config/config.env" });
-export const checkout = async (req, res) => {
-  const { amount } = req.body;
+
+export const checkout = async (amount) => {
   const options = {
     amount: Number(amount * 100),  // amount in the smallest currency unit
     currency: "INR",
   };
   const order = await instance.orders.create(options);
-  await Payment.create({
-    razorpay_order_id: order.id,
-    amount
-  })
-
-  res.status(200).json({
-    success: true,
-    order,
-  });
+  return [order.id,options.amount];
 };
+
+
 export const paymentVerification = async (req, res) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
   const body = razorpay_order_id + '|' + razorpay_payment_id;
@@ -32,9 +25,10 @@ export const paymentVerification = async (req, res) => {
   if (isAuthentic) {
     // databse comes here 
 
-    await Payment.findOneAndUpdate({ razorpay_order_id }, {
+    await Order.findOneAndUpdate({ razorpay_order_id }, {
       $set: {
-        razorpay_payment_id, razorpay_signature
+        payment_status: 'paid',
+        razorpay_payment_id
       }
     })
     res.redirect(process.env.FRONT_SITE);
@@ -46,31 +40,3 @@ export const paymentVerification = async (req, res) => {
 
   }
 };
-
-export const checkPaymentStatus = async (req, res) => {
-  try {
-    const userDataWithPayments = await Buyer.aggregate([
-      {
-        $lookup: {
-          from: "payments",
-          foreignField: "razorpay_order_id",
-          localField: "order_id",
-          as: "payment_data"
-        }
-      }
-    ]).exec();
-    res.status(200).json(userDataWithPayments);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-}
-
-export const getPaymentDetails = async (req, res) => {
-  try {
-    const payments = await Payment.find({});
-    res.status(200).json(payments);
-  } catch (error) {
-    console.log(error);
-  }
-}

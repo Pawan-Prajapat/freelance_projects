@@ -1,7 +1,11 @@
 import express from "express";
-import {storeBuyerData} from "../controllers/BuyerControllers.js"
+import {storeBuyerData ,customerData ,orderDataAll} from "../controllers/BuyerControllers.js"
 
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { adminMiddleware } from "../middlewares/adminMiddleware.js";
 const router = express.Router();
-router.route("/storeBuyerData").post( storeBuyerData);
+router.route("/storeBuyerData").post( authMiddleware,  adminMiddleware,  storeBuyerData);
+router.route("/customerData/:order_number").get( authMiddleware,  adminMiddleware,  customerData);
+router.route("/orderData").get( authMiddleware,  adminMiddleware,  orderDataAll);
 
 export default router;

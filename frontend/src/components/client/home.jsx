@@ -138,10 +138,10 @@ function Home() {
 
     }
     const images = [
-        { url: "/images/Hennakart/Hennakart-01.jpg", name: "Hennas", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/" },
-        { url: "/images/Hennakart/Hennakart-02.jpg", name: "Hair Care", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/hair" },
-        { url: "/images/Hennakart/Hennakart-03.jpg", name: "Skin Care", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/face" },
-        { url: "/images/Hennakart/Hennakart-04.jpg", name: "Face Care", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/" }
+        { url: "/images/Hennakart/Hennakart-01.jpg", name: "HENNA POWDER", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/henna/all_henna" },
+        { url: "/images/Hennakart/Hennakart-02.jpg", name: "ESSENTIAL OIL", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/essentialOil/all_oil" },
+        { url: "/images/Hennakart/Hennakart-03.jpg", name: "FACE CARE", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/face_care" },
+        { url: "/images/Hennakart/Hennakart-04.jpg", name: "HAIR CARE", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/hair_care" }
     ]
 
 

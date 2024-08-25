@@ -3,12 +3,11 @@ import axios from "axios";
 import logo from '../../img/YumiHerbalProduct.png';
 
 // for current product 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector} from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { calculateTotal } from '../../features/AddToCartSlice'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { fetchProducts } from "../../features/productsFileHairSlice.js";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -17,12 +16,13 @@ function paymentDetailSummary() {
 
 
   // for current product 
-  const dispatch = useDispatch();
   const param = useParams();
-  console.log("param.variantId, ", param.variantId);
   let AddToCartData;
   const myName = useSelector((state) => state.ProductHairReducer);
   AddToCartData = useSelector(state => state.AddToCartReducer.addToCart);
+  let SingleProductData = useSelector(state => state.AddToCartReducer.singleProduct);
+
+  console.log("SingleProductData",SingleProductData);
 
   // use state top level
   const [inputState, setInputState] = useState({
@@ -40,40 +40,35 @@ function paymentDetailSummary() {
   // document se email ki value get nhi ho rhi tho state se karte hai
   const [email, setEmail] = useState('');
   const [mail, setMail] = useState(true);
-  const [variantDataFront, setVariantDataFront] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(true); // Default to Razorpay
-
-  const [variantIds, setVariantIds] = useState([]);
   const [buyer, setBuyer] = useState({
-    email: " ", country: " ", firstName: "", lastName: " ", city: "", state: "", pincode: " ", phone: " ", address: " ", razorpay_order_id: " ", variantId: param.variantId, productId: param.id, payment_method: selectedPaymentMethod
+    "customerDetails": {
+      email: "", country: " ", firstName: "", lastName: " ", city: "", state: "", pincode: " ", phone: " ", address: " "
+    },
+    "orderDetails": {
+      "order_items": [],
+      "total_amount": null,
+      "payment_type": null
+    }
   })
 
 
+  useEffect(() => {
+    setBuyer({
+      ...buyer,
+      orderDetails: {
+        ...buyer.orderDetails,
+        payment_type: selectedPaymentMethod
+      }
+    });
+  }, [selectedPaymentMethod]);
 
   const handlePaymentChange = (event) => {
     const value = event.target.value === 'true';
     setSelectedPaymentMethod(value);
   };
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-
   // get the variant data 
-
-  useEffect(() => {
-    const fetchVariant = async () => {
-      try {
-        const res = await axios.get(`${serverUrl}/api/getVariantData/${param.variantId}`);
-        setVariantDataFront(res.data.variantData[0]);
-      } catch (error) {
-        console.error("Error in fetching the variants of the product");
-      }
-    };
-    fetchVariant();
-  }, [param.variantId])
-
-  console.log("variant data", variantDataFront);
 
   const checkUpLabel = (n, inputId) => {
     setInputState(prevState => ({
@@ -93,68 +88,59 @@ function paymentDetailSummary() {
 
 
 
-  useEffect(() => {
-    if (buyer.razorpay_order_id !== " ") {
-      buyerDataStore();
-    }
-  }, [buyer.razorpay_order_id]);
 
-
-
-
-  // store the buyer data
-  let currentProduct;
-  if (param.id !== "addToCartCheckout") {
-    currentProduct = myName?.data?.filter(element => element._id === param.id);
-  }
   // paise bhejne ka trika 
-  const productNamesArray = param.id !== "addToCartCheckout"
-    ? myName?.data?.filter(element => element._id === param.id).map(item => ({
-      _id: item._id,
-      name: item.name,
-      qyt: item.qty
-    })) || []
-    : AddToCartData.map(item => ({
-      _id: item._id,
-      name: item.name,
-      qyt: item.qyt
+  // store the buyer data
+  useEffect(() => {
+    let updatedOrderItems = [];
+
+    if (param.id !== "addToCartCheckout") {
+      // Single product case
+      updatedOrderItems = [
+        {
+          product_id: SingleProductData?.product_id,
+          variant_id: SingleProductData?.variant._id,
+          qty: SingleProductData?.qty // or set your desired quantity here
+        }
+      ];
+      console.log("updatedOrderItems", SingleProductData);
+    } else {
+      // Multiple products case
+      updatedOrderItems = AddToCartData.map(item => ({
+        product_id: item.product_id,
+        variant_id: item.variant._id,
+        qty: item.qty
+      }));
+    }
+
+    // Update the buyer state with the new order items
+    setBuyer(prevBuyer => ({
+      ...prevBuyer,
+      orderDetails: {
+        ...prevBuyer.orderDetails,
+        order_items: updatedOrderItems,
+        total_amount: calculateTotal(AddToCartData)
+      }
     }));
+  }, [param.id, param.variantId, myName, AddToCartData]);
 
-
-
-
-
-
-
-
-
-  const checkoutHandler = async (amount) => {
-    const { data: { key } } = await axios.get(serverUrl + "/api/getkey")
-    const { data: { order } } = await axios.post(serverUrl + "/api/checkout", {
-      amount
-    })
-    setBuyer((buyer) => ({ ...buyer, razorpay_order_id: order.id }));
-    console.log("pawan buyer id = ", order.id);
-
-
-    const userFirstName = document.getElementById('firstName').value
-    const userLastName = document.getElementById('lastName').value
-    const userPhone = document.getElementById('phone').value
-
+  // call the checkoutHandler when the payment type  is razorpay 
+  const checkoutHandler = async (order_id, amount) => {
+    const { data: { key } } = await axios.get(serverUrl + "/api/getkey");
     const options = {
       key, // Enter the Key ID generated from the Dashboard
-      amount: order.amount,
+      amount,
       currency: "INR",
       name: "Hennakart",
       description: "Test Transaction",
       image: logo,
-      order_id: order.id,
+      order_id,
       // collback_url important backend me hona chahiye
       callback_url: serverUrl + "/api/paymentVerification",
       prefill: {
-        "name": userFirstName + userLastName,
-        "email": email,
-        "contact": userPhone
+        "name": buyer.customerDetails.firstName + buyer.customerDetails.lastName,
+        "email": buyer.customerDetails.email,
+        "contact": buyer.customerDetails.phone
       },
       notes: {
         "address": "Razorpay Corporate Office"
@@ -163,15 +149,21 @@ function paymentDetailSummary() {
         "color": "#3399cc"
       }
     };
-    const razor = new window.Razorpay(options);
+    const razor = new Razorpay(options);
     razor.open();
   }
 
 
 
   const buyerDataStore = async () => {
-    console.log("pawan store buyer data call ho gya hai");
-    await axios.post(serverUrl + "/api/storeBuyerData", buyer);
+    await axios.post(serverUrl + "/api/storeBuyerData", buyer)
+      .then(res => {
+        if (res.data.razorpay_order_id != "no")
+          checkoutHandler(res.data.razorpay_order_id, res.data.amount);
+      })
+      .catch(err => {
+        console.error(err);
+      })
   }
 
 
@@ -180,12 +172,18 @@ function paymentDetailSummary() {
     window.scrollTo(0, 0);
   }, [])
 
-  if (myName.data === null) {
+  if (SingleProductData === null) {
     return <h1>Loading........</h1>
   }
   const handleInputs = (e) => {
     const { name, value } = e.target;
-    setBuyer({ ...buyer, [name]: value });
+    setBuyer({
+      ...buyer,
+      customerDetails: {
+        ...buyer.customerDetails,
+        [name]: value
+      }
+    });
   }
 
   // check all fiel are fill or not 
@@ -199,11 +197,6 @@ function paymentDetailSummary() {
   };
 
 
-  console.log("currentProduct", currentProduct)
-
-  if (!currentProduct || productNamesArray.length === 0) {
-    return <div>Loading...</div>; // You can customize the loading state
-  }
 
   return (
 
@@ -216,7 +209,7 @@ function paymentDetailSummary() {
             <h1 className="text-2xl font-semibold mb-4">Contact</h1>
             <div className='relative'>
               <label htmlFor="email" className={`${inputState.email.upLabel ? 'top-2 text-[12px]' : ' top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>Email or mobile phone number</label>
-              <input value={buyer.email} onChange={(e) => { checkUpLabel(e.target.value, "email"); handleInputs(e) }} onBlur={(e) => validateEmail(e.target.value)} name='email' type="email" id="email" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" required />
+              <input value={buyer.customerDetails.email} onChange={(e) => { checkUpLabel(e.target.value, "email"); handleInputs(e) }} onBlur={(e) => validateEmail(e.target.value)} name='email' type="email" id="email" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" required />
               <p className={`text-red-500 text-sm px-4 ${mail ? "hidden" : "visible"}`}>Enter a valid Emaiil</p>
             </div>
           </div>
@@ -227,24 +220,24 @@ function paymentDetailSummary() {
 
             <div className='relative'>
               <label htmlFor="country" className={`${inputState.countryName.upLabel ? 'top-2 text-[12px]' : 'top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>Country</label>
-              <input value={buyer.country} onChange={(e) => { checkUpLabel(e.target.value, "countryName"); handleInputs(e) }} type="text" id="country" name="country" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
+              <input value={buyer.customerDetails.country} onChange={(e) => { checkUpLabel(e.target.value, "countryName"); handleInputs(e) }} type="text" id="country" name="country" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
             </div>
             <div className='grid grid-cols-2 gap-3'>
               <div className='relative'>
                 <label htmlFor="firstName" className={`${inputState.firstName.upLabel ? 'top-2 text-[12px]' : 'top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>First Name</label>
-                <input value={buyer.firstName} onChange={(e) => { checkUpLabel(e.target.value, "firstName"); handleInputs(e) }} type="text" id="firstName" name="firstName" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
+                <input value={buyer.customerDetails.firstName} onChange={(e) => { checkUpLabel(e.target.value, "firstName"); handleInputs(e) }} type="text" id="firstName" name="firstName" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
                 <p className={`text-red-500 text-sm  ${inputState.firstName.visibleCheck ? "hidden" : "visible"}`}>Enter first name</p>
               </div>
               <div className='relative'>
                 <label htmlFor="lastName" className={`${inputState.lastName.upLabel ? 'top-2 text-[12px]' : 'top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>Last Name</label>
-                <input value={buyer.lastName} onChange={(e) => { checkUpLabel(e.target.value, "lastName"); handleInputs(e) }} type="text" id="lastName" name="lastName" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
+                <input value={buyer.customerDetails.lastName} onChange={(e) => { checkUpLabel(e.target.value, "lastName"); handleInputs(e) }} type="text" id="lastName" name="lastName" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
                 <p className={`text-red-500 text-sm  ${inputState.lastName.visibleCheck ? "hidden" : "visible"}`}>Enter last name</p>
               </div>
             </div>
 
             <div className='relative'>
               <label htmlFor="address" className={`${inputState.address.upLabel ? 'top-2 text-[12px]' : 'top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>Address</label>
-              <input value={buyer.address} onChange={(e) => { checkUpLabel(e.target.value, "address"); handleInputs(e) }} type="text" id="address" name="address" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
+              <input value={buyer.customerDetails.address} onChange={(e) => { checkUpLabel(e.target.value, "address"); handleInputs(e) }} type="text" id="address" name="address" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
               <p className={`text-red-500 text-sm  ${inputState.address.visibleCheck ? "hidden" : "visible"}`}>Enter an address</p>
             </div>
 
@@ -252,26 +245,26 @@ function paymentDetailSummary() {
             <div className='grid grid-cols-3 gap-3'>
               <div className='relative'>
                 <label htmlFor="city" className={`${inputState.city.upLabel ? 'top-2 text-[12px]' : 'top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>City</label>
-                <input value={buyer.city} onChange={(e) => { checkUpLabel(e.target.value, "city"); handleInputs(e) }} type="text" id="city" name="city" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
+                <input value={buyer.customerDetails.city} onChange={(e) => { checkUpLabel(e.target.value, "city"); handleInputs(e) }} type="text" id="city" name="city" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
                 <p className={`text-red-500 text-sm  ${inputState.city.visibleCheck ? "hidden" : "visible"}`}>Enter city</p>
 
               </div>
               <div className='relative'>
                 <label htmlFor="state" className={`${inputState.state.upLabel ? 'top-2 text-[12px]' : 'top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>State</label>
-                <input value={buyer.state} onChange={(e) => { checkUpLabel(e.target.value, "state"); handleInputs(e) }} type="text" id="state" name="state" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
+                <input value={buyer.customerDetails.state} onChange={(e) => { checkUpLabel(e.target.value, "state"); handleInputs(e) }} type="text" id="state" name="state" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
                 <p className={`text-red-500 text-sm  ${inputState.state.visibleCheck ? "hidden" : "visible"}`}>Enter state</p>
 
               </div>
               <div className='relative'>
                 <label htmlFor="pincode" className={`${inputState.pincode.upLabel ? 'top-2 text-[12px]' : 'top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>PIN Code</label>
-                <input value={buyer.pincode} onChange={(e) => { checkUpLabel(e.target.value, "pincode"); handleInputs(e) }} type="text" id="pincode" name="pincode" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
+                <input value={buyer.customerDetails.pincode} onChange={(e) => { checkUpLabel(e.target.value, "pincode"); handleInputs(e) }} type="text" id="pincode" name="pincode" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
                 <p className={`text-red-500 text-sm  ${inputState.pincode.visibleCheck ? "hidden" : "visible"}`}>Enter pincode / zip code</p>
 
               </div>
             </div>
             <div className='relative'>
               <label htmlFor="phone" className={`${inputState.phoneNumber.upLabel ? 'top-2 text-[12px]' : 'top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>Phone</label>
-              <input value={buyer.phone} onChange={(e) => { checkUpLabel(e.target.value, "phoneNumber"); handleInputs(e) }} type="tel" id="phone" name="phone" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
+              <input value={buyer.customerDetails.phone} onChange={(e) => { checkUpLabel(e.target.value, "phoneNumber"); handleInputs(e) }} type="tel" id="phone" name="phone" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" />
               <p className={`text-red-500 text-sm  ${inputState.phoneNumber.visibleCheck ? "hidden" : "visible"}`}>Enter a phone number</p>
 
             </div>
@@ -332,17 +325,21 @@ function paymentDetailSummary() {
           {/* pay now button  */}
           <div className={`${window.innerWidth > 778 ? 'visible' : 'hidden'}`}>
             <button type='button' className={` w-full bg-green-800 bg-opacity-50 text-xl text-white rounded-md hover:bg-opacity-70  py-5 font-bold ${!areAllFieldsFilled() ? "opacity-50 cursor-not-allowed" : ""}`}
-              disabled = {!areAllFieldsFilled()}
+              disabled={!areAllFieldsFilled()}
               onClick={() => {
                 if (areAllFieldsFilled()) {
-                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront?.price);
+                  buyerDataStore();
                 }
               }}
-            >Pay Now</button>
+            >{selectedPaymentMethod ? (
+              <p>pay now</p>
+            ) : (
+              <p>place order</p>
+            )}</button>
           </div>
         </div>
 
-              {/* for mobile */}
+        {/* for mobile */}
         <div className='lg:ps-10 lg:pe-32 px-3 lg:bg-gray-100 bg-white  pt-6'>
           {param.id === "addToCartCheckout" ? (
             <div>
@@ -350,20 +347,20 @@ function paymentDetailSummary() {
                 <div key={data._id} className={`flex  justify-between items-center mt-5`}>
                   <div className='relative'>
                     <LazyLoadImage className=' h-16 w-20 border border-gray-400 rounded-lg' src={`${serverUrl}/${data.image}`} alt="" />
-                    <p className=" absolute -top-3 right-0 rounded-full bg-gray-700 flex justify-center items-center text-white w-5  h-5"> {data.qyt} </p>
+                    <p className=" absolute -top-3 right-0 rounded-full bg-gray-700 flex justify-center items-center text-white w-5  h-5"> {data.qty} </p>
                   </div>
-                  <div><p className='text-center'>{data.name}</p></div>
-                  <div>Rs. {data.price}</div>
+                  <div><p className='text-center'>{data.title}</p></div>
+                  <div>Rs. {data.variant.price}</div>
                 </div>
               ))}
             </div>
           ) : (
             <div className={`flex  justify-between items-center`}>
               <div >
-                <LazyLoadImage className=' h-16 w-20  border border-gray-400 rounded-lg' src={`${serverUrl}/${currentProduct[0].image}`} alt={`${serverUrl}/${currentProduct[0].image}`} />
+                <LazyLoadImage className=' h-16 w-20  border border-gray-400 rounded-lg' src={`${serverUrl}${SingleProductData?.image}`} alt={`${serverUrl}${SingleProductData?.image}`} />
               </div>
-              <div><p className='text-center'>{currentProduct[0].title}</p></div>
-              <div>Rs. {variantDataFront?.price}</div>
+              <div><p className='text-center'>{SingleProductData?.title}</p></div>
+              <div>Rs. {SingleProductData?.variant.price}</div>
             </div>
           )}
 
@@ -379,16 +376,16 @@ function paymentDetailSummary() {
               <p className=' text-sm text-gray-500'>Including Rs. 53.67 in taxes</p>
             </div>
             <div className='flex flex-col gap-y-2 text-end'>
-              <p className='font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront?.price}</p>
+              <p className='font-semibold'>Rs. {param.id === "addToCartCheckout" ? buyer.orderDetails.total_amount : SingleProductData?.variant.price}</p>
               <p className='text-gray-500'>Enter shipping address</p>
-              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront?.price}</span></p>
+              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {param.id === "addToCartCheckout" ? buyer.orderDetails.total_amount : SingleProductData?.variant.price}</span></p>
             </div>
           </div>
           <div className='visible lg:hidden mt-6' >
             <button type='button' className='w-full bg-green-800 bg-opacity-50 text-xl text-white rounded-md hover:bg-opacity-70  py-5 font-bold'
               onClick={() => {
                 if (areAllFieldsFilled()) {
-                  checkoutHandler(param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : variantDataFront?.price);
+                  buyerDataStore();
                 }
               }}
             >Pay Now</button>

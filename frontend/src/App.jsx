@@ -27,12 +27,12 @@ import DotLoader from "react-spinners/DotLoader";
 // admin components
 const Products = lazy(() => import('./components/admin/products.jsx'));
 const ProductForm = lazy(() => import('./components/admin/product_form.jsx'));
-const UserDetail = lazy(() => import('./components/admin/UserDetail.jsx'));
-const UserPaymentDetail = lazy(() => import('./components/admin/UserPaymentDetail.jsx'));
+const OrderDetail = lazy(() => import('./components/admin/orderDetail.jsx'));
 const AdminLayout = lazy(() => import('./components/layouts/adminLayout.jsx'));
 const Categroies = lazy(() => import('./components/admin/categroies.jsx'));
 const Subcategroies = lazy(() => import('./components/admin/subCategroies.jsx'));
 const BannerAndTopSlider = lazy(() => import('./components/admin/bannerAndTopSlider.jsx'));
+const Orders = lazy(() => import('./components/admin/orders.jsx'));
 
 function App() {
 
@@ -76,8 +76,8 @@ function App() {
             <Route path='ProductForm' element={<ProductForm />} />
             <Route path="ProductFormForUpdate/:productId" element={<ProductForm />} />
 
-            <Route path='userDetail' element={<UserDetail />} />
-            <Route path='userPaymentDetail' element={<UserPaymentDetail />} />
+            <Route path='orders' element={<Orders />} />
+            <Route path='orderDetail/:order_number' element={<OrderDetail />} />
             <Route path='categroies' element={<Categroies />} />
             <Route path='subcategroies' element={<Subcategroies />} />
             <Route path='bannerAndTopSlider' element={<BannerAndTopSlider />} />

@@ -9,7 +9,7 @@ import { FaQuestionCircle } from "react-icons/fa";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { addProductInCart } from "../../features/AddToCartSlice";
+import { addProductInCart , singleProduct } from "../../features/AddToCartSlice";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { fetchProducts } from "../../features/productsFileHairSlice.js";
 import axios from 'axios';
@@ -31,6 +31,7 @@ function ProductDetailWhole() {
     const [otherImages, setOtherImages] = useState([]);
     const [variant, setVariant] = useState([]);
     const [selectedVariant, setSelectedVariant] = useState(null);
+    
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -97,6 +98,18 @@ function ProductDetailWhole() {
         setSelectedVariant(selected);
     };
 
+    // this is for add the product detail in the single product in the redux state management
+    const handleSingleProduct = (product) =>{
+        const productWithVariant = {
+            ...product,
+            selectedVariant,
+            quantity
+        };
+        dispatch(singleProduct(productWithVariant))
+        console.log("productWithVariant",productWithVariant);
+    }
+
+    // this for addto car the product detail
     const handleAddToCart = (product) => {
         const productWithVariant = {
             ...product,
@@ -181,7 +194,7 @@ function ProductDetailWhole() {
                         </a>
                         <div className='text-center text-base uppercase hover:border-none border-2 border-gray-600 py-[12px] font-bold shadow-[5px_6px_rgb(166,222,205,1)] hover:text-blue-50 bg-white hover:bg-black text-black w-full mt-10'>
                             { selectedVariant && selectedVariant.length != 0 ? (
-                                <Link to={`/paymentDetailSummary/${id}/${selectedVariant._id}`}>Buy it Now</Link>
+                                <Link to={`/paymentDetailSummary/${id}/${selectedVariant._id}`} onClick={() => handleSingleProduct(currentProduct)}>Buy it Now</Link>
                             ) : (
                                 <p>Selected variant nhi dala </p>
                             )

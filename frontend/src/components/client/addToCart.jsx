@@ -10,7 +10,7 @@ import {
   updateProductQuantityDecrease, updateProductQuantityIncrease, removeProductCart
   , calculateTotal
 } from "../../features/AddToCartSlice";
-import {LazyLoadImage } from 'react-lazy-load-image-component';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -25,6 +25,8 @@ function AddToCart() {
   }, [])
 
   const AddToCartData = useSelector(state => state.AddToCartReducer.addToCart);
+
+  console.log("AddToCartData", AddToCartData);
   const dispatch = useDispatch();
   return (
     <>
@@ -45,43 +47,43 @@ function AddToCart() {
             </div>
           </div>
           {
-            AddToCartData.map((data) => (
+            AddToCartData.map((data, index) => (
 
-              <div key={data._id} className={` flex-col ${data.quantity === 0 ? dispatch(removeProductCart(data._id)) : 'flex'}`}>
+              <div key={index} className={` flex-col ${data.qty === 0 ? dispatch(removeProductCart(index)) : 'flex'}`}>
                 <div className="border h-auto mt-5 ">
                   <div className="flex flex-col items-center lg:flex-row">
                     <div className="w-full lg:w-1/2 flex justify-center pe-5">
-                      <div className="flex gap-3 pt-5">
-                        <div className="h-24 w-24 ps-5 ">
-                          <LazyLoadImage src={`${serverUrl}/${data.image}`} alt="" />
-
+                      <div className="flex gap-3">
+                        <div className="h-24 w-24 ps-5 flex items-center ">
+                          <LazyLoadImage src={`${serverUrl}/${data.image}`} alt="product image" />
                         </div>
-                        <div className="w-52">
-                          <p className="w-52">{data.description}</p>
+                        <div className="w-52 flex items-center font-medium text-lg">
+                          <p className="w-52">{data.title}</p>
                         </div>
                       </div>
                     </div>
-                    <div className="w-full  lg:w-1/4 flex items-center justify-center font-semibold tracking-wider text-xl">Rs. {data.price}</div>
+                    <div className="w-full  lg:w-1/4 flex items-center justify-center font-semibold tracking-wider text-xl">Rs. {data.variant.price}</div>
                     <div className="w-full  lg:w-1/4 flex justify-center items-center">
                       <div className=" flex items-center relative border border-gray-300 w-[120px] py-6 mt-2">
-                        <button className="font-bold py-3 px-4 rounded-l absolute -left-2 " onClick={() => dispatch(updateProductQuantityDecrease(data._id))}>
+                        <button className="font-bold py-3 px-4 rounded-l absolute -left-2 " onClick={() => dispatch(updateProductQuantityDecrease(data.variant._id))}>
                           <FaMinus />
                         </button>
                         <input
                           id="qyt"
                           type="number"
                           className="focus:outline-none text-gray-700 py-3 w-[50px] bg-transparent absolute left-1/2"
-                          value={data.qyt}
+                          value={data.qty}
                           onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
+                          max={data.variant.qty}
                         />
-                        <button className="text-gray-700 font-bold py-2 px-4 rounded-r absolute -right-2" onClick={() => dispatch(updateProductQuantityIncrease(data._id))}>
+                        <button className="text-gray-700 font-bold py-2 px-4 rounded-r absolute -right-2" onClick={() => dispatch(updateProductQuantityIncrease(data.variant._id))}>
                           <FaPlus />
                         </button>
                       </div>
                     </div>
                     <div className="w-full  lg:w-1/4 my-2 lg:m-0 flex items-center justify-center gap-5">
-                      <span className={`${window.innerWidth > 768 ? 'visible' : 'hidden'} font-semibold tracking-wider text-xl`} >Rs. {data.price * data.qyt}</span>
-                      <IoCloseOutline onClick={() => dispatch(removeProductCart(data._id))} className="h-6 w-6 cursor-pointer" />
+                      <span className={`${window.innerWidth > 768 ? 'visible' : 'hidden'} font-semibold tracking-wider text-xl`} >Rs. {data.variant.price * data.qty}</span>
+                      <IoCloseOutline onClick={() => dispatch(removeProductCart(data.variant._id))} className="h-6 w-6 cursor-pointer" />
                     </div>
 
                   </div>
@@ -100,7 +102,7 @@ function AddToCart() {
           </div>
           <p className=" text-gray-500 mt-5">Tax included and shipping calculated at checkout</p>
           <div className=' text-center  text-base uppercase   hover:border-2  border-black  py-[12px]  font-bold  shadow-[5px_6px_rgb(166,222,205,1)] bg-[#4b7422] hover:text-black  hover:bg-white  text-white  w-full  mt-10 hover:shadow-black'>
-            <Link to={`/paymentDetailSummary/addToCartCheckout`}  >proceed to checkout</Link>
+            <Link to={`/paymentDetailSummary/addToCartCheckout/all_products`}  >proceed to checkout</Link>
           </div>
           <div className=' text-center  text-base uppercase hover:border-none border-2 border-gray-600  py-[12px]  font-bold hover:shadow-black  shadow-[5px_6px_rgb(166,222,205,1)] hover:text-blue-50  bg-white hover:bg-black text-black  w-full  mt-10'>
             <Link to={"/"}  > Continue Shopping</Link>

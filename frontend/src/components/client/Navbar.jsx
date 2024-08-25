@@ -70,7 +70,7 @@ export default function Navbar() {
     const howManyProductAdd = useSelector(state => state.AddToCartReducer.addToCart);
     let totalAddproduct = 0;
     howManyProductAdd.map((product) => {
-        totalAddproduct += product.qyt;
+        totalAddproduct += product.qty;
     })
 
     // hide the  navbar from the admin
