@@ -22,8 +22,6 @@ function paymentDetailSummary() {
   AddToCartData = useSelector(state => state.AddToCartReducer.addToCart);
   let SingleProductData = useSelector(state => state.AddToCartReducer.singleProduct);
 
-  console.log("SingleProductData",SingleProductData);
-
   // use state top level
   const [inputState, setInputState] = useState({
     email: { visibleCheck: true, upLabel: false },
@@ -103,7 +101,6 @@ function paymentDetailSummary() {
           qty: SingleProductData?.qty // or set your desired quantity here
         }
       ];
-      console.log("updatedOrderItems", SingleProductData);
     } else {
       // Multiple products case
       updatedOrderItems = AddToCartData.map(item => ({
@@ -172,7 +169,7 @@ function paymentDetailSummary() {
     window.scrollTo(0, 0);
   }, [])
 
-  if (SingleProductData === null) {
+  if (buyer?.orderDetails?.order_items?.length === 0) {
     return <h1>Loading........</h1>
   }
   const handleInputs = (e) => {
