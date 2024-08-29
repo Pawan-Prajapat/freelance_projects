@@ -116,7 +116,7 @@ function paymentDetailSummary() {
       orderDetails: {
         ...prevBuyer.orderDetails,
         order_items: updatedOrderItems,
-        total_amount: calculateTotal(AddToCartData)
+        total_amount: calculateTotal(AddToCartData || SingleProductData)
       }
     }));
   }, [param.id, param.variantId, myName, AddToCartData]);
