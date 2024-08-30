@@ -116,7 +116,7 @@ function paymentDetailSummary() {
       orderDetails: {
         ...prevBuyer.orderDetails,
         order_items: updatedOrderItems,
-        total_amount: calculateTotal(AddToCartData || SingleProductData)
+        total_amount: param.id === "addToCartCheckout" ? calculateTotal(AddToCartData) : calculateTotal([SingleProductData])
       }
     }));
   }, [param.id, param.variantId, myName, AddToCartData]);
@@ -153,6 +153,7 @@ function paymentDetailSummary() {
 
 
   const buyerDataStore = async () => {
+    console.log("buyer" , buyer)
     await axios.post(serverUrl + "/api/storeBuyerData", buyer)
       .then(res => {
         if (res.data.razorpay_order_id != "no")
