@@ -31,7 +31,7 @@ export const paymentVerification = async (req, res) => {
         razorpay_payment_id
       }
     })
-    res.redirect(process.env.FRONT_SITE);
+    res.redirect(process.env.FRONT_SITE + "/congratulation");
   }
   else {
     res.status(400).json({

@@ -66,6 +66,8 @@ export default function Cart(props) {
 
     const [currentData, setCurrentData] = useState(props.data);
 
+    console.log("props.data " , props.data);
+
 
 
     // console.log(currentData);
@@ -450,7 +452,7 @@ export default function Cart(props) {
                                         <p className=" text-base">{data.title}</p>
                                         <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
                                         <div >
-                                            <NavLink to={"/addToCart"} >
+                                            <NavLink to={"/addtocart"} >
                                                 <button onClick={() => addCartHandler(data)} className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
                                                     Add To Cart
                                                 </button>

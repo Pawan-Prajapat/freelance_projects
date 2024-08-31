@@ -3,18 +3,20 @@ import axios from "axios";
 import logo from '../../img/YumiHerbalProduct.png';
 
 // for current product 
-import { useSelector} from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { redirect, useParams, useNavigate } from 'react-router-dom';
 import { calculateTotal } from '../../features/AddToCartSlice'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Link } from 'react-router-dom';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
+const frontUrl = import.meta.env.VITE_FRONT_URL;
 
 
 function paymentDetailSummary() {
 
-
+  const navigate = useNavigate();
   // for current product 
   const param = useParams();
   let AddToCartData;
@@ -153,16 +155,22 @@ function paymentDetailSummary() {
 
 
   const buyerDataStore = async () => {
-    console.log("buyer" , buyer)
+    console.log("buyer", buyer);
     await axios.post(serverUrl + "/api/storeBuyerData", buyer)
       .then(res => {
-        if (res.data.razorpay_order_id != "no")
+        if (res.data.razorpay_order_id != "no") {
           checkoutHandler(res.data.razorpay_order_id, res.data.amount);
+        } else {
+          console.log("yha aaya kya ");
+          navigate("/congratulation");
+          console.log("anvigate hua  aaya kya ");
+        }
       })
       .catch(err => {
         console.error(err);
-      })
+      });
   }
+
 
 
   // when uesr click then page show on the top every time
@@ -381,12 +389,17 @@ function paymentDetailSummary() {
           </div>
           <div className='visible lg:hidden mt-6' >
             <button type='button' className='w-full bg-green-800 bg-opacity-50 text-xl text-white rounded-md hover:bg-opacity-70  py-5 font-bold'
+              disabled={!areAllFieldsFilled()}
               onClick={() => {
                 if (areAllFieldsFilled()) {
                   buyerDataStore();
                 }
               }}
-            >Pay Now</button>
+            >{selectedPaymentMethod ? (
+              <p>pay now</p>
+            ) : (
+              <p>place order</p>
+            )}</button>
           </div>
         </div>
       </form>

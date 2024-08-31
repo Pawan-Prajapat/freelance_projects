@@ -116,6 +116,7 @@ function ProductDetailWhole() {
             selectedVariant,
             quantity
         };
+        console.log("productWithVariant" , productWithVariant);
         dispatch(addProductInCart(productWithVariant));
     }
 
