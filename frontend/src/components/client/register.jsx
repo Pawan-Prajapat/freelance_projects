@@ -29,7 +29,6 @@ function Register() {
         try {
             const response = await axios.post(serverUrl + "/api/register", user);
             handleAddToken(response.data.token);
-            console.log("in register page",response.data.token);
         } catch (error) {
             console.error(error);
         }

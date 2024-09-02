@@ -106,7 +106,6 @@ function ProductDetailWhole() {
             quantity
         };
         dispatch(singleProduct(productWithVariant))
-        console.log("productWithVariant",productWithVariant);
     }
 
     // this for addto car the product detail
@@ -116,7 +115,6 @@ function ProductDetailWhole() {
             selectedVariant,
             quantity
         };
-        console.log("productWithVariant" , productWithVariant);
         dispatch(addProductInCart(productWithVariant));
     }
 

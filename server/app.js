@@ -29,7 +29,10 @@ app.use("/api", productRoute);
 app.use("/api", authRoute);
 app.use("/api", categroiesRoute);
 app.use("/api", banner_discount_topSlideRoute);
-app.use(express.static('public'));
+app.use(express.static('public',{
+  maxAge : '1d',
+  etag : true
+}));
 
 app.get("/api/getkey", (req, res) => {
   console.log("razor api key = " , process.env.RAZORPAY_API_KEY);

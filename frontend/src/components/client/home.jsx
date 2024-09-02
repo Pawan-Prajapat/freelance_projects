@@ -118,7 +118,6 @@ function Home() {
         const fetchBanners = async () => {
             try {
                 const response = await axios.get(`${serverUrl}/api/get_banner`);
-                console.log(response.data.banner);
                 setBanners(response.data.banner);
             } catch (error) {
                 console.error('Error fetching banners:', error);
@@ -173,10 +172,20 @@ function Home() {
                 {banners.map((banner, index) => (
                     <div key={index} className='w-full'>
                         <a href={banner.link} target="_blank" rel="noopener noreferrer">
-                            <LazyLoadImage src={serverUrl + banner.banner} alt={`Banner ${index + 1}`} className='w-full' />
+                            <LazyLoadImage
+                                src={`${serverUrl + banner.banner}`}
+                                srcSet={`${serverUrl + banner.banner}?w=300 300w, ${serverUrl + banner.banner}?w=768 768w, ${serverUrl + banner.banner}?w=1024 1024w`}
+                                sizes="(max-width: 300px) 300px, (max-width: 768px) 768px, 1024px"
+                                alt={`Banner ${index + 1}`}
+                                className='w-full'
+                                placeholderSrc="/path-to-placeholder-image.jpg"
+                                effect="blur"
+                            />
+
                         </a>
                     </div>
                 ))}
+
             </Carousel>
             <div className='mt-10'>
                 <p className='  font-bold font-pawan text-3xl tracking-normal text-[#4b7422] text-center'>Featured On Hennakart</p>

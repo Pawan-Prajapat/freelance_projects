@@ -247,6 +247,7 @@ export const getVariant = async (req, res) => {
 
 export const getVariantDetail = async (req,res) => {
     try {
+        console.log("yha aa gya kay ")
         const { variantId } = req.params;
 
         const VariantDetail = await Variant.find({ _id: variantId });

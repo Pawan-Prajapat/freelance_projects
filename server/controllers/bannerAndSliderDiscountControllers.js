@@ -17,7 +17,7 @@ export const add_banner = async (req, res) => {
         // Creating a new description image entry in the database
         await Banner.create({
             banner: photoPath, // Save the path in the database
-            link : redirectLink
+            link: redirectLink
         });
 
         res.status(200).json({ message: "Banner successfully uploaded" });
@@ -47,7 +47,20 @@ export const get_banner = async (req, res) => {
     try {
         const allBanner = await Banner.find({});
         if (!allBanner)
-            return res.status(201).json({ message: "No banner added "  , banner : []});
+            return res.status(201).json({ message: "No banner added ", banner: [] });
+
+        // Set Cache-Control header
+        res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+
+        // Optional: Set ETag header
+        const etag = generateETag(allBanner); // You need to implement generateETag
+        res.setHeader('ETag', etag);
+
+        // Check if the client’s cached version is still valid
+        if (req.headers['if-none-match'] === etag) {
+            return res.status(304).end(); // Not Modified
+        }
+
         res.status(200).json({ banner: allBanner });
 
     } catch (error) {
@@ -55,6 +68,14 @@ export const get_banner = async (req, res) => {
         res.status(500).json({ error: "banner get nhi ho rhe hai" });
     }
 }
+
+// Helper function to generate ETag based on the data (implement as needed)
+const generateETag = (data) => {
+    // You could use a hash function like SHA-1 or MD5
+    // Here we're just using a simple JSON string length-based approach for simplicity
+    return `"${Buffer.from(JSON.stringify(data)).toString('hex')}"`;
+};
+
 export const get_discount = async (req, res) => {
     try {
         const allDiscount = await Discount.find({});
@@ -69,7 +90,7 @@ export const get_discount = async (req, res) => {
 }
 export const get_topSlide = async (req, res) => {
     try {
-        const topSlide = await Topslide.find({_id : "top_slide"});
+        const topSlide = await Topslide.find({ _id: "top_slide" });
         if (!topSlide)
             return res.status(201).json({ message: "No top slide added " });
         res.status(200).json({ topSlide: topSlide });
@@ -99,9 +120,9 @@ export const update_topSlide = async (req, res) => {
         const { slideText } = req.body;
         await Topslide.findByIdAndUpdate(
             "top_slide",
-            {slideText}
+            { slideText }
         );
-        res.status(200).json({ message : "update the top slide" });
+        res.status(200).json({ message: "update the top slide" });
 
     } catch (error) {
         console.error("Error get the top slide  ", error);

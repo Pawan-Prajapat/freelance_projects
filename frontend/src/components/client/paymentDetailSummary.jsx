@@ -155,15 +155,12 @@ function paymentDetailSummary() {
 
 
   const buyerDataStore = async () => {
-    console.log("buyer", buyer);
     await axios.post(serverUrl + "/api/storeBuyerData", buyer)
       .then(res => {
         if (res.data.razorpay_order_id != "no") {
           checkoutHandler(res.data.razorpay_order_id, res.data.amount);
         } else {
-          console.log("yha aaya kya ");
-          navigate("/congratulation");
-          console.log("anvigate hua  aaya kya ");
+          navigate("/congratulation");   
         }
       })
       .catch(err => {

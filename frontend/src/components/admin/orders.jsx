@@ -35,7 +35,6 @@ function Order() {
         return formattedDate.replace(',', ' at'); // Replace comma with " at"
     }
 
-    console.log("user data", data);
     return (
         <div className={`flex flex-col`}>
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

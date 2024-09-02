@@ -29,7 +29,6 @@ function Users() {
         data: { id }
       }).then(res => {
         setRefreshOnAnyOperation(!refreshOnAnyOperation);
-        console.log("Delete successfully");
       })
       .catch(err => {
         console.log(err);

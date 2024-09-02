@@ -6,6 +6,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { GoChevronDown } from "react-icons/go";
 import { BiFilterAlt } from "react-icons/bi";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import axios from "axios";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 // add to cart products
@@ -34,7 +35,7 @@ export default function Cart(props) {
         { value: 'hTol', label: 'Price, high to low' }
     ]
 
-    // console.log(selectedOptionForSort);
+    const [selectedVariant, setSelectedVariant] = useState(null);
     const gridCartValue = (x) => { // image size on grid 
         //  setGridCart('grid-cols-' + x);
         if (x === 4) {
@@ -46,7 +47,6 @@ export default function Cart(props) {
             setGridCart('grid-cols-3');
         }
         else if (x === 2) {
-            // console.log(document.querySelector('.grid-cols-2').width)
             if (window.innerWidth > 1024) {
                 setImage(' w-full h-[455px]');
             }
@@ -65,12 +65,6 @@ export default function Cart(props) {
     // make a copy of the data
 
     const [currentData, setCurrentData] = useState(props.data);
-
-    console.log("props.data " , props.data);
-
-
-
-    // console.log(currentData);
 
     // how many page require for show products
     const [currentPage, setCurrentPage] = useState(1);
@@ -174,7 +168,6 @@ export default function Cart(props) {
     const productTypeChange = (e, index) => {
 
         const activeCheck = document.getElementById(index).checked;
-        // console.log(activeCheck , "active check");
         if (activeCheck) {
             setSelected(oldData => [...oldData, e.target.value]);
         }
@@ -230,9 +223,24 @@ export default function Cart(props) {
 
     // send the data to the card page 
     const dispatch = useDispatch();
-    const addCartHandler = (product) => {
-        dispatch(addProductInCart(product));
-    }
+    const addCartHandler = async (product) => {
+        try {
+            const res = await axios.get(`${serverUrl}/api/getVariantData/${product.Variant_Id}`);
+            const variants = res.data.variantData;
+
+            // Create the productWithVariant object after fetching the variants
+            const productWithVariant = {
+                ...product,
+                selectedVariant: variants[0],
+                quantity: 1
+            };
+
+            dispatch(addProductInCart(productWithVariant));
+        } catch (error) {
+            console.error("Error in fetching the variants of the product");
+        }
+    };
+
 
     return (
         <>
