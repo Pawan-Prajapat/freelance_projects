@@ -8,134 +8,99 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 function Order() {
     const [data, setData] = useState([]);
     const token = useSelector((state) => state.TokenReducer.token);
+
     useEffect(() => {
-        axios.get(serverUrl + "/api/orderData",
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
+        axios.get(`${serverUrl}/api/orderData`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                setData(response.data.reverse());
             })
-            .then(response => {
-                setData(response.data)
-            })
-            .catch(error => console.error(error));
-    }, []);
+            .catch((error) => console.error(error));
+    }, [token]);
 
     function formatDate(mongoDateStr) {
         const date = new Date(mongoDateStr);
         const options = {
-            month: 'short', // Abbreviated month (e.g., "Aug")
-            day: 'numeric', // Day of the month (e.g., "20")
-            hour: 'numeric', // Hour (e.g., "3")
-            minute: 'numeric', // Minute (e.g., "46")
-            hour12: true, // 12-hour clock (true for AM/PM)
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
         };
-
-        const formattedDate = date.toLocaleString('en-US', options);
-        return formattedDate.replace(',', ' at'); // Replace comma with " at"
+        return date.toLocaleString('en-US', options).replace(',', ' at');
     }
 
     return (
-        <div className={`flex flex-col`}>
-            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+        <div className="flex flex-col p-4 bg-gray-100">
+            <div className="overflow-x-auto">
+                <div className="py-4 align-middle inline-block min-w-full">
                     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-gray-200 bg-white">
+                            <thead className="bg-gray-200">
                                 <tr>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Order
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Date
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Customer
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Total
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Payment status
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Fulfillment status
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Items
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="ps-3 py-3 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Delivery status
-                                    </th>
-
+                                    {['Order', 'Date', 'Customer', 'Total', 'Payment Status', 'Fulfillment Status', 'Items', 'Delivery Status'].map((heading) => (
+                                        <th
+                                            key={heading}
+                                            scope="col"
+                                            className="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider"
+                                        >
+                                            {heading}
+                                        </th>
+                                    ))}
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {data &&
+                                {data.length > 0 ? (
                                     data.map((user, index) => (
-                                        <Link to={`/admin/orderDetail/${user.order_number}`}>
-                                            <tr key={index} >
-                                                <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                    <div className="text-sm leading-5">{`#${user.order_number}`}</div>
-                                                </td>
-                                                <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                    <div className="text-sm leading-5">{formatDate(user.createdAt)}</div>
-                                                </td>
-                                                <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                    <div className="text-sm leading-5">{user.name}</div>
-                                                </td>
-                                                <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                    <div className="text-sm leading-5">{user.total_amount}</div>
-                                                </td>
-                                                <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                    <div className="text-sm leading-5">{user.payment_status}</div>
-                                                </td>
-                                                {/* yha fulfilment ka karna hai      */}
-                                                <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                    <div className="text-sm leading-5">{user.status}</div>
-                                                </td>
-                                                <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                    <div className="text-sm leading-5">{user.order_items.length}</div>
-                                                </td>
-                                                {/* yeh bhi shiproket ki tafse karna hai  */}
-                                                <td className="ps-3 py-4 text-center whitespace-no-wrap border-b border-gray-200">
-                                                    <div className="text-sm leading-5">{user.status}</div>
-                                                </td>
-
-                                            </tr>
-                                        </Link>
-                                    ))}
+                                        <tr
+                                            key={index}
+                                            className="hover:bg-gray-100 transition duration-300 ease-in-out"
+                                        >
+                                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
+                                                <Link to={`/admin/orderDetail/${user.order_number}`} className="text-blue-600 hover:underline">
+                                                    {`#${user.order_number}`}
+                                                </Link>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
+                                                {formatDate(user.createdAt)}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
+                                                {user.name}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
+                                                {user.total_amount}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
+                                                {user.payment_status}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
+                                                {user.status}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
+                                                {user.order_items.length}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
+                                                {user.status}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="8" className="px-6 py-4 text-center text-gray-500">
+                                            No orders available.
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Order
+export default Order;

@@ -193,18 +193,19 @@ function BannerAndTopSlider() {
         </ul>
       </div>
 
-      <div className="mb-4 p-4 border border-gray-300 rounded">
+      <div className="mb-4 p-4 border border-gray-300 rounded ">
+        <p><span className=' text-red-500'>*</span>Note for use fire Icon use [Icon]</p>
         <h3 className="text-xl font-bold mb-2">Update Top Slide</h3>
         <input
           type="text"
           value={topSlideText}
           onChange={(e) => setTopSlideText(e.target.value)}
-          className="mb-2 p-2 border border-gray-300 rounded"
+          className="mb-2 p-2 border border-gray-300 rounded w-3/4"
         />
         <button
           type="button"
           onClick={handleTopSlideUpdate}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          className="px-4 py-2 bg-blue-500 text-white rounded mx-3"
         >
           Update Top Slide
         </button>

@@ -93,7 +93,7 @@ export const get_topSlide = async (req, res) => {
         const topSlide = await Topslide.find({ _id: "top_slide" });
         if (!topSlide)
             return res.status(201).json({ message: "No top slide added " });
-        res.status(200).json({ topSlide: topSlide });
+        res.status(200).json({ topSlide: topSlide[0].slideText });
 
     } catch (error) {
         console.error("Error get the top slide  ", error);
@@ -129,3 +129,4 @@ export const update_topSlide = async (req, res) => {
         res.status(500).json({ error: "top slide get nhi ho rhe hai" });
     }
 }
+

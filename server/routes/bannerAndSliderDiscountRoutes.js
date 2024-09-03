@@ -23,7 +23,7 @@ router.route("/add_banner").post(
 router.route("/add_discount").post(add_discount);
 router.route("/get_banner").get(get_banner);
 router.route("/get_discount").get(get_discount);
-router.route("/get_topSlide").get(get_topSlide);
+router.route("/marquee").get(get_topSlide);
 router.route("/delete_banner").delete(delete_banner);
 router.route("/update_topSlide").patch(update_topSlide);
 export default router;

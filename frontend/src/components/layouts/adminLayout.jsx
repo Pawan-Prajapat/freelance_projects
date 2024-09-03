@@ -1,7 +1,7 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoMdArrowDropdown } from "react-icons/io";
-import { Link, Outlet, Navigate , NavLink } from 'react-router-dom';
-import {useSelector , useDispatch} from 'react-redux';
+import { Link, Outlet, Navigate, NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserData } from "../../features/tokenFeatureSlice";
 function adminLayout() {
     const [dropDownArray, setDropDownArray] = useState([true, true, true, true, true]);
@@ -18,17 +18,17 @@ function adminLayout() {
 
     useEffect(() => {
         if (token) {
-          dispatch(fetchUserData());
+            dispatch(fetchUserData());
         } else {
         }
-      }, [token]);
-      const userData = useSelector(state => state.TokenReducer.userData);
-    if(userData){
-        if(userData.msg.isAdmin !== true)
-            return <Navigate to="/"/>
+    }, [token]);
+    const userData = useSelector(state => state.TokenReducer.userData);
+    if (userData) {
+        if (userData.msg.isAdmin !== true)
+            return <Navigate to="/" />
     }
-    if(!token){
-        return <Navigate to="/"/>
+    if (!token) {
+        return <Navigate to="/" />
     }
     return (
         <>
@@ -39,8 +39,8 @@ function adminLayout() {
                     <NavLink to={'/logout'} >Logout</NavLink>
 
                 </div>
-                <div className='flex'>
-                    <div className='w-[15%] bg-blue-950 px-5'>
+                <div className='flex flex-col lg:flex-row'>
+                    <div className='w-full lg:w-[15%] bg-blue-950 px-4 lg:px-5'>
                         <div className=" text-base tracking-wide font-bold text-white mt-10">Deshboard</div>
                         <div className="pt-5 w-full">
                             <div className=" flex gap-2 items-center cursor-pointer " onClick={() => togglePrice(0)}>
@@ -94,9 +94,9 @@ function adminLayout() {
                                 <Link className=' text-base tracking-wide font-bold text-white hover:underline hover:underline-offset-4' to={'/admin/bannerAndTopSlider'}>Add Banner and Show Offer</Link>
                             </div>
                         </div>
-                        
+
                     </div>
-                    <div className='w-[85%] bg-white px-8'>
+                    <div className='w-full lg:w-[85%] bg-white px-4 lg:px-8'>
                         <Outlet />
                     </div>
                 </div>

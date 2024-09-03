@@ -14,6 +14,9 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { GoChevronDown } from "react-icons/go";
 import { FaFireFlameCurved } from "react-icons/fa6";
 
+import axios from 'axios';
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 
 export default function Navbar() {
 
@@ -26,6 +29,22 @@ export default function Navbar() {
             dispatch(fetchUserData());
         }
     }, [token, dispatch]);
+
+
+    const [textParts, setTextParts] = useState([]);
+    useEffect(() => {
+        // Fetch the text from your API
+        axios.get(`${serverUrl}/api/marquee`)
+            .then(response => {
+                const textWithIcon = response.data.topSlide;
+                console.log("textWithIcon" , textWithIcon);
+                // Split the text by the [ICON] placeholder
+                const parts = textWithIcon.split('[Icon]');
+                setTextParts(parts);
+            })
+            .catch(error => console.error(error));
+    }, []);
+
     const userData = useSelector(state => state.TokenReducer.userData);
 
     const location = useLocation();
@@ -132,42 +151,25 @@ export default function Navbar() {
             <div className='flex h-14 overflow-hidden gap-96 group bg-orange-300'>
                 <div className=' flex flex-shrink-0 items-center justify-around whitespace-nowrap w-full animate-slide gap-4 group-hover:paused'>
                     <div className='inline-flex items-center justify-center'>
-                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
-                        <p >Official International Henna Store for Henna Artist and Henna Reseller</p>
-                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                        {textParts.map((part, index) => (
+                            <React.Fragment key={index}>
+                                <p>{part}</p>
+                                {/* Insert the icon between text parts, except after the last part */}
+                                {index < textParts.length - 1 && <FaFireFlameCurved className='mx-3 h-5 w-5' />}
+                            </React.Fragment>
+                        ))}
                     </div>
-                    <div className='inline-flex items-center justify-center'>
-                        <p >Managed By Hennahub India</p>
-                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
-                    </div>
-                    <div className='inline-flex items-center justify-center'>
-                        <p >Fast Shipping by DHL, Fedex and Aramex</p>
-                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
-                    </div>
-                    <div className='inline-flex items-center justify-center'>
-                        <p >Introductory Offer 10% Discount on all orders use "SAVE10" code</p>
-                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
-                    </div>
-
                 </div>
                 <div className=' flex flex-shrink-0 items-center justify-around whitespace-nowrap w-full animate-slide gap-4 group-hover:paused'>
                     <div className='inline-flex items-center justify-center'>
-                        <p >Official International Henna Store for Henna Artist and Henna Reseller</p>
-                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
+                        {textParts.map((part, index) => (
+                            <React.Fragment key={index}>
+                                <p>{part}</p>
+                                {/* Insert the icon between text parts, except after the last part */}
+                                {index < textParts.length - 1 && <FaFireFlameCurved className='mx-3 h-5 w-5' />}
+                            </React.Fragment>
+                        ))}
                     </div>
-                    <div className='inline-flex items-center justify-center'>
-                        <p >Managed By Hennahub India</p>
-                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
-                    </div>
-                    <div className='inline-flex items-center justify-center'>
-                        <p >Fast Shipping by DHL, Fedex and Aramex</p>
-                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
-                    </div>
-                    <div className='inline-flex items-center justify-center'>
-                        <p >Introductory Offer 10% Discount on all orders use "SAVE10" code</p>
-                        <FaFireFlameCurved className='mx-3 h-5 w-5 ' />
-                    </div>
-
                 </div>
             </div>
             <nav className={`${navbar ? 'h-[50px]  pb-10 pt-3   bg-white   fixed top-0  ' : '  '} shadow-md xl:shadow-none w-full z-[1001] `}>
