@@ -24,7 +24,7 @@ export default function BestSellers() {
         element.category && element.category.split(',').some(cat => cat.trim() === "face_care")
     );
     const subcategoryCounts = selectedFaceData.reduce((acc, current) => {
-        const subcategory = current.subCategroies;
+        const subcategory = current.subCategory;
         if (acc[subcategory]) {
             acc[subcategory]++;
         } else {
@@ -34,7 +34,11 @@ export default function BestSellers() {
     }, {});
 
     const uniqueArray = Object.entries(subcategoryCounts).map(([subcategory, count]) => ({ subcategory, count }));
-    const max = Math.max(...selectedFaceData.map(item => item.price));
+    let max = Math.max(...selectedFaceData.map(item => item.Variant_Price));
+    if (max === -Infinity) {
+        max = 0;
+    }
+
 
     return (
         <>

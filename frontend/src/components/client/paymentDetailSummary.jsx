@@ -3,15 +3,14 @@ import axios from "axios";
 import logo from '../../img/YumiHerbalProduct.png';
 
 // for current product 
-import { useSelector } from 'react-redux';
-import { redirect, useParams, useNavigate } from 'react-router-dom';
-import { calculateTotal } from '../../features/AddToCartSlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
+import { calculateTotal , clearCart } from '../../features/AddToCartSlice'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Link } from 'react-router-dom';
+
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
-const frontUrl = import.meta.env.VITE_FRONT_URL;
 
 
 function paymentDetailSummary() {
@@ -152,7 +151,7 @@ function paymentDetailSummary() {
     razor.open();
   }
 
-
+  const dispatch = useDispatch();
 
   const buyerDataStore = async () => {
     await axios.post(serverUrl + "/api/storeBuyerData", buyer)
@@ -160,8 +159,9 @@ function paymentDetailSummary() {
         if (res.data.razorpay_order_id != "no") {
           checkoutHandler(res.data.razorpay_order_id, res.data.amount);
         } else {
-          navigate("/congratulation");   
+          navigate("/congratulation");
         }
+        dispatch(clearCart());
       })
       .catch(err => {
         console.error(err);

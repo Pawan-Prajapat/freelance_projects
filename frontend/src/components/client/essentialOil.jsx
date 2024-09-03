@@ -35,7 +35,7 @@ export default function Essential() {
   );
   // Count occurrences of each subcategory
   const subcategoryCounts = selectedEssentialData.reduce((acc, current) => {
-    const subcategory = current.subCategories;
+    const subcategory = current.subCategory;
     if (acc[subcategory]) {
       acc[subcategory]++;
     } else {
@@ -44,14 +44,14 @@ export default function Essential() {
     return acc;
   }, {});
 
-  // Create an array of subcategories with counts
+  // Create an array of subcategory with counts
   const uniqueArray = Object.entries(subcategoryCounts).map(([subcategory, count]) => ({
     subcategory,
     count
   }));
 
   // Find the maximum price in the selected data
-  let max = Math.max(...selectedEssentialData.map((item) => item.price));
+  let max = Math.max(...selectedEssentialData.map((item) => item.Variant_Price));
   if (max === -Infinity) {
     max = 0;
   }

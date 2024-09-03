@@ -6,6 +6,7 @@ import { LiaShoppingBagSolid } from "react-icons/lia";
 import { FiMenu } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
 import Login from "./login";
+import Search from "./search";
 import { GoPerson } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData } from "../../features/tokenFeatureSlice";
@@ -30,6 +31,7 @@ export default function Navbar() {
     const location = useLocation();
 
     const [navbar, setNavbar] = useState(false);
+    const [searchKeyword, setSearchKeyword] = useState("");
     const changeNavBar = () => {
         if (window.scrollY >= 27) {
             setNavbar(true);
@@ -43,7 +45,7 @@ export default function Navbar() {
 
     // for the offcanvas
 
-    const [isOffcanvasOpen, setOffcanvas] = useState([false, false]);
+    const [isOffcanvasOpen, setOffcanvas] = useState([false, false, false]);
 
     const offcanvasOpenAndClose = (number) => {
         const newArray = [...isOffcanvasOpen];
@@ -58,6 +60,7 @@ export default function Navbar() {
 
     // show the submenu on hover     
     const [showTheSubmenuOnHover, setShowTheSubmenuOnHover] = useState(null);
+    const [showSearchResults, setShowSearchResults] = useState(false);
     const [activeLink, setActiveLink] = useState(null);
     const showTheSubmenuOnHoverFunc = (index) => {
         setShowTheSubmenuOnHover(prevIndex => prevIndex === index ? null : index);
@@ -98,6 +101,28 @@ export default function Navbar() {
             breakpoint: { max: 464, min: 0 },
             items: 1
         }
+    };
+
+    // Handle the keyword passed from the Search component
+
+    const handleSearchKeyword = (event) => {
+        const keyword = event.target.value;
+        setSearchKeyword(keyword);
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            setShowSearchResults(true);
+        }
+    };
+
+    const handleFocus = () => {
+        setShowSearchResults(true);
+    };
+
+    const handleBlur = () => {
+        // Optional: Hide the search results when input loses focus (if desired)
+        // setShowSearchResults(false);
     };
 
     return (
@@ -154,8 +179,25 @@ export default function Navbar() {
                     </div>
                     <div className='w-[200px] h-[70px] overflow-y-clip'><Link to="/"><LazyLoadImage src={logo} alt="" className=' w-[190px] h-[95px] ' /></Link></div>
                     <div className='flex items-center w-72 justify-between'>
-                        <div className="relative mt-2 rounded-md shadow-sm mx-2">
-                            <input type="text" name="search" id="search" className="block  rounded-md py-1.5 border-b-2 w-[132px] pl-1 pr-10 text-gray-900 outline-none  placeholder:text-gray-400   sm:text-sm sm:leading-6" placeholder="Search" />
+                        <div className="relative mt-2 rounded-md shadow-sm mx-2 ">
+                            <input
+                                type="text"
+                                name="search"
+                                id="search"
+                                className="block rounded-md py-1.5 border-b-2 w-[132px] pl-1 pr-10 text-gray-900 outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                                placeholder="Search"
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
+                                onChange={handleSearchKeyword}
+                                onKeyDown={handleKeyDown} // Listen for Enter key
+                            />
+                            {showSearchResults && (
+                                <Search
+                                    keyword={searchKeyword}
+                                    openAndClose={offcanvasOpenAndClose}
+                                    showOrNot={checkIsOffcanvasOpenForLogin}
+                                />
+                            )}
                             <div className="cursor-pointer transition-all hover:ease-in-out hover:duration-75 absolute inset-y-0 right-0 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="40" fill="currentColor" className="  bi bi-search " viewBox="0 0 16 16">
                                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />

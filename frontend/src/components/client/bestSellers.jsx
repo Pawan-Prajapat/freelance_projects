@@ -24,7 +24,7 @@ export default function BestSellers() {
         element.category && element.category.split(',').some(cat => cat.trim() === "bestSellers")
     );
     const subcategoryCounts = selectedHariData.reduce((acc, current) => {
-        const subcategory = current.subCategroies;
+        const subcategory = current.subCategory;
         if (acc[subcategory]) {
             acc[subcategory]++;
         } else {
@@ -34,7 +34,10 @@ export default function BestSellers() {
     }, {});
 
     const uniqueArray = Object.entries(subcategoryCounts).map(([subcategory, count]) => ({ subcategory, count }));
-    const max = Math.max(...selectedHariData.map(item => item.price));
+    let max = Math.max(...selectedHariData.map(item => item.Variant_Price));
+    if (max === -Infinity) {
+        max = 0;
+    }
 
     return (
         <>

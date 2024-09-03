@@ -35,7 +35,8 @@ export default function Cart(props) {
         { value: 'hTol', label: 'Price, high to low' }
     ]
 
-    const [selectedVariant, setSelectedVariant] = useState(null);
+    // const [selectedVariant, setSelectedVariant] = useState(null);
+
     const gridCartValue = (x) => { // image size on grid 
         //  setGridCart('grid-cols-' + x);
         if (x === 4) {
@@ -168,6 +169,7 @@ export default function Cart(props) {
     const productTypeChange = (e, index) => {
 
         const activeCheck = document.getElementById(index).checked;
+        console.log("selected" , selected);        
         if (activeCheck) {
             setSelected(oldData => [...oldData, e.target.value]);
         }
@@ -320,7 +322,7 @@ export default function Cart(props) {
                                     {
                                         props.productTypes.map((product, i) => (
                                             <div key={i}>
-                                                <input type="checkbox" value={product.subcategory} id={i} onChange={(e) => productTypeChange(e, i)} />
+                                                <input type="checkbox" value={product.subategory} id={i} onChange={(e) => productTypeChange(e, i)} />
                                                 <span className="ps-3 ">{product.subcategory} {`(${product.count})`}</span>
                                             </div>
                                         ))

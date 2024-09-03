@@ -247,7 +247,6 @@ export const getVariant = async (req, res) => {
 
 export const getVariantDetail = async (req,res) => {
     try {
-        console.log("yha aa gya kay ")
         const { variantId } = req.params;
 
         const VariantDetail = await Variant.find({ _id: variantId });
@@ -257,3 +256,52 @@ export const getVariantDetail = async (req,res) => {
         res.status(500).json({ message: "Error retrieving Variant data", error });
     }
 }
+
+
+
+export const searchProductController = async (req, res) => {
+    try {
+        // Fetch all products
+
+        const {keyword} = req.params;
+        const productData = await Product.find({
+            $or : [
+                {title : {$regex : keyword , $options : "i"}}
+            ]
+        });
+        if (productData.length === 0) {
+            return res.status(200).json({ message: "No product data found", data: [] });
+        }
+
+        // Iterate through each product to calculate the total quantity and find the variant with the lowest weight
+        const updatedProductData = await Promise.all(productData.map(async (product) => {
+            // Find all variants for the current product
+            const variants = await Variant.find({ productId: product._id });
+
+            // Calculate the total quantity from all variants
+            const totalQty = variants.reduce((sum, variant) => sum + variant.qty, 0);
+
+            let minWeightVariant;
+            if (variants.length > 0) {
+                // Find the variant with the lowest weight
+                minWeightVariant = variants.reduce((minVariant, currentVariant) => {
+                    return currentVariant.weight < minVariant.weight ? currentVariant : minVariant;
+                });
+            }
+
+            // Return the product data with the total quantity and the ID of the variant with the lowest weight
+            return {
+                ...product.toObject(), // Convert Mongoose document to a plain object
+                totalStock: totalQty,
+                Variant_Id: minWeightVariant ? minWeightVariant._id : null, // Only the _id of the variant with the lowest weight
+                Variant_Price: minWeightVariant ? minWeightVariant.price : null,
+            };
+        }));
+
+
+        // Return the updated product data with quantity and variant ID information
+        res.status(200).json({ message: "Product data retrieved successfully", data: updatedProductData });
+    } catch (error) {
+        res.status(500).json({ message: "Error retrieving product data", error });
+    }
+};

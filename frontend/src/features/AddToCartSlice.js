@@ -11,7 +11,7 @@ const setSingleItemFunc = (item) => {
 }
 const initialState = {
     addToCart: cartItems,
-    singleProduct : singleItems,
+    singleProduct: singleItems,
     total: 0
 }
 
@@ -67,11 +67,15 @@ export const AddToCartSlice = createSlice({
         removeProductCart: (state, action) => {
             state.addToCart = state.addToCart.filter((product) => product.variant._id !== action.payload);
             setItemFunc(state.addToCart.map(item => item));
+        },
+        clearCart: (state) => {
+            state.addToCart = [];
+            setItemFunc(state.addToCart); // Clear localStorage
         }
     }
 })
 
-export const { singleProduct, addProductInCart, updateProductQuantityIncrease, updateProductQuantityDecrease, removeProductCart } = AddToCartSlice.actions;
+export const { singleProduct, addProductInCart, updateProductQuantityIncrease, updateProductQuantityDecrease, removeProductCart, clearCart } = AddToCartSlice.actions;
 export default AddToCartSlice.reducer
 
 export function calculateTotal(cart) {

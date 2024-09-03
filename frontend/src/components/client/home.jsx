@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link, NavLink } from 'react-router-dom';
@@ -118,7 +118,15 @@ function Home() {
         const fetchBanners = async () => {
             try {
                 const response = await axios.get(`${serverUrl}/api/get_banner`);
-                setBanners(response.data.banner);
+                const banners = response.data.banner;
+
+                // Preload images
+                banners.forEach((banner) => {
+                    const img = new Image();
+                    img.src = `${serverUrl}${banner.banner}`;
+                });
+
+                setBanners(banners);
             } catch (error) {
                 console.error('Error fetching banners:', error);
             }
@@ -173,8 +181,8 @@ function Home() {
                     <div key={index} className='w-full'>
                         <a href={banner.link} target="_blank" rel="noopener noreferrer">
                             <LazyLoadImage
-                                src={`${serverUrl + banner.banner}`}
-                                srcSet={`${serverUrl + banner.banner}?w=300 300w, ${serverUrl + banner.banner}?w=768 768w, ${serverUrl + banner.banner}?w=1024 1024w`}
+                                src={`${serverUrl}${banner.banner}`}
+                                srcSet={`${serverUrl}${banner.banner}?w=300 300w, ${serverUrl}${banner.banner}?w=768 768w, ${serverUrl}${banner.banner}?w=1024 1024w`}
                                 sizes="(max-width: 300px) 300px, (max-width: 768px) 768px, 1024px"
                                 alt={`Banner ${index + 1}`}
                                 className='w-full'
@@ -268,7 +276,7 @@ function Home() {
                             records.map((data, i) => (
                                 <div key={i} className='py-3'  >
                                     <Link className="overflow-hidden" to={{
-                                        pathname: `/productDetail/${data.subcategories}`
+                                        pathname: `/productDetail/${data._id}`
                                     }} >
                                         <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
                                     </Link>

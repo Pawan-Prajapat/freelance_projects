@@ -13,6 +13,40 @@ const getOrderId = async () => {
   return counter.sequence_value;
 }
 
+const updateOrderQty = async (add, variantsArray) => {
+  try {
+    for (const item of variantsArray) {
+      const { variant_id, qty } = item;
+
+      // Find the variant in the database (assuming you are using Mongoose or a similar ORM)
+      const variant = await Variant.findById(variant_id);
+
+      if (!variant) {
+        throw new Error(`Variant with ID ${variant_id} not found`);
+      }
+
+      // Update the variant quantity based on the `add` flag
+      if (add) {
+        variant.qty += qty;  // Add the quantity
+      } else {
+        variant.qty -= qty;  // Subtract the quantity
+        if (variant.qty < 0) {
+          throw new Error(`Insufficient quantity for variant ID ${variant_id}`);
+        }
+      }
+
+      // Save the updated variant back to the database
+      await variant.save();
+    }
+
+    return { success: true, message: 'Quantities updated successfully' };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: error.message };
+  }
+};
+
+
 export const storeBuyerData = async (req, res) => {
   try {
     const { email, country, firstName, lastName, city, state, pincode, phone, address } = req.body.customerDetails;
@@ -52,6 +86,7 @@ export const storeBuyerData = async (req, res) => {
     if (!payment_type) {  // COD
       const order = new Order(orderData);
       await order.save();
+      await updateOrderQty(false, orderData.order_items);
       return res.status(201).json({
         success: true,
         message: 'Order created successfully with COD',
@@ -63,6 +98,7 @@ export const storeBuyerData = async (req, res) => {
       orderData.razorpay_order_id = razorpay_order_id;
       const order = new Order(orderData);
       await order.save();
+      await updateOrderQty(false, orderData.order_items);
       return res.status(201).json({
         success: true,
         message: 'Order created successfully with Razorpay',

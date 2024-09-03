@@ -70,7 +70,7 @@ function OrderWithCustomerDetail() {
                     <p className="mb-2"><strong>Order Number:</strong> {current_order.order_number}</p>
                     <p className="mb-2"><strong>Status:</strong> {current_order.status}</p>
                     <p className="mb-2"><strong>Payment Status:</strong> {current_order.payment_status}</p>
-                    <p className="mb-2"><strong>Payment Type:</strong> {current_order.payment_type ? <p>Razorpay</p> : <p>Cod</p>}</p>
+                    <p className="mb-2"><strong>Payment Type:</strong> {current_order.payment_type === "true" ? <p>Razorpay</p> : <p>Cod</p>}</p>
                     <p className="mb-2"><strong>Total Amount:</strong> ₹{current_order.total_amount}</p>
                     <div className="mt-4">
                         <h3 className="font-semibold">Items:</h3>

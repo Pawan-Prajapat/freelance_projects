@@ -25,9 +25,23 @@ function AddToCart() {
   }, [])
 
   const AddToCartData = useSelector(state => state.AddToCartReducer.addToCart);
-
-  console.log("AddToCartData", AddToCartData);
   const dispatch = useDispatch();
+
+  const handleDecreaseQuantity = (variantId, qty) => {
+    if (qty > 1) {
+      dispatch(updateProductQuantityDecrease(variantId));
+    }
+  };
+
+  const handleIncreaseQuantity = (variantId, qty, maxQty) => {
+    if (qty < maxQty) {
+      dispatch(updateProductQuantityIncrease(variantId));
+    }
+  };
+
+  const handleRemoveProduct = (variantId) => {
+    dispatch(removeProductCart(variantId));
+  };
   return (
     <>
       <div className={`${AddToCartData.length > 0 ? "flex" : "hidden"} flex-col lg:flex-row my-20`}>
@@ -65,7 +79,7 @@ function AddToCart() {
                     <div className="w-full  lg:w-1/4 flex items-center justify-center font-semibold tracking-wider text-xl">Rs. {data.variant.price}</div>
                     <div className="w-full  lg:w-1/4 flex justify-center items-center">
                       <div className=" flex items-center relative border border-gray-300 w-[120px] py-6 mt-2">
-                        <button className="font-bold py-3 px-4 rounded-l absolute -left-2 " onClick={() => dispatch(updateProductQuantityDecrease(data.variant._id))}>
+                        <button className="font-bold py-3 px-4 rounded-l absolute -left-2" onClick={() => handleDecreaseQuantity(data.variant._id, data.qty)}>
                           <FaMinus />
                         </button>
                         <input
@@ -76,14 +90,14 @@ function AddToCart() {
                           onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
                           max={data.variant.qty}
                         />
-                        <button className="text-gray-700 font-bold py-2 px-4 rounded-r absolute -right-2" onClick={() => dispatch(updateProductQuantityIncrease(data.variant._id))}>
+                        <button className="text-gray-700 font-bold py-2 px-4 rounded-r absolute -right-2" onClick={() => handleIncreaseQuantity(data.variant._id, data.qty, data.variant.qty)}>
                           <FaPlus />
                         </button>
                       </div>
                     </div>
                     <div className="w-full  lg:w-1/4 my-2 lg:m-0 flex items-center justify-center gap-5">
                       <span className={`${window.innerWidth > 768 ? 'visible' : 'hidden'} font-semibold tracking-wider text-xl`} >Rs. {data.variant.price * data.qty}</span>
-                      <IoCloseOutline onClick={() => dispatch(removeProductCart(data.variant._id))} className="h-6 w-6 cursor-pointer" />
+                      <IoCloseOutline onClick={() => handleRemoveProduct(data.variant._id)} className="h-6 w-6 cursor-pointer" />
                     </div>
 
                   </div>
@@ -108,7 +122,7 @@ function AddToCart() {
             <Link to={"/"}  > Continue Shopping</Link>
           </div>
         </div>
-      </div>
+      </div >
 
       <div className={`${AddToCartData.length > 0 ? "hidden" : "flex"} justify-center my-28 `}>
         <div className=" w-full px-20 xl:px-0 xl:w-1/5 ">

@@ -33,9 +33,10 @@ export default function Combopack() {
       element.category && ['henna_and_oil_combo', 'essential_oil_combo', 'henna_indigo_combo', 'face_care_combo', 'skin_care_combo'].some(combo => element.category.split(',').includes(combo))
     )
   );
+
   // Count occurrences of each subcategory
   const subcategoryCounts = selectedComboData.reduce((acc, current) => {
-    const subcategory = current.subCategories;
+    const subcategory = current.subCategory;
     if (acc[subcategory]) {
       acc[subcategory]++;
     } else {
@@ -51,7 +52,7 @@ export default function Combopack() {
   }));
 
   // Find the maximum price in the selected data
-  let max = Math.max(...selectedComboData.map((item) => item.price));
+  let max = Math.max(...selectedComboData.map((item) => item.Variant_Price));
   if (max === -Infinity) {
     max = 0;
   }

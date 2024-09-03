@@ -73,7 +73,7 @@ function ProductDetailWhole() {
     const multipleImages = [currentProduct.image, ...otherImages];
 
     const handleMinusClick = () => quantity > 1 && setQuantity(quantity - 1);
-    const handlePlusClick = () => setQuantity(quantity + 1);
+    const handlePlusClick = () => quantity < selectedVariant?.qty &&  setQuantity(quantity + 1);
 
     const CustomDot = ({ onClick, index, active }) => (
         <button className={`${active ? "active opacity-60" : "inactive"} mx-1`} onClick={() => onClick()}>
@@ -170,7 +170,7 @@ function ProductDetailWhole() {
                                 <button className="font-bold py-3 px-4 rounded-l absolute -left-2" onClick={handleMinusClick}>
                                     <FaMinus />
                                 </button>
-                                <input id='qyt' type="number" className="focus:outline-none text-gray-700 py-3 w-[50px] bg-transparent absolute left-1/2" value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value, 10))} />
+                                <input id='qyt' type="number" className="focus:outline-none text-gray-700 py-3 w-[50px] bg-transparent absolute left-1/2" value={quantity}  onChange={(e) => setQuantity(parseInt(e.target.value, 10))} />
                                 <button className="text-gray-700 font-bold py-2 px-4 rounded-r absolute -right-2" onClick={handlePlusClick}>
                                     <FaPlus />
                                 </button>
