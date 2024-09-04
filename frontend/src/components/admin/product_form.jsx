@@ -344,7 +344,7 @@ function ProductForm() {
 
             {/* Product Media */}
 
-            <p> <span className=' text-red-500'>*</span>Note In the main image must have the head keyword </p>
+            <p> <span className=' text-red-500'>*</span>Note In the main image must have the <strong> "head"  </strong>keyword </p>
 
             <div className="space-y-2">
                 <label className="block text-gray-700 text-sm font-semibold">Upload Media</label>
