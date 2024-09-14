@@ -27,6 +27,8 @@ function AddToCart() {
   const AddToCartData = useSelector(state => state.AddToCartReducer.addToCart);
   const dispatch = useDispatch();
 
+  console.log("AddToCartData" , AddToCartData);
+
   const handleDecreaseQuantity = (variantId, qty) => {
     if (qty > 1) {
       dispatch(updateProductQuantityDecrease(variantId));
@@ -69,7 +71,7 @@ function AddToCart() {
                     <div className="w-full lg:w-1/2 flex justify-center pe-5">
                       <div className="flex gap-3">
                         <div className="h-24 w-24 ps-5 flex items-center ">
-                          <LazyLoadImage src={`${serverUrl}/${data.image}`} alt="product image" />
+                          <LazyLoadImage src={`${data.image}`} alt="product image" />
                         </div>
                         <div className="w-52 flex items-center font-medium text-lg">
                           <p className="w-52">{data.title}</p>

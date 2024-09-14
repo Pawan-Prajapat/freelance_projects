@@ -28,7 +28,6 @@ function ProductDetailWhole() {
     const myName = useSelector((state) => state.ProductHairReducer);
     const [quantity, setQuantity] = useState(1);
     const { id } = useParams();
-    const [otherImages, setOtherImages] = useState([]);
     const [variant, setVariant] = useState([]);
     const [selectedVariant, setSelectedVariant] = useState(null);
     
@@ -42,14 +41,7 @@ function ProductDetailWhole() {
     }, []);
 
     useEffect(() => {
-        const fetchImage = async () => {
-            try {
-                const res = await axios.get(`${serverUrl}/api/getImagesWithoutHeadInPath/${id}`);
-                setOtherImages(res.data);
-            } catch (error) {
-                console.error("Error fetching images:", error);
-            }
-        };
+       
 
         const fetchVariant = async () => {
             try {
@@ -62,22 +54,23 @@ function ProductDetailWhole() {
             }
         };
         fetchVariant();
-        fetchImage();
     }, [id]);
 
-    if (!myName.data) return <h1>Loading........ </h1>;
+    if (!myName.data?.data) return <h1>Loading........ </h1>;
 
-    const currentProduct = myName.data.find(element => element._id === id);
+    const currentProduct = myName.data?.data.find(element => element._id === id);
+    console.log("currentProduct" , currentProduct);
     if (!currentProduct) return <h1>Product not found</h1>;
 
-    const multipleImages = [currentProduct.image, ...otherImages];
+    const multipleImages = [currentProduct.images[0]];
+    console.log("multipleImages , " , multipleImages);
 
     const handleMinusClick = () => quantity > 1 && setQuantity(quantity - 1);
     const handlePlusClick = () => quantity < selectedVariant?.qty &&  setQuantity(quantity + 1);
 
     const CustomDot = ({ onClick, index, active }) => (
         <button className={`${active ? "active opacity-60" : "inactive"} mx-1`} onClick={() => onClick()}>
-            <LazyLoadImage src={`${serverUrl}/${multipleImages[index]}`} alt="" className='lg:h-[181px] lg:w-[181px] h-[70px] w-[70px]' />
+            <LazyLoadImage src={`${multipleImages[index]}`} alt="" className='lg:h-[181px] lg:w-[181px] h-[70px] w-[70px]' />
         </button>
     );
 
@@ -110,6 +103,7 @@ function ProductDetailWhole() {
 
     // this for addto car the product detail
     const handleAddToCart = (product) => {
+        console.log("product " , product );
         const productWithVariant = {
             ...product,
             selectedVariant,
@@ -127,7 +121,7 @@ function ProductDetailWhole() {
                             className='w-full h-[600px] lg:h-auto'>
                             {multipleImages.map((image, index) => (
                                 <div key={index} className='w-full lg:h-[900px] h-auto'>
-                                    <LazyLoadImage src={`${serverUrl}/${image}`} alt="" className='lg:h-[631px] h-[350px]' />
+                                    <LazyLoadImage src={`${image}`} alt="" className='lg:h-[631px] h-[350px]' />
                                 </div>
                             ))}
                         </Carousel>

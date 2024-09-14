@@ -136,14 +136,28 @@ function Home() {
 
     let records;
     let recordsForBestSelling, recordsForTrend;
+    console.log(myName.data?.data);
     if (myName.data?.data !== null) {
-        const recordsFace = myName.data?.data.filter(element => element.categroies === "face").slice(0, 2);
-        const recordsHair = myName.data?.data.filter(element => element.categroies === "hair").slice(0, 2);
-        records = recordsFace.concat(recordsHair);
-        recordsForBestSelling = myName.data?.data.filter(element => element.categroies === "hair").slice(0, 4);
-        recordsForTrend = myName.data?.data.filter(element => element.categroies === "face").slice(0, 4);
+        const recordsFace = myName.data?.data.filter(element => element.category?.includes("face_care")) || [];
+        const recordsHair = myName.data?.data.filter(element => element.category?.includes("hair_care")) || [];
 
+        console.log("recordsFace", recordsFace);
+        console.log("recordsHair", recordsHair);
+
+        // Only concat if recordsFace and recordsHair are not empty
+        if (recordsFace.length > 0 && recordsHair.length > 0) {
+            records = recordsFace.concat(recordsHair);
+        } else if (recordsFace.length > 0) {
+            records = recordsFace;
+        } else if (recordsHair.length > 0) {
+            records = recordsHair;
+        }
+
+        recordsForBestSelling = myName.data?.data.filter(element => element.category?.includes("bestSellers")).slice(0, 4);
+        recordsForTrend = myName.data?.data.filter(element => element.category?.includes("all_combo")).slice(0, 4);
     }
+
+
     const images = [
         { url: "/images/Hennakart/Hennakart-01.jpg", name: "HENNA POWDER", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/henna/all_henna" },
         { url: "/images/Hennakart/Hennakart-02.jpg", name: "ESSENTIAL OIL", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/essentialOil/all_oil" },

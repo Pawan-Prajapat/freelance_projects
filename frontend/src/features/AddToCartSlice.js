@@ -25,7 +25,7 @@ export const AddToCartSlice = createSlice({
                 product_id: product._id,
                 variant: product.selectedVariant,
                 qty: product.quantity || 1,
-                image: product.image,
+                image: product.images[0],
                 title: product.title
             }
             state.singleProduct = newProductCartData;
@@ -41,7 +41,7 @@ export const AddToCartSlice = createSlice({
                     product_id: product._id,
                     variant: product.selectedVariant,
                     qty: product.quantity || 1,
-                    image: product.image,
+                    image: product.images[0],
                     title: product.title
                 }
                 state.addToCart.push(newProductCartData);
