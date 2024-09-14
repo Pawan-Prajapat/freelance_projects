@@ -20,8 +20,8 @@ export default function BestSellers() {
     if (myName.data === null) {
         return
     }
-    const selectedHariData = myName.data.filter(element =>
-        element.category && element.category.split(',').some(cat => cat.trim() === "bestSellers")
+    const selectedHariData = myName.data?.data.filter(element =>
+        element.category && element.category.some(cat => cat.trim() === "bestSellers")
     );
     const subcategoryCounts = selectedHariData.reduce((acc, current) => {
         const subcategory = current.subCategory;

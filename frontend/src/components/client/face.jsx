@@ -20,8 +20,8 @@ export default function BestSellers() {
     if (myName.data === null) {
         return
     }
-    const selectedFaceData = myName.data.filter(element =>
-        element.category && element.category.split(',').some(cat => cat.trim() === "face_care")
+    const selectedFaceData = myName.data?.data.filter(element =>
+        element.category && element.category.some(cat => cat.trim() === "face_care")
     );
     const subcategoryCounts = selectedFaceData.reduce((acc, current) => {
         const subcategory = current.subCategory;

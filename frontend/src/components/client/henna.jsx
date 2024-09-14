@@ -26,11 +26,11 @@ export default function Henna() {
 
   // Select products with category "combopack"
 
-  const selectedHennaData = myName.data.filter((element) =>
+  const selectedHennaData = myName.data?.data.filter((element) =>
     (param.subHenna !== 'all_henna') ? (
-      element.category && element.category.split(',').some(cat => cat.trim() === param.subHenna)
+      element.category && element.category.some(cat => cat.trim() === param.subHenna)
     ) : (
-      element.category && ['baq_henna', 'herbal_henna', 'natural_henna', 'henna_based_hair_color'].some(combo => element.category.split(',').includes(combo))
+      element.category && ['baq_henna', 'herbal_henna', 'natural_henna', 'henna_based_hair_color'].some(combo => element.category.includes(combo))
     )
   );
   // Count occurrences of each subcategory

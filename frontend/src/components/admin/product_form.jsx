@@ -13,6 +13,8 @@ function ProductForm() {
     const [isEditMode, setEditMode] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [imageUrl, setImageUrl] = useState(''); // State to handle input value
+
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -28,15 +30,15 @@ function ProductForm() {
         }
     }, [productId]);
 
-    useEffect(()=>{
-        if(errorMessage || successMessage){
-            const timer = setTimeout(()=>{
+    useEffect(() => {
+        if (errorMessage || successMessage) {
+            const timer = setTimeout(() => {
                 setErrorMessage('');
                 setSuccessMessage('');
             }, 2000);
             return () => clearTimeout(timer);
         }
-    },[errorMessage,successMessage])
+    }, [errorMessage, successMessage])
 
     const titleRef = useRef(null);
     const categoryRef = useRef(null);
@@ -62,10 +64,11 @@ function ProductForm() {
     useEffect(() => {
         if (isEditMode) {
             titleRef.current.value = product.title;
-            categoryRef.current.value = product.category;
+            categoryRef.current.value = product.subCategory;
             setDesc_Content(product.description || '');
             setVariants(product.variants || []);
             setMedia(product.media || []);
+            setcategroies(product.category || []);
         }
     }, [isEditMode, product]);
 
@@ -106,7 +109,9 @@ function ProductForm() {
         productData.append('title', titleRef.current.value);
         productData.append('description', desc_content);
         productData.append('subCategory', categoryRef.current.value);
-        productData.append('category', categroies);
+        categroies.forEach((category, index) => {
+            productData.append(`category[${index}]`, category); // Use `media[${index}]` as the key
+        });
 
         variants.forEach((variant, index) => {
             productData.append(`variants[${index}][sku]`, variant.sku);
@@ -117,14 +122,21 @@ function ProductForm() {
                 productData.append(`variants[${index}][_id]`, variant._id);
             }
         });
-
-        media.forEach((file, index) => {
-            productData.append(`media`, file);
+        // Append media
+        media.forEach((url, index) => {
+            productData.append(`media[${index}]`, url); // Use `media[${index}]` as the key
         });
+
+
         if (isEditMode) {
             productData.append('_id', productId);
 
-            axios.patch(`${serverUrl}/api/product`, productData)
+            axios.patch(`${serverUrl}/api/product`, productData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then(response => {
                     setSuccessMessage('Product updated successfully!');
                     setButtonShow(false);
@@ -167,9 +179,15 @@ function ProductForm() {
         setVariants(variants.filter((_, i) => i !== index));
     };
 
-    const handleMediaChange = (e) => {
-        const files = Array.from(e.target.files);
-        setMedia([...media, ...files]);
+    // Handle URL input change
+    const handleUrlChange = (e) => {
+        setImageUrl(e.target.value);
+    };
+    const handleAddUrl = () => {
+        if (imageUrl) {
+            setMedia([...media, imageUrl]);
+            setImageUrl('');
+        }
     };
 
     const removeMedia = (index) => {
@@ -342,43 +360,70 @@ function ProductForm() {
                 </button>
             </div>
 
+
+            {/* Image and Video Upload */}
+            <div className=' flex flex-col gap-5 border py-5 px-10 border-gray-700'>
+                <h2 className='font-sans text-xl font-semibold text-gray-800'>Upload the image and get the url  to insert in the description and media </h2>
+                <Description_image_upload  />
+            </div>
+
             {/* Product Media */}
+            <div className="p-4">
+                {/* Note and Upload Media Section */}
+                <p>
+                    <span className='text-red-500'>*</span>Note: Get the url then insert in the media (means product photos for clien).
+                </p>
 
-            <p> <span className=' text-red-500'>*</span>Note In the main image must have the <strong> "head"  </strong>keyword </p>
+                <div className="space-y-2">
+                    <label className="block text-gray-700 text-sm font-semibold">Upload Media</label>
 
-            <div className="space-y-2">
-                <label className="block text-gray-700 text-sm font-semibold">Upload Media</label>
-                <input
-                    type="file"
-                    onChange={handleMediaChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    multiple
-                />
-                <div className="mt-2 flex flex-wrap gap-2">
-                    {media.map((file, index) => (
-                        <div key={index} className="relative">
-                            <img
-                                // src={URL.createObjectURL(file)}
-                                alt={`media-${index}`}
-                                className="h-20 w-20 object-cover rounded-lg"
-                            />
-                            <button
-                                type="button"
-                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center"
-                                onClick={() => removeMedia(index)}
+                    {/* URL Input Field */}
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="text"
+                            value={imageUrl}
+                            onChange={handleUrlChange}
+                            placeholder="Enter image URL"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                        <button
+                            type="button"
+                            onClick={handleAddUrl}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                        >
+                            Add Image
+                        </button>
+                    </div>
+
+                    {/* Display Added Images */}
+                    <div className="mt-2 flex flex-wrap gap-2">
+                        {media.map((url, index) => (
+                            <div
+                                key={index}
+                                className="relative group"
+                                style={{ width: '200px', height: '200px' }} // Set the size of the image container
                             >
-                                &times;
-                            </button>
-                        </div>
-                    ))}
+                                <img
+                                    src={url}
+                                    alt={`media-${index}`}
+                                    className="w-full h-full object-cover rounded-lg"
+                                    style={{ width: '200px', height: '200px' }} // Set the size of the image
+                                />
+                                {/* Remove button only shows on hover */}
+                                <button
+                                    type="button"
+                                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    onClick={() => removeMedia(index)}
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 
-            {/* Image and Video Upload */}
-            <div className=' flex flex-col gap-5'>
-                <h2 className='font-sans text-xl font-semibold text-gray-800'>Upload the image and get the url  to insert in the description </h2>
-                <Description_image_upload media={media} removeMedia={removeMedia} handleMediaChange={handleMediaChange} />
-            </div>
+
 
             {/* Product Description */}
             <div className="space-y-2">

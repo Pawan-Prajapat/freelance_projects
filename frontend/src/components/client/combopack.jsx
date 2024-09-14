@@ -26,13 +26,14 @@ export default function Combopack() {
 
   // Select products with category "combopack"
 
-  const selectedComboData = myName.data.filter((element) =>
-    (param.subCombo !== 'all_combo') ? (
-      element.category && element.category.split(',').some(cat => cat.trim() === param.subCombo)
+  const selectedComboData = myName?.data?.data.filter((element) =>
+    param.subCombo !== 'all_combo' ? (
+      element.category && element.category.some(cat => cat.trim() === param.subCombo)
     ) : (
-      element.category && ['henna_and_oil_combo', 'essential_oil_combo', 'henna_indigo_combo', 'face_care_combo', 'skin_care_combo'].some(combo => element.category.split(',').includes(combo))
+      element.category && ['henna_and_oil_combo', 'essential_oil_combo', 'henna_indigo_combo', 'face_care_combo', 'skin_care_combo'].some(combo => element.category.includes(combo))
     )
   );
+
 
   // Count occurrences of each subcategory
   const subcategoryCounts = selectedComboData.reduce((acc, current) => {

@@ -169,7 +169,6 @@ export default function Cart(props) {
     const productTypeChange = (e, index) => {
 
         const activeCheck = document.getElementById(index).checked;
-        console.log("selected" , selected);        
         if (activeCheck) {
             setSelected(oldData => [...oldData, e.target.value]);
         }
@@ -455,11 +454,11 @@ export default function Cart(props) {
                                         pathname: `/productDetail/${data._id}`
                                     }}
                                     >
-                                        <LazyLoadImage alt={`${serverUrl} + hello + ${data.image}`} className={`object-cover object-center block ${window.innerWidth > 1024 ? image : ''}`} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
+                                        <LazyLoadImage alt={`${data.images[0]}`} className={`object-cover object-center block ${window.innerWidth > 1024 ? image : ''}`} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                     </Link>
                                     <div className=" mt-4 text-center  pt-3 ">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
-                                        <p className=" text-base">{data.title}</p>
+                                        <p className=" text-base line-clamp-2">{data.title}</p>
                                         <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
                                         <div >
                                             <NavLink to={"/addtocart"} >

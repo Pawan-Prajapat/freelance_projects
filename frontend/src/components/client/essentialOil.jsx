@@ -26,11 +26,11 @@ export default function Essential() {
 
   // Select products with category "combopack"
 
-  const selectedEssentialData = myName.data.filter((element) =>
+  const selectedEssentialData = myName.data?.data.filter((element) =>
     (param.subEssentialOil !== 'all_oil') ? (
-      element.category && element.category.split(',').some(cat => cat.trim() === param.subEssentialOil)
+      element.category && element.category.some(cat => cat.trim() === param.subEssentialOil)
     ) : (
-      element.category && ['eucalyptus_oil', 'lavender_oil', 'tea_tree_oil', 'mehandi_oil','clove_oil','cajeput_oil'].some(combo => element.category.split(',').includes(combo))
+      element.category && ['eucalyptus_oil', 'lavender_oil', 'tea_tree_oil', 'mehandi_oil','clove_oil','cajeput_oil'].some(combo => element.category.includes(combo))
     )
   );
   // Count occurrences of each subcategory

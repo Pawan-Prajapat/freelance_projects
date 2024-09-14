@@ -10,14 +10,16 @@ const productSchema = new Schema({
     type: String,
     required: true
   },
-  category: {
-    type: String,
-    required: true 
-  },
+  category: [{
+    type:String 
+  }],
   subCategory: {
     type: String,
     required: true
-  }
+  },
+  images : [{
+    type:String 
+  }]
 }, {
   timestamps: true
 });
@@ -51,21 +53,7 @@ const variantSchema = new Schema({
   timestamps: false
 });
 
-// schema for media
-const mediaSchema = new Schema({
-  productId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Product',
-    required: true
-  },
-  image:{
-    type : String,
-    required : true
-  }
-}, {
-  timestamps: false
-});
+
 
 export const  Product = mongoose.model('Product', productSchema);
 export const  Variant = mongoose.model('Variant', variantSchema);
-export const  Media = mongoose.model('Media', mediaSchema);

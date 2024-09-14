@@ -15,6 +15,8 @@ const descriptionPhotoSchema = new mongoose.Schema ({
         type:String,
         required : true
     }
+},{
+    timestamps : true
 });
 export const CategroiesData =  mongoose.model("categroie" , categroiesSchema);
 export const DescriptionPhotoData =  mongoose.model("descriptionPhoto" , descriptionPhotoSchema);

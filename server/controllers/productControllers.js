@@ -1,18 +1,19 @@
-import { Product, Variant, Media } from "../models/productModel.js";
+import { Product, Variant } from "../models/productModel.js";
 import fs from "fs";
 import path from 'path';
 import { fileURLToPath } from 'url';
+import mongoose from "mongoose";
 
 export const storeProductData = async (req, res) => {
     try {
-        const { title, description, category, subCategory, variants } = req.body;
-        const mediaFiles = req.files;
+        const { title, description, category, subCategory, variants, media } = req.body;
         if (title) {
             const newProduct = await Product.create({
                 title,
                 description,
                 subCategory,
-                category
+                category,
+                images: media
             });
             if (variants) {
                 const variantDocs = variants.map((variant) => ({
@@ -21,13 +22,7 @@ export const storeProductData = async (req, res) => {
                 }));
                 const check = await Variant.insertMany(variantDocs);
             }
-            if (mediaFiles) {
-                const mediaDocs = mediaFiles.map((file) => ({
-                    image: `/images/${file.filename}`,
-                    productId: newProduct._id
-                }));
-                const check = await Media.insertMany(mediaDocs);
-            }
+
         }
         res.status(200).send({ message: "product add successfully " });
     } catch (error) {
@@ -38,16 +33,17 @@ export const storeProductData = async (req, res) => {
 
 
 // update ka abhi karte hai 
-
 export const updateProductData = async (req, res) => {
     try {
-        const { _id, title, description, category, subCategory, variants } = req.body;
+        const { _id, title, description, category, subCategory, variants, media } = req.body;
+
         // Construct the update object dynamically to only include fields that are provided
         const updateFields = {};
         if (title) updateFields.title = title;
         if (description) updateFields.description = description;
         if (category) updateFields.category = category;
         if (subCategory) updateFields.subCategory = subCategory;
+        if (media) updateFields.images = media;
 
         // Update the product and return the updated document
         const updatedProduct = await Product.findOneAndUpdate(
@@ -62,26 +58,46 @@ export const updateProductData = async (req, res) => {
 
         // Handle variant updates
         if (variants && Array.isArray(variants)) {
-            const variantPromises = variants.map(async (variant) => {
-                if (variant._id) {
-                    const pawan = await Variant.find({ _id: variant._id });
+            const updatePromises = [];
+            const insertPromises = [];
+
+            variants.forEach((variant) => {
+                // Check if _id is a valid ObjectId
+                const isValidObjectId = mongoose.Types.ObjectId.isValid(variant._id) && variant._id !== 'undefined';
+
+                if (isValidObjectId) {
                     // Update existing variant
-                    return Variant.findByIdAndUpdate(
-                        variant._id,
-                        {
-                            $set: {
-                                sku: variant.sku,
-                                price: variant.price,
-                                qty: variant.qty,
-                                weight: variant.weight
-                            }
-                        },
-                        { new: true, runValidators: true }
+                    updatePromises.push(
+                        Variant.findByIdAndUpdate(
+                            variant._id,
+                            {
+                                $set: {
+                                    sku: variant.sku,
+                                    price: variant.price,
+                                    qty: variant.qty,
+                                    weight: variant.weight
+                                }
+                            },
+                            { new: true, runValidators: true }
+                        )
+                    );
+                } else {
+                    // Add new variant
+                    if (variant._id === 'undefined') {
+                        delete variant._id;
+                    }
+                    insertPromises.push(
+                        Variant.create({
+                            ...variant,
+                            productId: updatedProduct._id, // Link new variants to the updated product
+                        })
                     );
                 }
             });
 
-            const updatedVariants = await Promise.all(variantPromises);
+            // Wait for all updates and inserts to complete
+            await Promise.all(updatePromises);
+            await Promise.all(insertPromises);
         }
 
         res.status(200).json({ message: "Product updated successfully", data: updatedProduct });
@@ -90,7 +106,8 @@ export const updateProductData = async (req, res) => {
         console.error("Error updating product:", error);
         res.status(400).json({ message: "Error updating product", error });
     }
-};
+}
+
 
 
 
@@ -106,15 +123,11 @@ export const deleteProductData = async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        const getImages = await Media.find({ productId: id });
-        await Media.deleteMany({ productId: id });
-
-        for (const media of getImages) {
+        for (const media of deletedProduct.images) {
             const imagePath = path.join(__dirname, '..', media.image);
 
             try {
                 await fs.promises.unlink(imagePath);
-                console.log("Image deleted successfully");
             } catch (error) {
                 console.error(`Error deleting image: ${error}`);
             }
@@ -177,7 +190,6 @@ export const getSingleProductData = async (req, res) => {
         }
 
         const productVariant = await Variant.find({ productId: _id });
-        const productMedia = await Media.find({ productId: _id });
 
         // Combine the data into a single object
         const product = {
@@ -189,7 +201,7 @@ export const getSingleProductData = async (req, res) => {
             createdAt: productData.createdAt,
             updatedAt: productData.updatedAt,
             variants: productVariant,
-            media: productMedia
+            media: productData.images
         };
 
         res.status(200).json({ message: "Product data retrieved successfully", data: product });
@@ -198,41 +210,8 @@ export const getSingleProductData = async (req, res) => {
     }
 };
 
-export const getAllProductHeadImage = async (req, res) => {
-    try {
-        const imageWithHead = await Media.find({ image: { $regex: /head/i } });
-        if (imageWithHead.length === 0) {
-            return res.status(200).json({ message: "No images found with 'head' in their path", data: [] });
-        }
-        res.status(200).json({ message: "Images with 'head' in their path retrieved successfully", data: imageWithHead });
-    } catch (error) {
-        res.status(500).json({ message: "Error retrieving  images ", error });
-    }
-}
 
-export const getImagesWithoutHeadInPath = async (req, res) => {
-    try {
-        const { productId } = req.params;
 
-        if (!productId) {
-            return res.status(400).json({ message: "Product ID is required" });
-        }
-
-        // Find images for the given productId that do not have "head" in their path (case-insensitive)
-        const imagesWithoutHead = await Media.find({
-            productId,
-            image: { $not: { $regex: /head/i } }
-        }).select('image -_id'); // Select only the image field and exclude the _id field
-
-        // Extract the image paths into an array
-        const imageArray = imagesWithoutHead.map(imageDoc => imageDoc.image);
-
-        // Return the array of image paths directly
-        return res.status(200).json(imageArray);
-    } catch (error) {
-        res.status(500).json({ message: "Error retrieving images", error });
-    }
-};
 export const getVariant = async (req, res) => {
     try {
         const { productId } = req.params;
@@ -245,7 +224,7 @@ export const getVariant = async (req, res) => {
     }
 };
 
-export const getVariantDetail = async (req,res) => {
+export const getVariantDetail = async (req, res) => {
     try {
         const { variantId } = req.params;
 
@@ -263,10 +242,10 @@ export const searchProductController = async (req, res) => {
     try {
         // Fetch all products
 
-        const {keyword} = req.params;
+        const { keyword } = req.params;
         const productData = await Product.find({
-            $or : [
-                {title : {$regex : keyword , $options : "i"}}
+            $or: [
+                { title: { $regex: keyword, $options: "i" } }
             ]
         });
         if (productData.length === 0) {

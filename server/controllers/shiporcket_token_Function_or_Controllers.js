@@ -77,6 +77,7 @@ export const create_shiprocket_order = async (req, res) => {
         }));
 
         // Create the order data object
+        const payment_method = OrderData.payment_type == "false" ? 'COD' : 'Prepaid';
         const orderData = {
             "order_id": order_number + 10000000000,
             "order_date": formattedDate,
@@ -92,7 +93,7 @@ export const create_shiprocket_order = async (req, res) => {
             "billing_phone": CustomerData.phone,
             "shipping_is_billing": true,
             "order_items": order_items,
-            "payment_method": "Prepaid",
+            "payment_method": payment_method ,
             "sub_total": OrderData.total_amount,
             "length": length,
             "breadth": breadth,
@@ -100,7 +101,7 @@ export const create_shiprocket_order = async (req, res) => {
             "weight": weight
         };
 
-        console.log("order DAta" , orderData)
+        // console.log("order DAta" , orderData)
         // Log the order data for debugging
         // Make the API call to Shiprocket
         const newOrder = await axios.post(
@@ -114,7 +115,7 @@ export const create_shiprocket_order = async (req, res) => {
             }
         );
 
-        console.log("newOrder.data", newOrder.data);
+        // console.log("newOrder.data", newOrder.data);
         res.json({ message: "Order successfully added to Shiprocket", data: newOrder.data });
     } catch (error) {
         // Log the error and send a response with an appropriate status code

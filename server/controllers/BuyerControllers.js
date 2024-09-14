@@ -138,7 +138,6 @@ export const orderDataAll = async (req, res) => {
 export const customerData = async (req, res) => {
   try {
     const { order_number } = req.params;
-
     // Find the current order by order_number
     const current_order = await Order.findOne({ order_number });
     for (let i = 0; i < current_order.order_items.length; i++) {
@@ -163,11 +162,19 @@ export const customerData = async (req, res) => {
       order_number: { $ne: order_number }
     }).sort({ createdAt: -1 });
 
+
     // Map through the previous orders to get the product and variant details
     const orderDetails = await Promise.all(prevOrders.map(async (order) => {
       const items = await Promise.all(order.order_items.map(async (item) => {
         const product = await Product.findById(item.product_id).select('title');
         const variant = await Variant.findById(item.variant_id).select('sku price weight');
+        if(!product){
+          console.warn(`product with id ${item.product_id} not found`);
+        }
+        if(!variant){
+          console.warn(`variant with id ${item.variant_id} not found`);
+        }
+
 
         return {
           product_name: product.title,
