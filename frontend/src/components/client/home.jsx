@@ -136,12 +136,12 @@ function Home() {
 
     let records;
     let recordsForBestSelling, recordsForTrend;
-    if (myName.data !== null) {
-        const recordsFace = myName.data.filter(element => element.categroies === "face").slice(0, 2);
-        const recordsHair = myName.data.filter(element => element.categroies === "hair").slice(0, 2);
+    if (myName.data?.data !== null) {
+        const recordsFace = myName.data?.data.filter(element => element.categroies === "face").slice(0, 2);
+        const recordsHair = myName.data?.data.filter(element => element.categroies === "hair").slice(0, 2);
         records = recordsFace.concat(recordsHair);
-        recordsForBestSelling = myName.data.filter(element => element.categroies === "hair").slice(0, 4);
-        recordsForTrend = myName.data.filter(element => element.categroies === "face").slice(0, 4);
+        recordsForBestSelling = myName.data?.data.filter(element => element.categroies === "hair").slice(0, 4);
+        recordsForTrend = myName.data?.data.filter(element => element.categroies === "face").slice(0, 4);
 
     }
     const images = [
