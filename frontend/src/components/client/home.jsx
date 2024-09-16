@@ -137,8 +137,8 @@ function Home() {
     let records;
     let recordsForBestSelling, recordsForTrend;
     if (myName.data?.data !== null) {
-        const recordsFace = myName.data?.data.filter(element => element.category?.includes("face_care")).slice(0,4) || [];
-        const recordsHair = myName.data?.data.filter(element => element.category?.includes("hair_care")).slice(0,4) || [];
+        const recordsFace = myName.data?.data.filter(element => element.category?.includes("face_care")).slice(0, 2) || [];
+        const recordsHair = myName.data?.data.filter(element => element.category?.includes("hair_care")).slice(0, 2) || [];
 
         // Only concat if recordsFace and recordsHair are not empty
         if (recordsFace.length > 0 && recordsHair.length > 0) {
@@ -162,8 +162,22 @@ function Home() {
     ]
 
 
-    const handleAddToCart = (product) => {
-        dispatch(addProductInCart(product));
+    const handleAddToCart = async (product) => {
+        try {
+            const res = await axios.get(`${serverUrl}/api/getVariantData/${product.Variant_Id}`);
+            const variants = res.data.variantData;
+
+            // Create the productWithVariant object after fetching the variants
+            const productWithVariant = {
+                ...product,
+                selectedVariant: variants[0],
+                quantity: 1
+            };
+
+            dispatch(addProductInCart(productWithVariant));
+        } catch (error) {
+            console.error("Error in fetching the variants of the product");
+        }
     }
 
 
