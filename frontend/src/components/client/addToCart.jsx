@@ -27,7 +27,6 @@ function AddToCart() {
   const AddToCartData = useSelector(state => state.AddToCartReducer.addToCart);
   const dispatch = useDispatch();
 
-  console.log("AddToCartData" , AddToCartData);
 
   const handleDecreaseQuantity = (variantId, qty) => {
     if (qty > 1) {
