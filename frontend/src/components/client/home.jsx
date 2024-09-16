@@ -184,6 +184,7 @@ function Home() {
         else video.pause();
     }
 
+
     return (
         <React.Fragment>
             <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
@@ -239,7 +240,7 @@ function Home() {
                                 <Link className="overflow-hidden" to={{
                                     pathname: `/productDetail/${data.name}`
                                 }} >
-                                    <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.image}`} />
+                                    <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                 </Link>
                                 <div className="mt-4 text-center">
                                     <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
@@ -288,7 +289,7 @@ function Home() {
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data._id}`
                                     }} >
-                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.image}`} />
+                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                     </Link>
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
@@ -314,7 +315,7 @@ function Home() {
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data.name}`
                                     }} >
-                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.image}`} />
+                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                     </Link>
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
@@ -340,7 +341,7 @@ function Home() {
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data.name}`
                                     }} >
-                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.image}`} />
+                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                     </Link>
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
