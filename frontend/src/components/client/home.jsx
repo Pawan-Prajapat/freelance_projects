@@ -136,13 +136,9 @@ function Home() {
 
     let records;
     let recordsForBestSelling, recordsForTrend;
-    console.log(myName.data?.data);
     if (myName.data?.data !== null) {
         const recordsFace = myName.data?.data.filter(element => element.category?.includes("face_care")) || [];
         const recordsHair = myName.data?.data.filter(element => element.category?.includes("hair_care")) || [];
-
-        console.log("recordsFace", recordsFace);
-        console.log("recordsHair", recordsHair);
 
         // Only concat if recordsFace and recordsHair are not empty
         if (recordsFace.length > 0 && recordsHair.length > 0) {

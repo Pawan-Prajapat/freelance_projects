@@ -59,18 +59,16 @@ function ProductDetailWhole() {
     if (!myName.data?.data) return <h1>Loading........ </h1>;
 
     const currentProduct = myName.data?.data.find(element => element._id === id);
-    console.log("currentProduct" , currentProduct);
     if (!currentProduct) return <h1>Product not found</h1>;
 
-    const multipleImages = [currentProduct.images[0]];
-    console.log("multipleImages , " , multipleImages);
+    const multipleImages = [currentProduct.images];
 
     const handleMinusClick = () => quantity > 1 && setQuantity(quantity - 1);
     const handlePlusClick = () => quantity < selectedVariant?.qty &&  setQuantity(quantity + 1);
 
     const CustomDot = ({ onClick, index, active }) => (
         <button className={`${active ? "active opacity-60" : "inactive"} mx-1`} onClick={() => onClick()}>
-            <LazyLoadImage src={`${multipleImages[index]}`} alt="" className='lg:h-[181px] lg:w-[181px] h-[70px] w-[70px]' />
+            <LazyLoadImage src={`${multipleImages[0][index]}`} alt="" className='lg:h-[181px] lg:w-[181px] h-[70px] w-[70px]' />
         </button>
     );
 
@@ -103,7 +101,6 @@ function ProductDetailWhole() {
 
     // this for addto car the product detail
     const handleAddToCart = (product) => {
-        console.log("product " , product );
         const productWithVariant = {
             ...product,
             selectedVariant,
@@ -119,7 +116,7 @@ function ProductDetailWhole() {
                     <div className="pic w-full md:w-[100%] xl:w-[730.08] px-2 sm:px-5 lg:px-10 gap-y-10 flex">
                         <Carousel responsive={responsive} infinite={true} showDots customDot={<CustomDot />} customRightArrow={<CustomRightArrow />} customLeftArrow={<CustomLeftArrow />}
                             className='w-full h-[600px] lg:h-auto'>
-                            {multipleImages.map((image, index) => (
+                            {multipleImages[0].map((image, index) => (
                                 <div key={index} className='w-full lg:h-[900px] h-auto'>
                                     <LazyLoadImage src={`${image}`} alt="" className='lg:h-[631px] h-[350px]' />
                                 </div>
