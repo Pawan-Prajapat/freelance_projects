@@ -137,8 +137,8 @@ function Home() {
     let records;
     let recordsForBestSelling, recordsForTrend;
     if (myName.data?.data !== null) {
-        const recordsFace = myName.data?.data.filter(element => element.category?.includes("face_care")) || [];
-        const recordsHair = myName.data?.data.filter(element => element.category?.includes("hair_care")) || [];
+        const recordsFace = myName.data?.data.filter(element => element.category?.includes("face_care")).slice(0,4) || [];
+        const recordsHair = myName.data?.data.filter(element => element.category?.includes("hair_care")).slice(0,4) || [];
 
         // Only concat if recordsFace and recordsHair are not empty
         if (recordsFace.length > 0 && recordsHair.length > 0) {
@@ -149,8 +149,8 @@ function Home() {
             records = recordsHair;
         }
 
-        recordsForBestSelling = myName.data?.data.filter(element => element.category?.includes("bestSellers")).slice(0, 4);
-        recordsForTrend = myName.data?.data.filter(element => element.category?.includes("all_combo")).slice(0, 4);
+        recordsForBestSelling = myName.data?.data.filter(element => element.category?.includes("bestSellers")).slice(0, 4) || [];
+        recordsForTrend = myName.data?.data.filter(element => element.category?.includes("all_combo")).slice(0, 4) || [];
     }
 
 
@@ -239,7 +239,7 @@ function Home() {
                                 <Link className="overflow-hidden" to={{
                                     pathname: `/productDetail/${data.name}`
                                 }} >
-                                    <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
+                                    <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.image}`} />
                                 </Link>
                                 <div className="mt-4 text-center">
                                     <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
@@ -288,7 +288,7 @@ function Home() {
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data._id}`
                                     }} >
-                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
+                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.image}`} />
                                     </Link>
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
@@ -314,7 +314,7 @@ function Home() {
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data.name}`
                                     }} >
-                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
+                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.image}`} />
                                     </Link>
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
@@ -340,7 +340,7 @@ function Home() {
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data.name}`
                                     }} >
-                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${serverUrl}/${data.image}`} />
+                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.image}`} />
                                     </Link>
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
