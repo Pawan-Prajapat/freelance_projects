@@ -49,18 +49,6 @@ export const get_banner = async (req, res) => {
         if (!allBanner)
             return res.status(201).json({ message: "No banner added ", banner: [] });
 
-        // Set Cache-Control header
-        res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
-
-        // Optional: Set ETag header
-        const etag = generateETag(allBanner); // You need to implement generateETag
-        res.setHeader('ETag', etag);
-
-        // Check if the client’s cached version is still valid
-        if (req.headers['if-none-match'] === etag) {
-            return res.status(304).end(); // Not Modified
-        }
-
         res.status(200).json({ banner: allBanner });
 
     } catch (error) {
@@ -68,13 +56,6 @@ export const get_banner = async (req, res) => {
         res.status(500).json({ error: "banner get nhi ho rhe hai" });
     }
 }
-
-// Helper function to generate ETag based on the data (implement as needed)
-const generateETag = (data) => {
-    // You could use a hash function like SHA-1 or MD5
-    // Here we're just using a simple JSON string length-based approach for simplicity
-    return `"${Buffer.from(JSON.stringify(data)).toString('hex')}"`;
-};
 
 export const get_discount = async (req, res) => {
     try {
