@@ -39,9 +39,6 @@ router.route("/product").patch(
     upload.none(), updateProductData
 );
 router.route("/deleteProductData").delete(
-    authMiddleware,
-    adminMiddleware,
-    upload.none(),
     deleteProductData
 );
 router.route("/getAllProductData").get(getAllProductData);

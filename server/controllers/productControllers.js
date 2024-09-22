@@ -1,7 +1,4 @@
 import { Product, Variant } from "../models/productModel.js";
-import fs from "fs";
-import path from 'path';
-import { fileURLToPath } from 'url';
 import mongoose from "mongoose";
 
 export const storeProductData = async (req, res) => {
@@ -111,10 +108,6 @@ export const updateProductData = async (req, res) => {
 
 
 
-// Helper to resolve __dirname in ES6 modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 export const deleteProductData = async (req, res) => {
     try {
         const { id } = req.body;
@@ -123,15 +116,6 @@ export const deleteProductData = async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        for (const media of deletedProduct.images) {
-            const imagePath = path.join(__dirname, '..', media.image);
-
-            try {
-                await fs.promises.unlink(imagePath);
-            } catch (error) {
-                console.error(`Error deleting image: ${error}`);
-            }
-        }
         await Variant.deleteMany({ productId: id });
 
         res.status(200).json({ message: "Product deleted successfully", data: deletedProduct });

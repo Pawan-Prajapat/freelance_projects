@@ -37,7 +37,6 @@ export default function Navbar() {
         axios.get(`${serverUrl}/api/marquee`)
             .then(response => {
                 const textWithIcon = response.data.topSlide;
-                console.log("textWithIcon" , textWithIcon);
                 // Split the text by the [ICON] placeholder
                 const parts = textWithIcon.split('[Icon]');
                 setTextParts(parts);

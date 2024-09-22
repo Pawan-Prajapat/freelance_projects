@@ -15,21 +15,14 @@ function BannerAndTopSlider() {
   const [discountAmount, setDiscountAmount] = useState('');
 
   useEffect(() => {
-    // Fetch existing banners
-    const fetchBanners = async () => {
-      try {
-        const response = await axios.get(`${serverUrl}/api/get_banner`);
-        setBanners(response.data.banner || []);
-      } catch (error) {
-        console.error('Error fetching banners:', error);
-      }
-    };
+
 
     // Fetch top slide data
     const fetchTopSlide = async () => {
       try {
-        const response = await axios.get(`${serverUrl}/api/get_topSlide`);
-        setTopSlideText(response.data.topSlide[0].slideText || '');
+        const response = await axios.get(`${serverUrl}/api/marquee`);
+        setTopSlideText(response.data.topSlide || '');
+        console.log("banner and top slider jsx", topSlideText);
       } catch (error) {
         console.error('Error fetching top slide:', error);
       }
@@ -45,10 +38,24 @@ function BannerAndTopSlider() {
       }
     };
 
-    fetchBanners();
+
     fetchTopSlide();
     fetchDiscounts();
   }, []);
+
+  useEffect(() => {
+    // Fetch existing banners
+    const fetchBanners = async () => {
+      try {
+        const response = await axios.get(`${serverUrl}/api/get_banner`);
+        setBanners(response.data.banner || []);
+
+      } catch (error) {
+        console.error('Error fetching banners:', error);
+      }
+    };
+    fetchBanners();
+  }, [banners])
 
   // Handle file selection
   const handleFileChange = (event) => {
@@ -173,7 +180,7 @@ function BannerAndTopSlider() {
         <ul className="list-none p-0">
           {banners.map((banner) => (
             <li key={banner._id} className="flex items-center mb-4">
-              <img src={ serverUrl + banner.banner} alt={"banner"} width={100}  className="mr-4" />
+              <img src={serverUrl + banner.banner} alt={"banner"} width={100} className="mr-4" />
               <a
                 href={banner.link}
                 target="_blank"

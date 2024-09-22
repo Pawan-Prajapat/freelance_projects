@@ -1,4 +1,7 @@
 import { Banner, Topslide, Discount } from "../models/bannerAndSliderDiscountModel.js";
+import fs from "fs";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 export const add_banner = async (req, res) => {
     try {
@@ -83,10 +86,17 @@ export const get_topSlide = async (req, res) => {
 }
 
 
+// Helper to resolve __dirname in ES6 modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 export const delete_banner = async (req, res) => {
     try {
         const { _id } = req.body;
-        await Banner.findByIdAndDelete({ _id });
+        const deleteBanner = await Banner.findByIdAndDelete({ _id });
+        const imagePath = path.join(__dirname , '..' , 'public' , deleteBanner.banner);
+        await fs.promises.unlink(imagePath);
         res.status(200).json({ message: "delete the banner successfully" });
 
     } catch (error) {
