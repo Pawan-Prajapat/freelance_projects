@@ -10,12 +10,16 @@ import { fetchProducts } from "../../features/productsFileHairSlice.js";
 import testVideo from "../../assets/testVideo.mp4";
 
 // result images
-import result1 from "../../assets/eaculyptus.webp";
-import result2 from "../../assets/herbal_henna_result_3.webp";
-import result3 from "../../assets/herbal_henna_result.webp";
-import result4 from "../../assets/natural_henna_result.webp";
-import result5 from "../../assets/tea_tree_result_2.webp";
-import result6 from "../../assets/tea_tree_result_2 (1).webp";
+import result1 from "../../assets/Untitled-1-01.jpg";
+import result2 from "../../assets/Untitled-1-02.jpg";
+import result3 from "../../assets/Untitled-1-03.jpg";
+import result4 from "../../assets/Untitled-1-04.jpg";
+import result5 from "../../assets/Untitled-1-05.jpg";
+import result6 from "../../assets/Untitled-1-06.jpg";
+import result7 from "../../assets/Untitled-1-07.jpg";
+import result8 from "../../assets/Untitled-1-08.jpg";
+import result9 from "../../assets/Untitled-1-09.jpg";
+import result10 from "../../assets/Untitled-1-10.jpg";
 import customer1 from "../../assets/customer1.jpg";
 import customer2 from "../../assets/customer2.jpg";
 import customer3 from "../../assets/customer3.jpg";
@@ -448,6 +452,18 @@ function Home() {
                 </div>
                 <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
                     <LazyLoadImage src={result6} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result7} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result8} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result9} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={result10} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
                 </div>
             </Carousel>
 
