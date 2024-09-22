@@ -31,10 +31,11 @@ export const add_banner = async (req, res) => {
 };
 export const add_discount = async (req, res) => {
     try {
-        const { discoutText, discoutAmount } = req.body;
+        const { discountText, discountAmount, discountType } = req.body;
         await Discount.create({
-            discoutText,
-            discoutAmount
+            discountText,
+            discountAmount,
+            discountType
         });
 
         res.status(200).json({ message: "Discount successfully Added" });
@@ -44,7 +45,15 @@ export const add_discount = async (req, res) => {
     }
 };
 
-
+export const discount_status = async (req, res) => {
+    try {
+        const { discount_id, value } = req.body;
+        await Discount.updateOne({ _id: discount_id }, { $set: { discountStatus: value } }, { new: true })
+        res.status(200).json({ message: " update successfully " });
+    } catch (error) {
+        res.status(500).json({ erro: error.message });
+    }
+}
 
 export const get_banner = async (req, res) => {
     try {
@@ -62,10 +71,28 @@ export const get_banner = async (req, res) => {
 
 export const get_discount = async (req, res) => {
     try {
-        const allDiscount = await Discount.find({});
+        const allDiscount = await Discount.find({}).sort({ createdAt: -1 });
         if (!allDiscount)
             return res.status(201).json({ message: "No Discount added " });
         res.status(200).json({ discount: allDiscount });
+
+    } catch (error) {
+        console.error("Error get the discount  ", error);
+        res.status(500).json({ error: "dicount get nhi ho rhe hai" });
+    }
+}
+export const discount_value = async (req, res) => {
+    try {
+        const { code } = req.body;
+        const Discount_code = await Discount.findOne({ discountText: code });
+        if (!Discount_code)
+            return res.status(201).json({amount: 0 , type: "nhi" ,  message: "Invalid Discount code " });
+        else if (!Discount_code.discountStatus)
+            return res.status(201).json({amount: 0 , type: "nhi" ,  message: "Discount code expire" });
+        else if (Discount_code.discountType === "percentage")
+            return res.status(201).json({amount: Discount_code.discountAmount , type: Discount_code.discountType ,  message: Discount_code.discountAmount + "% Discount" });
+        else
+            return res.status(201).json({amount: Discount_code.discountAmount , type: Discount_code.discountType ,  message: Discount_code.discountAmount + " Rs. Discount" });
 
     } catch (error) {
         console.error("Error get the discount  ", error);
@@ -86,6 +113,7 @@ export const get_topSlide = async (req, res) => {
 }
 
 
+
 // Helper to resolve __dirname in ES6 modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -95,7 +123,7 @@ export const delete_banner = async (req, res) => {
     try {
         const { _id } = req.body;
         const deleteBanner = await Banner.findByIdAndDelete({ _id });
-        const imagePath = path.join(__dirname , '..' , 'public' , deleteBanner.banner);
+        const imagePath = path.join(__dirname, '..', 'public', deleteBanner.banner);
         await fs.promises.unlink(imagePath);
         res.status(200).json({ message: "delete the banner successfully" });
 

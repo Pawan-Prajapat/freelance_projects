@@ -50,7 +50,8 @@ const updateOrderQty = async (add, variantsArray) => {
 export const storeBuyerData = async (req, res) => {
   try {
     const { email, country, firstName, lastName, city, state, pincode, phone, address } = req.body.customerDetails;
-    const { order_items, total_amount, payment_type } = req.body.orderDetails;
+    const { order_items, total_amount, payment_type, discount_amount , discount_cupon} = req.body.orderDetails;
+    console.log("req.body.orderDetails" , req.body.orderDetails);
     let customer = await Customer.findOne({ email });
     if (!customer) {
       customer = await Customer.create({
@@ -80,7 +81,9 @@ export const storeBuyerData = async (req, res) => {
       total_amount,
       payment_type,
       payment_status: 'pending',
-      status: 'pending'
+      status: 'pending',
+      discount_amount,
+      discount_cupon
     };
 
     if (!payment_type) {  // COD
@@ -94,7 +97,7 @@ export const storeBuyerData = async (req, res) => {
         order
       });
     } else {  // Razorpay
-      const [razorpay_order_id, amount] = await checkout(total_amount);
+      const [razorpay_order_id, amount] = await checkout(total_amount - discount_amount);
       orderData.razorpay_order_id = razorpay_order_id;
       const order = new Order(orderData);
       await order.save();
@@ -168,10 +171,10 @@ export const customerData = async (req, res) => {
       const items = await Promise.all(order.order_items.map(async (item) => {
         const product = await Product.findById(item.product_id).select('title');
         const variant = await Variant.findById(item.variant_id).select('sku price weight');
-        if(!product){
+        if (!product) {
           console.warn(`product with id ${item.product_id} not found`);
         }
-        if(!variant){
+        if (!variant) {
           console.warn(`variant with id ${item.variant_id} not found`);
         }
 

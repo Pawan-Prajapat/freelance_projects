@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from "axios";
 import logo from '../../img/YumiHerbalProduct.png';
 
 // for current product 
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { calculateTotal , clearCart } from '../../features/AddToCartSlice'
+import { calculateTotal, clearCart } from '../../features/AddToCartSlice'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
@@ -36,6 +36,12 @@ function paymentDetailSummary() {
     pincode: { visibleCheck: true, upLabel: false },
   });
 
+  // discount price 
+  const [discount_price, setDiscount_price] = useState(0);
+  const [discount_message, setDiscount_message] = useState('');
+  const [discount_code, setDiscount_code] = useState('');
+  const discount_ref = useRef(null);
+
   // document se email ki value get nhi ho rhi tho state se karte hai
   const [email, setEmail] = useState('');
   const [mail, setMail] = useState(true);
@@ -47,7 +53,9 @@ function paymentDetailSummary() {
     "orderDetails": {
       "order_items": [],
       "total_amount": null,
-      "payment_type": null
+      "payment_type": null,
+      "discount_amount": discount_price,
+      "discount_cupon":discount_code
     }
   })
 
@@ -154,6 +162,9 @@ function paymentDetailSummary() {
   const dispatch = useDispatch();
 
   const buyerDataStore = async () => {
+    buyer.orderDetails.discount_amount = discount_price;
+    buyer.orderDetails.discount_cupon = discount_code;
+    console.log("buyer " , buyer);
     await axios.post(serverUrl + "/api/storeBuyerData", buyer)
       .then(res => {
         if (res.data.razorpay_order_id != "no") {
@@ -199,7 +210,32 @@ function paymentDetailSummary() {
     return true;
   };
 
+  const subTotal = param.id === "addToCartCheckout" ? buyer.orderDetails.total_amount : SingleProductData?.variant.price ;
 
+  const checkDiscount = async (code) => {
+    try {
+      await axios.post(serverUrl + "/api/discount_value", { code })
+        .then(res => {
+          const amount = res.data.amount;
+          if (amount === 0)
+            setDiscount_price(0);
+          else if (res.data.type === "percentage") {
+            setDiscount_price((subTotal * amount) / 100);
+          }
+          else
+          {
+            setDiscount_price(subTotal );
+          }
+            
+
+          setDiscount_message(res.data.message);
+        })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  console.log("discount_price" , discount_price);
 
   return (
 
@@ -310,7 +346,7 @@ function paymentDetailSummary() {
                 <p className='w-1/2 text-center text-sm pb-4'>After clicking “Pay now”, you will be redirected to Razorpay Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
               </div>
             </label>
-            <label>
+            {/* <label>
               <div className={`py-6 px-4 flex gap-3 border ${selectedPaymentMethod ? '' : 'border-green-500'}  bg-gray-50`}>
                 <input
                   type="radio"
@@ -321,7 +357,7 @@ function paymentDetailSummary() {
                 />
                 <p>Cash on Delivery (COD)</p>
               </div>
-            </label>
+            </label> */}
           </div>
 
 
@@ -368,20 +404,21 @@ function paymentDetailSummary() {
           )}
 
           <div className='flex justify-center mt-7 gap-4'>
-            <input className=' border border-gray-300  rounded-md px-5 py-3 w-3/4' type="text" placeholder='Discount Code' />
-            <button className=' border border-gray-300  rounded-md px-5 py-3 bg-gray-200'>Apply</button>
+            <input className=' border border-gray-300  rounded-md px-5 py-3 w-3/4' type="text" ref={discount_ref} onInput={() => setDiscount_code(discount_ref.current.value)} placeholder='Discount Code' />
+            <button type='button' onClick={() => checkDiscount(discount_code)} className=' border border-gray-300  rounded-md px-5 py-3 bg-gray-200'>Apply</button>
           </div>
+          <p className={`${discount_price !== 0 ? 'text-green-800' : 'text-red-800'} mx-5 `}>{discount_message}</p>
           <div className='flex justify-between mt-7'>
             <div className='flex flex-col gap-y-2 '>
               <p className=' text-sm'>Subtotal</p>
-              <p className=' text-sm'>Shipping</p>
+              <p className={`${discount_price !== 0 ? '' : 'hidden'} text-sm`}>Discount</p>
               <p className='  text-xl'>Total</p>
               <p className=' text-sm text-gray-500'>Including Rs. 53.67 in taxes</p>
             </div>
             <div className='flex flex-col gap-y-2 text-end'>
-              <p className='font-semibold'>Rs. {param.id === "addToCartCheckout" ? buyer.orderDetails.total_amount : SingleProductData?.variant.price}</p>
-              <p className='text-gray-500'>Enter shipping address</p>
-              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {param.id === "addToCartCheckout" ? buyer.orderDetails.total_amount : SingleProductData?.variant.price}</span></p>
+              <p className='font-semibold'>Rs. {subTotal}</p>
+              <p className={`${discount_price !== 0 ? '' : 'hidden'}  text-gray-500`}>{discount_price}</p>
+              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {subTotal - discount_price}</span></p>
             </div>
           </div>
           <div className='visible lg:hidden mt-6' >

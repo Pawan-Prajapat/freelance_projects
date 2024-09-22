@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaEllipsisV } from 'react-icons/fa';
 import axios from 'axios';
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
@@ -13,6 +14,9 @@ function BannerAndTopSlider() {
   const [discounts, setDiscounts] = useState([]);
   const [discountText, setDiscountText] = useState('');
   const [discountAmount, setDiscountAmount] = useState('');
+  const [discountType, setDiscountType] = useState("percentage");
+
+  const [activeMenu, setActiveMenu] = useState(null);
 
   useEffect(() => {
 
@@ -22,7 +26,6 @@ function BannerAndTopSlider() {
       try {
         const response = await axios.get(`${serverUrl}/api/marquee`);
         setTopSlideText(response.data.topSlide || '');
-        console.log("banner and top slider jsx", topSlideText);
       } catch (error) {
         console.error('Error fetching top slide:', error);
       }
@@ -126,16 +129,35 @@ function BannerAndTopSlider() {
   // Handle discount submission
   const handleDiscountSubmit = async () => {
     try {
-      await axios.post(`${serverUrl}/api/add_discount`, { discoutText: discountText, discoutAmount: discountAmount });
+      await axios.post(`${serverUrl}/api/add_discount`, { discountText, discountAmount, discountType });
       // Fetch updated discounts
       const response = await axios.get(`${serverUrl}/api/get_discount`);
       setDiscounts(response.data.discount || []);
       setDiscountText('');
       setDiscountAmount('');
+      setDiscountType('');
     } catch (error) {
       console.error('Error adding discount:', error);
     }
   };
+
+  // Toggle the visibility of the dropdown menu for a specific discount
+  const toggleMenu = (index) => {
+    setActiveMenu(activeMenu === index ? null : index);
+  };
+
+  const discount_status = async (discount_id, value) => {
+    const current_status  = discounts.find(obj => obj._id === discount_id &&  obj.discountStatus === value);
+    if(current_status){
+      return ;
+    }
+    else{
+      await axios.patch(`${serverUrl}/api/update_discount` , {discount_id , value})
+      // Fetch updated discounts
+      const response = await axios.get(`${serverUrl}/api/get_discount`);
+      setDiscounts(response.data.discount || []);
+    }
+  }
 
   return (
     <div className="p-4">
@@ -234,6 +256,16 @@ function BannerAndTopSlider() {
           onChange={(e) => setDiscountAmount(e.target.value)}
           className="mb-2 p-2 border border-gray-300 rounded"
         />
+        <select
+          name="discountType"
+          value={discountType}   // Assuming 'discountType' is a state variable
+          onChange={(e) => setDiscountType(e.target.value)}   // Update the discount type state
+          className="mb-2 p-2 border border-gray-300 rounded"
+        >
+          <option value="percentage">Percentage(%)</option>
+          <option value="fix">Fix Amount</option>
+        </select>
+
         <button
           type="button"
           onClick={handleDiscountSubmit}
@@ -248,8 +280,45 @@ function BannerAndTopSlider() {
         {discounts.length === 0 && <p>No discounts added yet.</p>}
         <ul className="list-none p-0">
           {discounts.map((discount, index) => (
-            <li key={index} className="mb-2">
-              <span className="font-bold">{discount.discoutText}:</span> {discount.discoutAmount}
+            <li
+              key={index}
+              className="relative bg-white border border-gray-300 rounded-lg shadow-md p-4 mb-4 flex justify-between items-center"
+            >
+              <div className={`${discount.discountStatus ? '' : 'line-through'}`}>
+                <span className="font-bold text-gray-800">{discount.discountText}:</span>{' '}
+                <span className="text-gray-600">{discount.discountAmount}</span>{' '}
+                <span className="text-gray-500">
+                  {discount.discountType === 'fix' ? 'Rs. Discount' : '% Discount'}
+                </span>
+              </div>
+
+              {/* Three-dot menu button */}
+              <div className="relative">
+                <button
+                  onClick={() => toggleMenu(index)}
+                  className="p-2 hover:bg-gray-100 rounded-full focus:outline-none"
+                >
+                  <FaEllipsisV className="text-gray-600" />
+                </button>
+
+                {/* Dropdown menu */}
+                {activeMenu === index && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                    <button
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-800"
+                      onClick={() => discount_status(discount._id, true)}
+                    >
+                      Activate
+                    </button>
+                    <button
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-800"
+                      onClick={() => discount_status(discount._id, false)}
+                    >
+                      Deactivate
+                    </button>
+                  </div>
+                )}
+              </div>
             </li>
           ))}
         </ul>

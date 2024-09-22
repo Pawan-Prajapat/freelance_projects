@@ -68,6 +68,9 @@ function OrderWithCustomerDetail() {
                     <p className="mb-2 text-gray-700"><strong>Payment Status:</strong> {current_order.payment_status}</p>
                     <p className="mb-2 text-gray-700"><strong>Payment Type:</strong> {current_order.payment_type === "true" ? "Razorpay" : "Cod"}</p>
                     <p className="mb-2 text-gray-700"><strong>Total Amount:</strong> ₹{current_order.total_amount}</p>
+                    <p className="mb-2 text-gray-700"><strong>Discount Amount:</strong> ₹{current_order.discount_amount}</p>
+                    <p className="mb-2 text-gray-700"><strong>Discount Cupon:</strong> {current_order.discount_cupon}</p>
+                    <p className="mb-2 text-gray-700"><strong>Final Amount:</strong> {current_order.total_amount - current_order.discount_amount}</p>
                     <div className="mt-4">
                         <h3 className="font-semibold text-gray-800">Items:</h3>
                         <ul className="list-disc list-inside ml-4 text-gray-700">

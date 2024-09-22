@@ -31,13 +31,21 @@ const topSliderSchema = new Schema({
 
 // schema for discount
 const discountSchema = new Schema({
-    discoutText:{
+    discountText:{
       type : String,
       required : true
     },
-    discoutAmount:{
+    discountAmount:{
       type : Number,
       required : true
+    },
+    discountType:{
+      type : String,
+      required : true
+    },
+    discountStatus : {
+      type : Boolean,
+      default : true
     }
   }, {
     timestamps: false
