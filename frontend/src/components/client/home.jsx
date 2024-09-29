@@ -222,7 +222,6 @@ function Home() {
                                     alt={`Banner ${index + 1}`}
                                     className='w-full'
                                     placeholderSrc="/path-to-placeholder-image.jpg"
-                                    effect="blur"
                                 />
 
                             </a>
@@ -295,7 +294,6 @@ function Home() {
                                     alt={`Banner ${index + 1}`}
                                     className='w-full'
                                     placeholderSrc="/path-to-placeholder-image.jpg"
-                                    effect="blur"
                                 />
 
                             </a>
@@ -408,7 +406,6 @@ function Home() {
                                     alt={`Banner ${index + 1}`}
                                     className='w-full'
                                     placeholderSrc="/path-to-placeholder-image.jpg"
-                                    effect="blur"
                                 />
 
                             </a>
