@@ -39,7 +39,7 @@ function Search(props) {
         <>
             {props.showFull ? (
                 // Full-screen version
-                <div className={` inset-0 z-50 bg-white flex flex-col p-5`}>
+                <div className={`${props.showOrNot(2) ? 'hidden' : ''} inset-0 z-50 bg-white flex flex-col p-5`}>
                     <div className="flex justify-between items-center mb-4">
                         <input
                             type="text"
