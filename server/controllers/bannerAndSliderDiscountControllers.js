@@ -8,7 +8,7 @@ export const add_banner = async (req, res) => {
         // Accessing the uploaded file information
 
         const file = req.files['image'][0]; // Access the 'image' field
-        const { redirectLink } = req.body;
+        const { redirectLink , slider_number } = req.body;
 
         if (!file) {
             return res.status(400).json({ message: 'No image file uploaded' });
@@ -20,7 +20,8 @@ export const add_banner = async (req, res) => {
         // Creating a new description image entry in the database
         await Banner.create({
             banner: photoPath, // Save the path in the database
-            link: redirectLink
+            link: redirectLink,
+            slider : slider_number
         });
 
         res.status(200).json({ message: "Banner successfully uploaded" });

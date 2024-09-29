@@ -1,6 +1,10 @@
-import React from 'react';
+import React , {useEffect} from 'react';
 
 function ShippingPolicy() {
+  // when uesr click then page show on the top every time
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
   return (
     <div className='px-6 lg:px-32 py-5'>
       <h1 className='text-2xl font-bold mb-4 text-center'>Shipping Policy</h1>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoChevronDown } from "react-icons/go";
 
 function FAQ() {
@@ -7,6 +7,11 @@ function FAQ() {
   const toggleQuestion = (index) => {
     setOpenQuestionIndex(openQuestionIndex === index ? null : index);
   };
+
+  // when uesr click then page show on the top every time
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   return (
     <div className='px-6 lg:px-32 py-5 bg-neutral-50'>

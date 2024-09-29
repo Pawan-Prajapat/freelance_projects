@@ -1,6 +1,10 @@
-import React from 'react'
+import React ,{useEffect} from 'react';
 
 function About() {
+    // when uesr click then page show on the top every time
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
     return (
         <section className="px-6 lg:px-32 py-5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

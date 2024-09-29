@@ -41,6 +41,7 @@ function ProductForm() {
     }, [errorMessage, successMessage])
 
     const titleRef = useRef(null);
+    const codRef = useRef(null);
     const categoryRef = useRef(null);
     const editor = useRef(null);
     const [variants, setVariants] = useState([]);
@@ -64,6 +65,7 @@ function ProductForm() {
     useEffect(() => {
         if (isEditMode) {
             titleRef.current.value = product.title;
+            codRef.current.value = product.cod ? "Allow" : "Not Allow";
             categoryRef.current.value = product.subCategory;
             setDesc_Content(product.description || '');
             setVariants(product.variants || []);
@@ -126,6 +128,8 @@ function ProductForm() {
         media.forEach((url, index) => {
             productData.append(`media[${index}]`, url); // Use `media[${index}]` as the key
         });
+
+        productData.append('cod', codRef.current.value);
 
 
         if (isEditMode) {
@@ -305,6 +309,21 @@ function ProductForm() {
                 </select>
             </div>
 
+            {/* Cod or not */}
+            <div className="space-y-2">
+                <label className="block text-gray-700 text-sm font-semibold" htmlFor="cod">
+                    Cod
+                </label>
+                <select
+                    name="cod"
+                    ref={codRef}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                    <option value="Allow">Allow</option>
+                    <option value="Not Allow">Not Allow</option>
+                </select>
+            </div>
+
             {/* Product Variants */}
             <div className="space-y-4">
                 <label className="block text-gray-700 text-sm font-semibold">Variants</label>
@@ -364,7 +383,7 @@ function ProductForm() {
             {/* Image and Video Upload */}
             <div className=' flex flex-col gap-5 border py-5 px-10 border-gray-700'>
                 <h2 className='font-sans text-xl font-semibold text-gray-800'>Upload the image and get the url  to insert in the description and media </h2>
-                <Description_image_upload  />
+                <Description_image_upload />
             </div>
 
             {/* Product Media */}

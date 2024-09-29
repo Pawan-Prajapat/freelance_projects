@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { IoIosCall } from "react-icons/io";
 import emailjs from "@emailjs/browser";
@@ -9,6 +9,10 @@ import { MdClose } from "react-icons/md";
 const ContactPage = () => {
     const form = useRef();
     const [showSuccess, setShowSuccess] = useState(false);
+    // when uesr click then page show on the top every time
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     const sendEmail = (e) => {
         e.preventDefault();
@@ -95,7 +99,7 @@ const ContactPage = () => {
                     {showSuccess && (
                         <div className="mt-4 fixed z-[1002] bg-white shadow-xl top-28 gap-3 h-14 px-6 text-center flex items-center rounded-md border-t-4 border-green-600 right-16 text-green-600">
                             <p>Email has been sent successfully!</p>
-                            <MdClose className=" text-black h-6 w-6 hover:cursor-pointer" onClick={() => setShowSuccess(false)}/>
+                            <MdClose className=" text-black h-6 w-6 hover:cursor-pointer" onClick={() => setShowSuccess(false)} />
                         </div>
                     )}
                 </div>

@@ -18,6 +18,8 @@ function BannerAndTopSlider() {
 
   const [activeMenu, setActiveMenu] = useState(null);
 
+  const [slider_number, setSliderNumber] = useState('');
+
   useEffect(() => {
 
 
@@ -80,21 +82,16 @@ function BannerAndTopSlider() {
     const formData = new FormData();
     formData.append('image', selectedFile);
     formData.append('redirectLink', redirectLink);
+    formData.append('slider_number', slider_number);
 
     try {
       const response = await axios.post(`${serverUrl}/api/add_banner`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-
-      // Update the banner list
-      const newBanner = {
-        imageUrl: response.data.banner, // Adjust according to your response
-        redirectLink: redirectLink,
-      };
-      setBanners((prevBanners) => [...prevBanners, newBanner]);
       setUploadStatus('Banner uploaded successfully.');
       setSelectedFile(null);
       setRedirectLink('');
+      setSliderNumber('');
       setShowForm(false);
     } catch (error) {
       setUploadStatus('Image upload failed.');
@@ -147,12 +144,12 @@ function BannerAndTopSlider() {
   };
 
   const discount_status = async (discount_id, value) => {
-    const current_status  = discounts.find(obj => obj._id === discount_id &&  obj.discountStatus === value);
-    if(current_status){
-      return ;
+    const current_status = discounts.find(obj => obj._id === discount_id && obj.discountStatus === value);
+    if (current_status) {
+      return;
     }
-    else{
-      await axios.patch(`${serverUrl}/api/update_discount` , {discount_id , value})
+    else {
+      await axios.patch(`${serverUrl}/api/update_discount`, { discount_id, value })
       // Fetch updated discounts
       const response = await axios.get(`${serverUrl}/api/get_discount`);
       setDiscounts(response.data.discount || []);
@@ -185,6 +182,17 @@ function BannerAndTopSlider() {
             onChange={handleLinkChange}
             className="mb-2 p-2 border border-gray-300 rounded"
           />
+          <select
+            value={slider_number}
+            onChange={(e) => setSliderNumber(e.target.value)} // Update the state on change
+            className="mb-2 p-2 border border-gray-300 rounded"
+          >
+            <option value="" disabled>Select a number</option> {/* Optional default option */}
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+
           <button
             type="button"
             onClick={handleUpload}
@@ -199,18 +207,27 @@ function BannerAndTopSlider() {
       <div className="mb-4">
         <h3 className="text-xl font-bold">Added Banners:</h3>
         {banners.length === 0 && <p>No banners added yet.</p>}
-        <ul className="list-none p-0">
+        <ul className="list-none p-0 flex flex-wrap mt-5 border rounded-2xl mb-10 shadow-md h-80 overflow-y-auto">
           {banners.map((banner) => (
-            <li key={banner._id} className="flex items-center mb-4">
-              <img src={serverUrl + banner.banner} alt={"banner"} width={100} className="mr-4" />
-              <a
-                href={banner.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mr-4 text-blue-500 underline"
-              >
-                Visit Link
-              </a>
+            <li key={banner._id} className="flex items-center gap-32 mx-16 my-4 " style={{ width: 'calc(70.33% - 1rem)' }}>
+              <img
+                src={serverUrl + banner.banner}
+                alt={"banner"}
+                width={60}
+                height={60} // Set height to maintain aspect ratio
+                className="mr-4 rounded-md object-cover" // Added rounded corners and object-fit
+              />
+              <div className="flex gap-5"> {/* Use flex-grow to allow this div to take remaining space */}
+                <a
+                  href={banner.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mr-4 text-blue-500 underline"
+                >
+                  Visit Link
+                </a>
+                <p className="text-gray-700">Slider Number is {banner.slider}</p>
+              </div>
               <button
                 onClick={() => handleDeleteBanner(banner._id)}
                 className="px-4 py-2 bg-red-500 text-white rounded"
@@ -220,6 +237,7 @@ function BannerAndTopSlider() {
             </li>
           ))}
         </ul>
+
       </div>
 
       <div className="mb-4 p-4 border border-gray-300 rounded ">

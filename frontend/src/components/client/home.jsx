@@ -115,6 +115,10 @@ function Home() {
     const myName = useSelector((state) => state.ProductHairReducer);
     // for get the products from the store
     const [banners, setBanners] = useState([]);
+    // when uesr click then page show on the top every time
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -208,20 +212,22 @@ function Home() {
         <React.Fragment>
             <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
                 {banners.map((banner, index) => (
-                    <div key={index} className='w-full'>
-                        <a href={banner.link} target="_blank" rel="noopener noreferrer">
-                            <LazyLoadImage
-                                src={`${serverUrl}${banner.banner}`}
-                                srcSet={`${serverUrl}${banner.banner}?w=300 300w, ${serverUrl}${banner.banner}?w=768 768w, ${serverUrl}${banner.banner}?w=1024 1024w`}
-                                sizes="(max-width: 300px) 300px, (max-width: 768px) 768px, 1024px"
-                                alt={`Banner ${index + 1}`}
-                                className='w-full'
-                                placeholderSrc="/path-to-placeholder-image.jpg"
-                                effect="blur"
-                            />
+                    banner.slider == 1 && (
+                        <div key={index} className='w-full'>
+                            <a href={banner.link} target="_blank" rel="noopener noreferrer">
+                                <LazyLoadImage
+                                    src={`${serverUrl}${banner.banner}`}
+                                    srcSet={`${serverUrl}${banner.banner}?w=300 300w, ${serverUrl}${banner.banner}?w=768 768w, ${serverUrl}${banner.banner}?w=1024 1024w`}
+                                    sizes="(max-width: 300px) 300px, (max-width: 768px) 768px, 1024px"
+                                    alt={`Banner ${index + 1}`}
+                                    className='w-full'
+                                    placeholderSrc="/path-to-placeholder-image.jpg"
+                                    effect="blur"
+                                />
 
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    )
                 ))}
 
             </Carousel>
@@ -277,16 +283,26 @@ function Home() {
                     )
                 }
             </div>
-            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} >
-                <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/banner4.jpg" alt="" className=' ' />
-                </div>
-                <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/banner1.jpg" alt="" className='w-full' />
-                </div>
-                <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/hair.jpg" alt="" className='w-full' />
-                </div>
+            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
+                {banners.map((banner, index) => (
+                    banner.slider == 2 && (
+                        <div key={index} className='w-full'>
+                            <a href={banner.link} target="_blank" rel="noopener noreferrer">
+                                <LazyLoadImage
+                                    src={`${serverUrl}${banner.banner}`}
+                                    srcSet={`${serverUrl}${banner.banner}?w=300 300w, ${serverUrl}${banner.banner}?w=768 768w, ${serverUrl}${banner.banner}?w=1024 1024w`}
+                                    sizes="(max-width: 300px) 300px, (max-width: 768px) 768px, 1024px"
+                                    alt={`Banner ${index + 1}`}
+                                    className='w-full'
+                                    placeholderSrc="/path-to-placeholder-image.jpg"
+                                    effect="blur"
+                                />
+
+                            </a>
+                        </div>
+                    )
+                ))}
+
             </Carousel>
             <div className='my-10'>
                 <p className='  font-bold font-pawan text-[28px] text-[#4b7422] text-center capitalize'>What's New in hennakart store</p>
@@ -380,10 +396,25 @@ function Home() {
                 </div>
             </div>
 
-            <Carousel className='mt-10 lg:mt-20 lg:h-[500px]' responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={8000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
-                <div className='w-full'>
-                    <LazyLoadImage src="/images/Hennakart/Hennakart Face Care-01.jpg" alt="" className=' ' />
-                </div>
+            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
+                {banners.map((banner, index) => (
+                    banner.slider ==  3 &&(
+                        <div key={index} className='w-full'>
+                            <a href={banner.link} target="_blank" rel="noopener noreferrer">
+                                <LazyLoadImage
+                                    src={`${serverUrl}${banner.banner}`}
+                                    srcSet={`${serverUrl}${banner.banner}?w=300 300w, ${serverUrl}${banner.banner}?w=768 768w, ${serverUrl}${banner.banner}?w=1024 1024w`}
+                                    sizes="(max-width: 300px) 300px, (max-width: 768px) 768px, 1024px"
+                                    alt={`Banner ${index + 1}`}
+                                    className='w-full'
+                                    placeholderSrc="/path-to-placeholder-image.jpg"
+                                    effect="blur"
+                                />
+
+                            </a>
+                        </div>
+                    )
+                ))}
 
             </Carousel>
 

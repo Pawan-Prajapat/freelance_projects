@@ -63,7 +63,7 @@ export default function Navbar() {
 
     // for the offcanvas
 
-    const [isOffcanvasOpen, setOffcanvas] = useState([false, false, false]);
+    const [isOffcanvasOpen, setOffcanvas] = useState([false, false, false, false]);
 
     const offcanvasOpenAndClose = (number) => {
         const newArray = [...isOffcanvasOpen];
@@ -79,6 +79,7 @@ export default function Navbar() {
     // show the submenu on hover     
     const [showTheSubmenuOnHover, setShowTheSubmenuOnHover] = useState(null);
     const [showSearchResults, setShowSearchResults] = useState(false);
+    const [showSearchResults2, setShowSearchResults2] = useState(false);
     const [activeLink, setActiveLink] = useState(null);
     const showTheSubmenuOnHoverFunc = (index) => {
         setShowTheSubmenuOnHover(prevIndex => prevIndex === index ? null : index);
@@ -142,6 +143,13 @@ export default function Navbar() {
         // Optional: Hide the search results when input loses focus (if desired)
         // setShowSearchResults(false);
     };
+
+    const mobile_search_handle = () => {
+        setShowSearchResults2(false);
+    }
+    useEffect(() => {
+    }, [showSearchResults2]);
+
 
     return (
         <>
@@ -284,7 +292,7 @@ export default function Navbar() {
                             <li className={`nav ${activeLink === 6 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(6)}><Link to="/About">about us </Link></li>
                             <li className={`nav ${activeLink === 7 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(7)}><Link to="/">results </Link></li>
                             <li className={`nav ${activeLink === 8 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(8)}><Link to="/">blog </Link></li>
-                            <li className='px-3 py-3 font-medium text-center text-white bg-lime-800 rounded-full' ><Link to="/">Trak your order </Link></li>
+                            <li className='px-3 py-3 font-medium text-center text-white bg-lime-800 rounded-full' ><Link to="https://yumimehandi.shiprocket.co/tracking">Track your order </Link></li>
                         </ul>
                     </div>
 
@@ -351,7 +359,7 @@ export default function Navbar() {
                         </section>
                     </div>
                     <div className={`${navbar ? '' : ' xl:hidden'} flex gap-7  `}>
-                        <div className='cursor-pointer  '>
+                        <div onClick={() => setShowSearchResults2(!showSearchResults2)} className='cursor-pointer  '>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-6 h-6 bi bi-search " viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                             </svg>
@@ -378,6 +386,14 @@ export default function Navbar() {
                     </div>
                 </div>
 
+                {showSearchResults2 && (
+                    <Search
+                        showFull={true}
+                        mobile_search_handle={mobile_search_handle}
+                        openAndClose={offcanvasOpenAndClose}
+                        showOrNot={checkIsOffcanvasOpenForLogin}
+                    />
+                )}
             </nav >
 
         </>

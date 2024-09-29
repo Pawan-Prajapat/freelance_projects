@@ -55,7 +55,7 @@ function paymentDetailSummary() {
       "total_amount": null,
       "payment_type": null,
       "discount_amount": discount_price,
-      "discount_cupon":discount_code
+      "discount_cupon": discount_code
     }
   })
 
@@ -98,11 +98,15 @@ function paymentDetailSummary() {
 
   // paise bhejne ka trika 
   // store the buyer data
+  const [codShow, setCodShow] = useState(true);
   useEffect(() => {
     let updatedOrderItems = [];
 
     if (param.id !== "addToCartCheckout") {
       // Single product case
+      if (!SingleProductData?.cod) {
+        setCodShow(false);
+      }
       updatedOrderItems = [
         {
           product_id: SingleProductData?.product_id,
@@ -112,11 +116,16 @@ function paymentDetailSummary() {
       ];
     } else {
       // Multiple products case
-      updatedOrderItems = AddToCartData.map(item => ({
-        product_id: item.product_id,
-        variant_id: item.variant._id,
-        qty: item.qty
-      }));
+      updatedOrderItems = AddToCartData.map(item => {
+        if (!item.cod)
+          setCodShow(false);
+
+        return {
+          product_id: item.product_id,
+          variant_id: item.variant._id,
+          qty: item.qty
+        };
+      });
     }
 
     // Update the buyer state with the new order items
@@ -164,7 +173,6 @@ function paymentDetailSummary() {
   const buyerDataStore = async () => {
     buyer.orderDetails.discount_amount = discount_price;
     buyer.orderDetails.discount_cupon = discount_code;
-    console.log("buyer " , buyer);
     await axios.post(serverUrl + "/api/storeBuyerData", buyer)
       .then(res => {
         if (res.data.razorpay_order_id != "no") {
@@ -210,7 +218,7 @@ function paymentDetailSummary() {
     return true;
   };
 
-  const subTotal = param.id === "addToCartCheckout" ? buyer.orderDetails.total_amount : SingleProductData?.variant.price ;
+  const subTotal = param.id === "addToCartCheckout" ? buyer.orderDetails.total_amount : SingleProductData?.variant.price;
 
   const checkDiscount = async (code) => {
     try {
@@ -222,11 +230,10 @@ function paymentDetailSummary() {
           else if (res.data.type === "percentage") {
             setDiscount_price((subTotal * amount) / 100);
           }
-          else
-          {
-            setDiscount_price(subTotal );
+          else {
+            setDiscount_price(subTotal);
           }
-            
+
 
           setDiscount_message(res.data.message);
         })
@@ -234,8 +241,6 @@ function paymentDetailSummary() {
       console.error(error);
     }
   }
-
-  console.log("discount_price" , discount_price);
 
   return (
 
@@ -346,7 +351,7 @@ function paymentDetailSummary() {
                 <p className='w-1/2 text-center text-sm pb-4'>After clicking “Pay now”, you will be redirected to Razorpay Secure (UPI, Cards, Wallets, NetBanking) to complete your purchase securely.</p>
               </div>
             </label>
-            {/* <label>
+            <label className={`${codShow ? '' : ' hidden'}`}>
               <div className={`py-6 px-4 flex gap-3 border ${selectedPaymentMethod ? '' : 'border-green-500'}  bg-gray-50`}>
                 <input
                   type="radio"
@@ -357,7 +362,7 @@ function paymentDetailSummary() {
                 />
                 <p>Cash on Delivery (COD)</p>
               </div>
-            </label> */}
+            </label>
           </div>
 
 
@@ -413,7 +418,6 @@ function paymentDetailSummary() {
               <p className=' text-sm'>Subtotal</p>
               <p className={`${discount_price !== 0 ? '' : 'hidden'} text-sm`}>Discount</p>
               <p className='  text-xl'>Total</p>
-              <p className=' text-sm text-gray-500'>Including Rs. 53.67 in taxes</p>
             </div>
             <div className='flex flex-col gap-y-2 text-end'>
               <p className='font-semibold'>Rs. {subTotal}</p>

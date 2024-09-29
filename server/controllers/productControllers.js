@@ -3,13 +3,15 @@ import mongoose from "mongoose";
 
 export const storeProductData = async (req, res) => {
     try {
-        const { title, description, category, subCategory, variants, media } = req.body;
+        const { title, description, category, subCategory, variants, media, cod } = req.body;
+        const codType = (cod === 'Allow');
         if (title) {
             const newProduct = await Product.create({
                 title,
                 description,
                 subCategory,
                 category,
+                cod: codType,
                 images: media
             });
             if (variants) {
@@ -32,8 +34,8 @@ export const storeProductData = async (req, res) => {
 // update ka abhi karte hai 
 export const updateProductData = async (req, res) => {
     try {
-        const { _id, title, description, category, subCategory, variants, media } = req.body;
-
+        const { _id, title, description, category, subCategory, variants, media, cod } = req.body;
+        const codType = (cod === 'Allow');
         // Construct the update object dynamically to only include fields that are provided
         const updateFields = {};
         if (title) updateFields.title = title;
@@ -41,6 +43,7 @@ export const updateProductData = async (req, res) => {
         if (category) updateFields.category = category;
         if (subCategory) updateFields.subCategory = subCategory;
         if (media) updateFields.images = media;
+        if (cod) updateFields.cod = codType;
 
         // Update the product and return the updated document
         const updatedProduct = await Product.findOneAndUpdate(
@@ -182,6 +185,7 @@ export const getSingleProductData = async (req, res) => {
             description: productData.description,
             category: productData.category,
             subCategory: productData.subCategory,
+            cod: productData.cod,
             createdAt: productData.createdAt,
             updatedAt: productData.updatedAt,
             variants: productVariant,

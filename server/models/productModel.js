@@ -7,8 +7,7 @@ const productSchema = new Schema({
     required: true 
   },
   description: {
-    type: String,
-    required: true
+    type: String
   },
   category: [{
     type:String 
@@ -16,6 +15,10 @@ const productSchema = new Schema({
   subCategory: {
     type: String,
     required: true
+  },
+  cod: {
+    type: Boolean,
+    default: true
   },
   images : [{
     type:String 

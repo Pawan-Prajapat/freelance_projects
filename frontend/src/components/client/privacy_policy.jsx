@@ -1,6 +1,10 @@
-import React from 'react';
+import React , {useEffect} from 'react';
 
 function PrivacyPolicy() {
+  // when uesr click then page show on the top every time
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
   return (
     <div className='px-6 lg:px-32 py-5'>
       <h1 className='text-2xl font-bold mb-4 text-center'>Privacy Policy</h1>
@@ -13,7 +17,7 @@ function PrivacyPolicy() {
 
       <h2 className='text-xl font-bold mb-2'>1. Information We Collect</h2>
       <p className='mb-4'>We collect various types of information to provide a better customer experience.</p>
-      
+
       <h3 className='text-lg font-bold mb-2'>a. Personal Information:</h3>
       <ul className='list-disc pl-5 mb-4'>
         <li>Name</li>

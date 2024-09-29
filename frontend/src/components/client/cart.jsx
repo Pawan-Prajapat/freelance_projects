@@ -37,6 +37,11 @@ export default function Cart(props) {
 
     // const [selectedVariant, setSelectedVariant] = useState(null);
 
+    // when uesr click then page show on the top every time
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
+
     const gridCartValue = (x) => { // image size on grid 
         //  setGridCart('grid-cols-' + x);
         if (x === 4) {

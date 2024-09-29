@@ -1,10 +1,14 @@
-import React from 'react';
+import React , {useEffect} from 'react';
 
 function Refund_Return() {
+  // when uesr click then page show on the top every time
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
   return (
     <div className=' px-6 lg:px-32 py-5'>
       <h1 className='font-bold text-2xl underline underline-offset-1 mb-4 text-center'>RETURN AND REFUND AND EXCHANGE POLICY</h1>
-      
+
       <h2 className='font-bold text-xl mb-2'>REFUND</h2>
       <div className='mb-4'>
         <p className='mb-2'>

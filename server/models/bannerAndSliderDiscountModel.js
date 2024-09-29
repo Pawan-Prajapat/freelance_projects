@@ -9,6 +9,10 @@ const bannerSchema = new Schema({
   link: {
     type: String,
     required: true
+  },
+  slider :{
+    type: Number,
+    required:true
   }
 }, {
   timestamps: true
