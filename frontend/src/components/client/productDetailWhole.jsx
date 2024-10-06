@@ -9,7 +9,7 @@ import { FaQuestionCircle } from "react-icons/fa";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { addProductInCart , singleProduct } from "../../features/AddToCartSlice";
+import { addProductInCart, singleProduct } from "../../features/AddToCartSlice";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { fetchProducts } from "../../features/productsFileHairSlice.js";
 import axios from 'axios';
@@ -30,7 +30,7 @@ function ProductDetailWhole() {
     const { id } = useParams();
     const [variant, setVariant] = useState([]);
     const [selectedVariant, setSelectedVariant] = useState(null);
-    
+
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -41,7 +41,7 @@ function ProductDetailWhole() {
     }, []);
 
     useEffect(() => {
-       
+
 
         const fetchVariant = async () => {
             try {
@@ -64,7 +64,7 @@ function ProductDetailWhole() {
     const multipleImages = [currentProduct.images];
 
     const handleMinusClick = () => quantity > 1 && setQuantity(quantity - 1);
-    const handlePlusClick = () => quantity < selectedVariant?.qty &&  setQuantity(quantity + 1);
+    const handlePlusClick = () => quantity < selectedVariant?.qty && setQuantity(quantity + 1);
 
     const CustomDot = ({ onClick, index, active }) => (
         <button className={`${active ? "active opacity-60" : "inactive"} mx-1`} onClick={() => onClick()}>
@@ -90,7 +90,7 @@ function ProductDetailWhole() {
     };
 
     // this is for add the product detail in the single product in the redux state management
-    const handleSingleProduct = (product) =>{
+    const handleSingleProduct = (product) => {
         const productWithVariant = {
             ...product,
             selectedVariant,
@@ -161,7 +161,7 @@ function ProductDetailWhole() {
                                 <button className="font-bold py-3 px-4 rounded-l absolute -left-2" onClick={handleMinusClick}>
                                     <FaMinus />
                                 </button>
-                                <input id='qyt' type="number" className="focus:outline-none text-gray-700 py-3 w-[50px] bg-transparent absolute left-1/2" value={quantity}  onChange={(e) => setQuantity(parseInt(e.target.value, 10))} />
+                                <input id='qyt' type="number" className="focus:outline-none text-gray-700 py-3 w-[50px] bg-transparent absolute left-1/2" value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value, 10))} />
                                 <button className="text-gray-700 font-bold py-2 px-4 rounded-r absolute -right-2" onClick={handlePlusClick}>
                                     <FaPlus />
                                 </button>
@@ -182,15 +182,11 @@ function ProductDetailWhole() {
                                 Buy Bulk
                             </div>
                         </a>
-                        <div className='text-center text-base uppercase hover:border-none border-2 border-gray-600 py-[12px] font-bold shadow-[5px_6px_rgb(166,222,205,1)] hover:text-blue-50 bg-white hover:bg-black text-black w-full mt-10'>
-                            { selectedVariant && selectedVariant.length != 0 ? (
-                                <Link to={`/paymentDetailSummary/${id}/${selectedVariant._id}`} onClick={() => handleSingleProduct(currentProduct)}>Buy it Now</Link>
-                            ) : (
-                                <p>Selected variant nhi dala </p>
-                            )
-
-                            }
-                        </div>
+                        <Link to={`/paymentDetailSummary/${id}/${selectedVariant?._id}`} onClick={() => handleSingleProduct(currentProduct)}>
+                            <div className='text-center text-base uppercase hover:border-none border-2 border-gray-600 py-[12px] font-bold shadow-[5px_6px_rgb(166,222,205,1)] hover:text-blue-50 bg-white hover:bg-black text-black w-full mt-10'>
+                                Buy it Now
+                            </div>
+                        </Link>
                     </div>
                     <div className="w-full flex items-center mt-10 gap-5">
                         <FaRegEye className='w-5 h-5' />

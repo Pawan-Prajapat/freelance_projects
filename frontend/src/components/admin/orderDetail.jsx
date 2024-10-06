@@ -37,7 +37,7 @@ function OrderWithCustomerDetail() {
 
     if (!customer) return <div className="text-center mt-20 text-gray-500">Loading...</div>;
 
-    const { current_order, customer: customerDetails, prevOrders } = customer;
+    const { modified_order, customer: customerDetails, prevOrders } = customer;
 
     const handle_shiprocket_order = () => {
         const order_number = param.order_number;
@@ -63,20 +63,21 @@ function OrderWithCustomerDetail() {
                 {/* Current Order Box */}
                 <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <h2 className="text-2xl font-bold mb-4 text-indigo-600">Current Order</h2>
-                    <p className="mb-2 text-gray-700"><strong>Order Number:</strong> {current_order.order_number}</p>
-                    <p className="mb-2 text-gray-700"><strong>Status:</strong> {current_order.status}</p>
-                    <p className="mb-2 text-gray-700"><strong>Payment Status:</strong> {current_order.payment_status}</p>
-                    <p className="mb-2 text-gray-700"><strong>Payment Type:</strong> {current_order.payment_type === "true" ? "Razorpay" : "Cod"}</p>
-                    <p className="mb-2 text-gray-700"><strong>Total Amount:</strong> ₹{current_order.total_amount}</p>
-                    <p className="mb-2 text-gray-700"><strong>Discount Amount:</strong> ₹{current_order.discount_amount}</p>
-                    <p className="mb-2 text-gray-700"><strong>Discount Cupon:</strong> {current_order.discount_cupon}</p>
-                    <p className="mb-2 text-gray-700"><strong>Final Amount:</strong> {current_order.total_amount - current_order.discount_amount}</p>
+                    <p className="mb-2 text-gray-700"><strong>Order Number:</strong> {modified_order.order_number}</p>
+                    <p className="mb-2 text-gray-700"><strong>Status:</strong> {modified_order.status}</p>
+                    <p className="mb-2 text-gray-700"><strong>Payment Status:</strong> {modified_order.payment_status}</p>
+                    <p className="mb-2 text-gray-700"><strong>Payment Type:</strong> {modified_order.payment_type === "true" ? "Razorpay" : "Cod"}</p>
+                    <p className="mb-2 text-gray-700"><strong>Total Amount:</strong> ₹{modified_order.total_amount}</p>
+                    <p className="mb-2 text-gray-700"><strong>Discount Amount:</strong> ₹{modified_order.discount_amount}</p>
+                    <p className="mb-2 text-gray-700"><strong>Discount Cupon:</strong> {modified_order.discount_cupon}</p>
+                    <p className="mb-2 text-gray-700"><strong>Final Amount:</strong> {modified_order.total_amount - modified_order.discount_amount}</p>
                     <div className="mt-4">
                         <h3 className="font-semibold text-gray-800">Items:</h3>
                         <ul className="list-disc list-inside ml-4 text-gray-700">
-                            {current_order.order_items.map((item, index) => (
+                            {modified_order.order_items.map((item, index) => (
                                 <li key={index} className="mb-1">
-                                    Product ID: {item.product_id} - Qty: {item.qty} - Total: ₹{item.qty * item.variant_id}
+                                    Product ID: {item.product_name} | Qty: {item.qty} | Total: ₹{item.qty * item.variant_price} 
+                                     | Product weight : {item.variant_weight} gm
                                 </li>
                             ))}
                         </ul>
@@ -91,7 +92,7 @@ function OrderWithCustomerDetail() {
                     {showInputs && (
                         <div className="mt-4 space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Length</label>
+                                <label className="block text-sm font-medium text-gray-700">Length (in CMs must be more than 0.5)</label>
                                 <input
                                     type="text"
                                     name="length"
@@ -101,7 +102,7 @@ function OrderWithCustomerDetail() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Breadth</label>
+                                <label className="block text-sm font-medium text-gray-700">Breadth (in CMs must be more than 0.5)</label>
                                 <input
                                     type="text"
                                     name="breadth"
@@ -111,7 +112,7 @@ function OrderWithCustomerDetail() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Height</label>
+                                <label className="block text-sm font-medium text-gray-700">Height (in CMs must be more than 0.5)</label>
                                 <input
                                     type="text"
                                     name="height"
@@ -121,7 +122,7 @@ function OrderWithCustomerDetail() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">Weight</label>
+                                <label className="block text-sm font-medium text-gray-700">Weight (in KGs must be more than 0)</label>
                                 <input
                                     type="text"
                                     name="weight"

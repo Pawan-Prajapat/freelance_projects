@@ -377,8 +377,8 @@ export default function Cart(props) {
                         <div className="uppercase font-bold text-2xl border-b-2 py-4 w-[100%]">skin care</div>
                     </div>
                     <div className="w-full flex mt-4 justify-between pb-6">
-                        <div className="lg:hidden flex items-center gap-2">
-                            <BiFilterAlt onClick={() => offcanvasOpenAndClose(0)} className=" text-2xl " />
+                        <div onClick={() => offcanvasOpenAndClose(0)} className="lg:hidden flex items-center gap-2">
+                            <BiFilterAlt className=" text-2xl " />
                             <p>Filter</p>
                         </div>
                         <div className="flex justify-center items-center"> {/* images lgani hai line wali */}

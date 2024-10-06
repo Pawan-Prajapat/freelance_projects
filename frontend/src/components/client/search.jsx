@@ -11,7 +11,8 @@ function Search(props) {
     const dispatch = useDispatch();
     const myName = useSelector((state) => state.ProductHairReducer);
 
-    const [searchKeyword, setSearchKeyword] = useState(props?.keyword || "");
+
+    const [searchKeyword, setSearchKeyword] = useState(props?.keyword || " ");
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -20,6 +21,13 @@ function Search(props) {
     if (myName.data === null) {
         return null; // Return null to avoid rendering if data is null
     }
+
+    useEffect(() => {
+        if (props?.keyword) {
+            setSearchKeyword(props?.keyword)
+        }
+    }, [props?.keyword])
+
 
     // If `props.showFull` is true, show the full screen layout with search input
     const handleSearchInput = (e) => {
@@ -39,7 +47,7 @@ function Search(props) {
         <>
             {props.showFull ? (
                 // Full-screen version
-                <div className={`${props.showOrNot(2) ? 'hidden' : ''} inset-0 z-50 bg-white flex flex-col p-5`}>
+                <div className={`${props.showOrNot(3) ? 'hidden' : ''} inset-0 z-50 bg-white flex flex-col p-5`}>
                     <div className="flex justify-between items-center mb-4">
                         <input
                             type="text"
@@ -49,7 +57,7 @@ function Search(props) {
                             className="border p-2 w-full text-lg rounded-md shadow-md"
                         />
                         <div className='flex justify-end'>
-                            <IoCloseOutline onClick={() => {props.openAndClose(3) ; props.mobile_search_handle;}} className='mt-0 text-2xl cursor-pointer' />
+                            <IoCloseOutline onClick={() => { props.openAndClose(3); props.mobile_search_handle; }} className='mt-0 text-2xl cursor-pointer' />
                         </div>
                     </div>
                     <div className="flex-grow overflow-y-auto">
@@ -67,7 +75,7 @@ function Search(props) {
                                                 height={150}
                                                 width={150}
                                                 className="mx-auto"
-                                                src={`${serverUrl}/${data.image}`}
+                                                src={`${data.image}`}
                                             />
                                             <div className="p-4 text-center">
                                                 <h3 className="text-green-700 font-bold text-lg">{data.title}</h3>
@@ -103,7 +111,7 @@ function Search(props) {
                                             alt={`${serverUrl}/${data.image}`}
                                             height={100}
                                             width={100}
-                                            src={`${serverUrl}/${data.image}`}
+                                            src={`${data.image}`}
                                         />
                                         <div className="mt-4 text-center pt-3">
                                             <h3 className="text-green-700 font-bold title-font mb-1">Yumi mehendi</h3>

@@ -50,8 +50,7 @@ const updateOrderQty = async (add, variantsArray) => {
 export const storeBuyerData = async (req, res) => {
   try {
     const { email, country, firstName, lastName, city, state, pincode, phone, address } = req.body.customerDetails;
-    const { order_items, total_amount, payment_type, discount_amount , discount_cupon} = req.body.orderDetails;
-    console.log("req.body.orderDetails" , req.body.orderDetails);
+    const { order_items, total_amount, payment_type, discount_amount, discount_cupon } = req.body.orderDetails;
     let customer = await Customer.findOne({ email });
     if (!customer) {
       customer = await Customer.create({
@@ -125,7 +124,7 @@ export const orderDataAll = async (req, res) => {
         const customer = await Customer.findById(order.customer_id).select('firstName lastName');
         return {
           ...order._doc,
-          name: `${customer.firstName} ${customer.lastName}`
+          name: `${customer?.firstName} ${customer?.lastName}`
         }
       })
     )
@@ -143,18 +142,48 @@ export const customerData = async (req, res) => {
     const { order_number } = req.params;
     // Find the current order by order_number
     const current_order = await Order.findOne({ order_number });
-    for (let i = 0; i < current_order.order_items.length; i++) {
-      const product = await Product.findById(current_order.order_items[i].product_id).select('title');
-      const variant = await Variant.findById(current_order.order_items[i].variant_id).select('price');
-      current_order.order_items[i].product_id = product.title
-      current_order.order_items[i].variant_id = variant.price
-    };
+
     if (!current_order) {
-      return res.status(404).json({ success: false, message: "Order not found" });
+      return res.status(404).json({ message: 'Order not found' });
     }
 
+
+    // Step 2: Modify the JSON data
+    const modified_order = {
+      _id : current_order._id,
+      order_number: current_order.order_number,
+      customer_id : current_order.customer_id, 
+      order_items: [],
+      total_amount:current_order.total_amount,
+      discount_amount:current_order.discount_amount,
+      discount_cupon:current_order.discount_cupon,
+      payment_status: current_order.payment_status,
+      payment_type: current_order.payment_type,
+      razorpay_payment_id: current_order.razorpay_payment_id,
+      razorpay_order_id: current_order.razorpay_order_id,
+      status: current_order.status,
+      createdAt:current_order.createdAt,
+      updatedAt:current_order.updatedAt,
+    };
+
+    for (let i = 0; i < current_order.order_items.length; i++) {
+      const product_id = current_order.order_items[i].product_id; // This is a string in your case
+      const variant_id = current_order.order_items[i].variant_id;
+      
+      // Find the product by title if product_id is a string, else find by ObjectId
+      const product = await Product.findById({_id : product_id});
+      const variant = await Variant.findById(variant_id);
+
+      modified_order.order_items.push({
+        product_name: product ? product.title : 'Unknown Product', // Fallback if product is not found
+        variant_price: variant ? variant.price : 0, // Fallback if variant is not found
+        variant_weight: variant ? variant.weight : 0, // Fallback if variant is not found
+        qty: variant ? variant.qty : 1
+      });
+    };
+
     // Find the customer associated with the current order
-    const customer = await Customer.findById(current_order.customer_id);
+    const customer = await Customer.findById(modified_order.customer_id);
     if (!customer) {
       return res.status(404).json({ success: false, message: "Customer not found" });
     }
@@ -164,7 +193,6 @@ export const customerData = async (req, res) => {
       customer_id: current_order.customer_id,
       order_number: { $ne: order_number }
     }).sort({ createdAt: -1 });
-
 
     // Map through the previous orders to get the product and variant details
     const orderDetails = await Promise.all(prevOrders.map(async (order) => {
@@ -193,7 +221,7 @@ export const customerData = async (req, res) => {
       };
     }));
 
-    res.status(200).json({ current_order, customer, prevOrders: orderDetails });
+    res.status(200).json({ modified_order, customer, prevOrders: orderDetails });
   } catch (error) {
     console.error("Error in customerData:", error); // Log the error for debugging
     res.status(500).json({ success: false, message: "Internal server error", error });

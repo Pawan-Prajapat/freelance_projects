@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ShiprocketToken } from "../models/yumi_order_id_shiproket_token_model.js";
+import { ShiprocketToken, shiprocket_create_details } from "../models/yumi_order_id_shiproket_token_model.js";
 import { Customer, Order } from "../models/buyerModel.js";
 import { Product, Variant } from "../models/productModel.js";
 
@@ -11,6 +11,7 @@ export const setToken = async () => {
         const tokenAge = Math.floor((Date.now() - tokenExist.updatedAt) / 1000);
         let new_token = tokenExist.token;
         if (tokenAge > 863999) {
+
             const response = await axios.post("https://apiv2.shiprocket.in/v1/external/auth/login",
                 {
                     "email": process.env.SHIPROCKET_EMAIL,
@@ -38,7 +39,9 @@ export const setToken = async () => {
 export const create_shiprocket_order = async (req, res) => {
     try {
 
-        const { order_number ,length ,breadth  ,height ,weight } = req.body;
+        const { order_number, length, breadth, height, weight } = req.body;
+
+
         await setToken();
         // Retrieve the Shiprocket token and log it for verification
         const tokenData = await ShiprocketToken.findOne({ _id: 'ship_token' });
@@ -79,7 +82,7 @@ export const create_shiprocket_order = async (req, res) => {
         // Create the order data object
         const payment_method = OrderData.payment_type == "false" ? 'COD' : 'Prepaid';
         const orderData = {
-            "order_id": order_number + 10000000000,
+            "order_id": `${order_number}`,
             "order_date": formattedDate,
             "pickup_location": "Primary",
             "billing_customer_name": CustomerData.firstName,
@@ -93,15 +96,13 @@ export const create_shiprocket_order = async (req, res) => {
             "billing_phone": CustomerData.phone,
             "shipping_is_billing": true,
             "order_items": order_items,
-            "payment_method": payment_method ,
+            "payment_method": payment_method,
             "sub_total": OrderData.total_amount,
-            "length": length,
-            "breadth": breadth,
-            "height": height,
-            "weight": weight
+            "length": parseFloat(length),
+            "breadth": parseFloat(breadth),
+            "height": parseFloat(height),
+            "weight": parseFloat(weight)
         };
-
-        // console.log("order DAta" , orderData)
         // Log the order data for debugging
         // Make the API call to Shiprocket
         const newOrder = await axios.post(
@@ -115,7 +116,8 @@ export const create_shiprocket_order = async (req, res) => {
             }
         );
 
-        // console.log("newOrder.data", newOrder.data);
+        const Order_confirm_shiprocket = new shiprocket_create_details(newOrder.data);
+        await Order_confirm_shiprocket.save();
         res.json({ message: "Order successfully added to Shiprocket", data: newOrder.data });
     } catch (error) {
         // Log the error and send a response with an appropriate status code

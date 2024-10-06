@@ -133,6 +133,7 @@ export default function Navbar() {
         if (event.key === 'Enter') {
             setShowSearchResults(true);
         }
+        console.log("showSearchResults " , showSearchResults);
     };
 
     const handleFocus = () => {
