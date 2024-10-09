@@ -10,8 +10,8 @@ import { SiWhatsapp } from "react-icons/si";
 
 export default function Footer() {
   const location = useLocation();
-  if(location.pathname === '/admin' || location.pathname.startsWith('/admin')){
-    return null ;
+  if (location.pathname === '/admin' || location.pathname.startsWith('/admin')) {
+    return null;
   }
   return (
     <footer className="bg-white mt-24 mb-3">
@@ -20,10 +20,10 @@ export default function Footer() {
           <div>
             <img src={logo} alt="" height={100} width={150} />
             <p className="leading-relaxed">
-            BERA MAYLAT,SOJAT CITY (306104)
-            <br />
-            PALI RAJASTHAN INDIA.
-            <br />
+              BERA MAYLAT,SOJAT CITY (306104)
+              <br />
+              PALI RAJASTHAN INDIA.
+              <br />
             </p>
             <p className="mt-2">
               Call us: <a href="tel:+919256432475">(+91) 92564-32475 </a> <br />
@@ -33,8 +33,8 @@ export default function Footer() {
           <div className='my-6' >
             <h1 className='text-green-800 uppercase font-bold text-lg py-4'>stay connected</h1>
             <ul className='flex gap-7 my-5 justify-start'>
-              <li><a href="https://www.instagram.com/yumimehandi1/"><FaFacebookF className=' text-green-900 w-8 h-8' /></a></li>
-              <li><a href="https://www.facebook.com/share/AxaBm8gAJd7YEtKL/?mibextid=qi2Omg"><AiFillInstagram className='text-green-900 w-10 h-10' /></a></li>
+              <li><a href="https://www.facebook.com/share/AxaBm8gAJd7YEtKL/?mibextid=qi2Omg"><FaFacebookF className=' text-green-900 w-8 h-8' /></a></li>
+              <li><a href="https://www.instagram.com/yumimehandi1/"><AiFillInstagram className='text-green-900 w-10 h-10' /></a></li>
             </ul>
           </div>
         </div>
@@ -71,8 +71,8 @@ export default function Footer() {
           <ul className=" ">
 
             <li className="my-3">
-            <Link to="/About" className="text-gray-800 hover:underline underline-offset-4">
-                About Us 
+              <Link to="/About" className="text-gray-800 hover:underline underline-offset-4">
+                About Us
               </Link>
             </li>
 
@@ -136,10 +136,10 @@ export default function Footer() {
         </div>
       </div>
       <div className='bg-green-600 w-12 h-12 fixed bottom-5 right-5 rounded-full flex justify-center items-center'>
-        <a href="https://wa.me/919256432475"><SiWhatsapp className=' text-white w-8 h-8'/></a>
+        <a href="https://wa.me/919256432475"><SiWhatsapp className=' text-white w-8 h-8' /></a>
       </div>
       <div className=" text-left text-green-700 text-base mt-16 px-3">
-      &copy; {new Date().getFullYear()} Yumi mehendi India. 
+        &copy; {new Date().getFullYear()} Yumi mehendi India.
       </div>
     </footer>
   )

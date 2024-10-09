@@ -215,10 +215,25 @@ function ProductForm() {
         toolbarSticky: false,
         buttons: [
             'bold', 'italic', 'underline', 'strikethrough', 'eraser', 'ul', 'ol', '|',
-            'image', '|',
+            'fontsize', 'image', '|',
             'align', 'undo', 'redo', '|',
-            'hr', 'eraser', 'fullsize'
-        ]
+            'hr', 'eraser', 'fullsize',
+        ],
+        controls: {
+            fontsize: {
+                list: {
+                    '8': '8',
+                    '10': '10',
+                    '12': '12',
+                    '14': '14',
+                    '16': '16',
+                    '18': '18',
+                    '24': '24',
+                    '36': '36',
+                    '48': '48'
+                }
+            }
+        }
     }), []);
 
     return (

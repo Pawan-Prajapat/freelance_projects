@@ -20,11 +20,12 @@ import result7 from "../../assets/Untitled-1-07.jpg";
 import result8 from "../../assets/Untitled-1-08.jpg";
 import result9 from "../../assets/Untitled-1-09.jpg";
 import result10 from "../../assets/Untitled-1-10.jpg";
-import customer1 from "../../assets/customer1.jpg";
-import customer2 from "../../assets/customer2.jpg";
-import customer3 from "../../assets/customer3.jpg";
-import customer4 from "../../assets/customer4.jpg";
-import customer5 from "../../assets/customer5.jpg";
+import Review01 from "../../assets/Review-01.jpg";
+import Review02 from "../../assets/Review-02.jpg";
+import Review03 from "../../assets/Review-03.jpg";
+import Review04 from "../../assets/Review-04.jpg";
+import Review05 from "../../assets/Review-05.jpg";
+import Review06 from "../../assets/Review-06.jpg";
 
 import axios from 'axios';
 const serverUrl = import.meta.env.VITE_SERVER_URL;
@@ -143,22 +144,12 @@ function Home() {
     }, [dispatch]);
 
     let records;
-    let recordsForBestSelling, recordsForTrend;
+    let recordsForBestSelling, recordsForTrend , recordsForMostViewed;
     if (myName.data?.data !== null) {
-        const recordsFace = myName.data?.data.filter(element => element.category?.includes("face_care")).slice(0, 2) || [];
-        const recordsHair = myName.data?.data.filter(element => element.category?.includes("hair_care")).slice(0, 2) || [];
-
-        // Only concat if recordsFace and recordsHair are not empty
-        if (recordsFace.length > 0 && recordsHair.length > 0) {
-            records = recordsFace.concat(recordsHair);
-        } else if (recordsFace.length > 0) {
-            records = recordsFace;
-        } else if (recordsHair.length > 0) {
-            records = recordsHair;
-        }
-
+        records = myName.data?.data.filter(element => element.category?.includes("premiumProduct")).slice(0, 4) || [];
         recordsForBestSelling = myName.data?.data.filter(element => element.category?.includes("bestSellers")).slice(0, 4) || [];
-        recordsForTrend = myName.data?.data.filter(element => element.category?.includes("all_combo")).slice(0, 4) || [];
+        recordsForTrend = myName.data?.data.filter(element => element.category?.includes("trendNow")).slice(0, 4) || [];
+        recordsForMostViewed = myName.data?.data.filter(element => element.category?.includes("mostViewed")).slice(0, 4) || [];
     }
 
 
@@ -210,7 +201,7 @@ function Home() {
 
     return (
         <React.Fragment>
-            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
+            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000}  removeArrowOnDeviceType={[ "mobile"]} >
                 {banners.map((banner, index) => (
                     banner.slider == 1 && (
                         <div key={index} className='w-full'>
@@ -282,7 +273,7 @@ function Home() {
                     )
                 }
             </div>
-            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
+            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["mobile"]} >
                 {banners.map((banner, index) => (
                     banner.slider == 2 && (
                         <div key={index} className='w-full'>
@@ -316,8 +307,8 @@ function Home() {
             <div className=' flex flex-col'>
                 <div className={`${whatNewInHennaKart[0] ? 'visible' : 'hidden'} w-full grid gap-2 lg:gap-4 px-3 ${window.innerWidth < 1024 ? window.innerWidth < 770 ? window.innerWidth < 320 ? 'grid-cols-1' : 'grid-cols-2' : 'grid-cols-3' : 'grid-cols-4'}`}>
                     {
-                        records ? (
-                            records.map((data, i) => (
+                        recordsForBestSelling ? (
+                            recordsForBestSelling.map((data, i) => (
                                 <div key={i} className='py-3'  >
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data._id}`
@@ -341,32 +332,6 @@ function Home() {
                     }
                 </div>
                 <div className={`${whatNewInHennaKart[1] ? 'visible' : 'hidden'} w-full grid gap-2 lg:gap-4 px-3 ${window.innerWidth < 1024 ? window.innerWidth < 770 ? window.innerWidth < 320 ? 'grid-cols-1' : 'grid-cols-2' : 'grid-cols-3' : 'grid-cols-4'}`}>
-                    {
-                        recordsForBestSelling ? (
-                            recordsForBestSelling.map((data, i) => (
-                                <div key={i} className='py-3'  >
-                                    <Link className="overflow-hidden" to={{
-                                        pathname: `/productDetail/${data._id}`
-                                    }} >
-                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
-                                    </Link>
-                                    <div className="mt-4 text-center">
-                                        <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
-                                        <p className=" text-base line-clamp-2">{data.title}</p>
-                                        <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
-                                        <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
-                                            <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
-                                                Add To Cart
-                                            </button>
-                                        </NavLink>
-                                    </div>
-                                </div>
-                            ))) : (
-                            <h1>Loading .........</h1>
-                        )
-                    }
-                </div>
-                <div className={`${whatNewInHennaKart[2] ? 'visible' : 'hidden'} w-full grid gap-2 lg:gap-4 px-3 ${window.innerWidth < 1024 ? window.innerWidth < 770 ? window.innerWidth < 320 ? 'grid-cols-1' : 'grid-cols-2' : 'grid-cols-3' : 'grid-cols-4'}`}>
                     {
                         recordsForTrend ? (
                             recordsForTrend.map((data, i) => (
@@ -392,9 +357,35 @@ function Home() {
                         )
                     }
                 </div>
+                <div className={`${whatNewInHennaKart[2] ? 'visible' : 'hidden'} w-full grid gap-2 lg:gap-4 px-3 ${window.innerWidth < 1024 ? window.innerWidth < 770 ? window.innerWidth < 320 ? 'grid-cols-1' : 'grid-cols-2' : 'grid-cols-3' : 'grid-cols-4'}`}>
+                    {
+                        recordsForMostViewed ? (
+                            recordsForMostViewed.map((data, i) => (
+                                <div key={i} className='py-3'  >
+                                    <Link className="overflow-hidden" to={{
+                                        pathname: `/productDetail/${data._id}`
+                                    }} >
+                                        <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
+                                    </Link>
+                                    <div className="mt-4 text-center">
+                                        <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
+                                        <p className=" text-base line-clamp-2">{data.title}</p>
+                                        <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
+                                        <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
+                                            <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
+                                                Add To Cart
+                                            </button>
+                                        </NavLink>
+                                    </div>
+                                </div>
+                            ))) : (
+                            <h1>Loading .........</h1>
+                        )
+                    }
+                </div>
             </div>
 
-            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]} >
+            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["mobile"]} >
                 {banners.map((banner, index) => (
                     banner.slider ==  3 &&(
                         <div key={index} className='w-full'>
@@ -462,7 +453,7 @@ function Home() {
                         before-and-after pictures – where transformations speak louder than words.</p>
                 </div>
             </div>
-            <Carousel responsive={responsiveVerifyLogo} className=' transition-transform duration-500 ease-in-out bg-gray-100 py-5 lg:py-16 border-t' infinite={true} autoPlay={true} autoPlaySpeed={1500} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]}>
+            <Carousel responsive={responsiveVerifyLogo} className=' transition-transform duration-500 ease-in-out bg-gray-100 border-t' infinite={true} autoPlay={true} autoPlaySpeed={1500} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]}>
                 <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
                     <LazyLoadImage src={result1} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
                 </div>
@@ -547,21 +538,24 @@ function Home() {
                         before-and-after pictures – where transformations speak louder than words.</p>
                 </div>
             </div>
-            <Carousel responsive={responsiveVerifyLogo} className=' transition-transform duration-500 ease-in-out bg-gray-100 py-5 lg:py-16 border-t' infinite={true} autoPlay={true} autoPlaySpeed={1500} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]}>
+            <Carousel responsive={responsiveVerifyLogo} className=' transition-transform duration-500 ease-in-out bg-gray-100 border-t' infinite={true} autoPlay={true} autoPlaySpeed={1500} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]}>
                 <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
-                    <LazyLoadImage src={customer1} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                    <LazyLoadImage src={Review01} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
                 </div>
                 <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
-                    <LazyLoadImage src={customer2} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                    <LazyLoadImage src={Review02} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
                 </div>
                 <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
-                    <LazyLoadImage src={customer3} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                    <LazyLoadImage src={Review03} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
                 </div>
                 <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
-                    <LazyLoadImage src={customer4} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                    <LazyLoadImage src={Review04} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
                 </div>
                 <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
-                    <LazyLoadImage src={customer5} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                    <LazyLoadImage src={Review05} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
+                </div>
+                <div className='lg:w-full w-40 lg:px-[1.9px] overflow-hidden'>
+                    <LazyLoadImage src={Review06} alt="" className=' transition-transform ease-in-out hover:scale-110  ' />
                 </div>
             </Carousel>
         </React.Fragment >

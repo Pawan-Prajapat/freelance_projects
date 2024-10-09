@@ -38,16 +38,6 @@ function Users() {
   const [updateDisplay, setUpdateDisplay] = useState(false);
 
 
-
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [subCategroies, setsubCategroies] = useState('');
-  const [categroies, setcategroies] = useState('');
-  const [qyt, setQyt] = useState('');
-
-
-
   return (
     <>
       <div className={`flex flex-col ${updateDisplay ? ' blur-lg' : ''}`}>
@@ -99,7 +89,7 @@ function Users() {
                           <div className="text-sm leading-5">{product.title}</div>
                         </td>
                         <td className=" text-center ps-3 py-4 whitespace-no-wrap border-b border-gray-200">
-                          <div className="text-sm leading-5">{product.category}</div>
+                          <div className="text-sm leading-5">{product.category.join(", ")}</div>
                         </td>
                         <td className=" text-center ps-3 py-4 whitespace-no-wrap border-b border-gray-200">
                           <div className="text-sm leading-5">{product.subCategory}</div>
