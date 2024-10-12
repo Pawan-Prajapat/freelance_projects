@@ -53,7 +53,7 @@ export default function Combopack() {
   }));
 
   // Find the maximum price in the selected data
-  let max = Math.max(...selectedComboData.map((item) => item.Variant_Price));
+  let max = Math.max(...selectedComboData.map((item) => item.Variant_total_price));
   if (max === -Infinity) {
     max = 0;
   }

@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 
 export const storeProductData = async (req, res) => {
     try {
-        const { title, description, category, subCategory, variants, media, cod } = req.body;
+        const { title, description, category, subCategory, variants, media, cod, recommend } = req.body;
         const codType = (cod === 'Allow');
+        recommend = recommend.map(id => mongoose.Types.ObjectId(id));
         if (title) {
             const newProduct = await Product.create({
                 title,
@@ -12,7 +13,8 @@ export const storeProductData = async (req, res) => {
                 subCategory,
                 category,
                 cod: codType,
-                images: media
+                images: media,
+                recommend
             });
             if (variants) {
                 const variantDocs = variants.map((variant) => ({
@@ -34,7 +36,7 @@ export const storeProductData = async (req, res) => {
 // update ka abhi karte hai 
 export const updateProductData = async (req, res) => {
     try {
-        const { _id, title, description, category, subCategory, variants, media, cod } = req.body;
+        const { _id, title, description, category, subCategory, variants, media, cod, recommend } = req.body;
         const codType = (cod === 'Allow');
         // Construct the update object dynamically to only include fields that are provided
         const updateFields = {};
@@ -44,6 +46,7 @@ export const updateProductData = async (req, res) => {
         if (subCategory) updateFields.subCategory = subCategory;
         if (media) updateFields.images = media;
         if (cod) updateFields.cod = codType;
+        if (recommend) updateFields.recommend = recommend;
 
         // Update the product and return the updated document
         const updatedProduct = await Product.findOneAndUpdate(
@@ -75,7 +78,8 @@ export const updateProductData = async (req, res) => {
                                     sku: variant.sku,
                                     price: variant.price,
                                     qty: variant.qty,
-                                    weight: variant.weight
+                                    weight: variant.weight,
+                                    price_off: variant.price_off
                                 }
                             },
                             { new: true, runValidators: true }
@@ -150,12 +154,15 @@ export const getAllProductData = async (req, res) => {
                 });
             }
 
+            console.log("minWeightVariant " , minWeightVariant);
             // Return the product data with the total quantity and the ID of the variant with the lowest weight
             return {
                 ...product.toObject(), // Convert Mongoose document to a plain object
                 totalStock: totalQty,
                 Variant_Id: minWeightVariant ? minWeightVariant._id : null, // Only the _id of the variant with the lowest weight
                 Variant_Price: minWeightVariant ? minWeightVariant.price : null,
+                Variant_price_off: minWeightVariant ? minWeightVariant.price_off : 0,
+                Variant_total_price: minWeightVariant ? minWeightVariant.final_price : Variant_Price,
             };
         }));
 
@@ -189,7 +196,8 @@ export const getSingleProductData = async (req, res) => {
             createdAt: productData.createdAt,
             updatedAt: productData.updatedAt,
             variants: productVariant,
-            media: productData.images
+            media: productData.images,
+            recommend: productData.recommend
         };
 
         res.status(200).json({ message: "Product data retrieved successfully", data: product });

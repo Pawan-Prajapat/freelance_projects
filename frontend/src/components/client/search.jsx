@@ -78,8 +78,8 @@ function Search(props) {
                                                 src={`${data.image}`}
                                             />
                                             <div className="p-4 text-center">
-                                                <h3 className="text-green-700 font-bold text-lg">{data.title}</h3>
-                                                <p className="text-gray-500">Rs. {data.Variant_Price}</p>
+                                            <p className="text-base line-clamp-2">{data.title}</p>
+                                            <p className="font-bold mt-1">₹{data.Variant_Price}</p>
                                             </div>
                                         </Link>
                                     </div>
@@ -114,9 +114,8 @@ function Search(props) {
                                             src={`${data.image}`}
                                         />
                                         <div className="mt-4 text-center pt-3">
-                                            <h3 className="text-green-700 font-bold title-font mb-1">Yumi mehendi</h3>
-                                            <p className="text-base">{data.title}</p>
-                                            <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
+                                            <p className="text-base line-clamp-2">{data.title}</p>
+                                            <p className="font-bold mt-1">₹{data.Variant_Price}</p>
                                         </div>
                                     </Link>
                                 </div>

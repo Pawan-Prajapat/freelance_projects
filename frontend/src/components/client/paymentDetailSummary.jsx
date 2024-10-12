@@ -171,7 +171,7 @@ function paymentDetailSummary() {
   const dispatch = useDispatch();
 
   const buyerDataStore = async () => {
-    buyer.orderDetails.discount_amount = discount_price;
+    buyer.orderDetails.discount_amount = Number(discount_price.toFixed(2));
     buyer.orderDetails.discount_cupon = discount_code;
     await axios.post(serverUrl + "/api/storeBuyerData", buyer)
       .then(res => {
@@ -218,7 +218,7 @@ function paymentDetailSummary() {
     return true;
   };
 
-  const subTotal = param.id === "addToCartCheckout" ? buyer.orderDetails.total_amount : SingleProductData?.variant.price;
+  const subTotal = param.id === "addToCartCheckout" ? buyer.orderDetails.total_amount : SingleProductData?.variant.final_price;
 
   const checkDiscount = async (code) => {
     try {
@@ -394,7 +394,7 @@ function paymentDetailSummary() {
                     <p className=" absolute -top-3 right-0 rounded-full bg-gray-700 flex justify-center items-center text-white w-5  h-5"> {data.qty} </p>
                   </div>
                   <div><p className='text-center'>{data.title}</p></div>
-                  <div>Rs. {data.variant.price}</div>
+                  <div>Rs. {data.variant.final_price}</div>
                 </div>
               ))}
             </div>
@@ -404,7 +404,7 @@ function paymentDetailSummary() {
                 <LazyLoadImage className=' h-16 w-20  border border-gray-400 rounded-lg' src={`${SingleProductData?.image}`} alt={`${serverUrl}${SingleProductData?.image}`} />
               </div>
               <div><p className='text-center'>{SingleProductData?.title}</p></div>
-              <div>Rs. {SingleProductData?.variant.price}</div>
+              <div>Rs. {SingleProductData?.variant.final_price}</div>
             </div>
           )}
 
@@ -420,9 +420,9 @@ function paymentDetailSummary() {
               <p className='  text-xl'>Total</p>
             </div>
             <div className='flex flex-col gap-y-2 text-end'>
-              <p className='font-semibold'>Rs. {subTotal}</p>
-              <p className={`${discount_price !== 0 ? '' : 'hidden'}  text-gray-500`}>{discount_price}</p>
-              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {subTotal - discount_price}</span></p>
+              <p className='font-semibold'>Rs. {subTotal?.toFixed(2)}</p> 
+              <p className={`${discount_price !== 0 ? '' : 'hidden'}  text-gray-500`}>{discount_price.toFixed(2)}</p>
+              <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {(subTotal - discount_price).toFixed(2)}</span></p>
             </div>
           </div>
           <div className='visible lg:hidden mt-6' >

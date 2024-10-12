@@ -10,8 +10,10 @@ export const checkout = async (amount) => {
     amount: Number(amount * 100),  // amount in the smallest currency unit
     currency: "INR",
   };
+
+  console.log("yha aaya kya" , typeof(options.amount));
   const order = await instance.orders.create(options);
-  return [order.id,options.amount];
+  return [order.id, options.amount];
 };
 
 

@@ -43,6 +43,7 @@ function AddToCart() {
   const handleRemoveProduct = (variantId) => {
     dispatch(removeProductCart(variantId));
   };
+
   return (
     <>
       <div className={`${AddToCartData.length > 0 ? "flex" : "hidden"} flex-col lg:flex-row my-20`}>
@@ -77,7 +78,7 @@ function AddToCart() {
                         </div>
                       </div>
                     </div>
-                    <div className="w-full  lg:w-1/4 flex items-center justify-center font-semibold tracking-wider text-xl">Rs. {data.variant.price}</div>
+                    <div className="w-full  lg:w-1/4 flex items-center justify-center font-semibold tracking-wider text-xl">₹{data.variant.final_price}</div>
                     <div className="w-full  lg:w-1/4 flex justify-center items-center">
                       <div className=" flex items-center relative border border-gray-300 w-[120px] py-6 mt-2">
                         <button className="font-bold py-3 px-4 rounded-l absolute -left-2" onClick={() => handleDecreaseQuantity(data.variant._id, data.qty)}>
@@ -97,7 +98,7 @@ function AddToCart() {
                       </div>
                     </div>
                     <div className="w-full  lg:w-1/4 my-2 lg:m-0 flex items-center justify-center gap-5">
-                      <span className={`${window.innerWidth > 768 ? 'visible' : 'hidden'} font-semibold tracking-wider text-xl`} >Rs. {data.variant.price * data.qty}</span>
+                      <span className={`${window.innerWidth > 768 ? 'visible' : 'hidden'} font-semibold tracking-wider text-xl`} >₹{(data.variant.final_price * data.qty).toFixed(2)}</span>
                       <IoCloseOutline onClick={() => handleRemoveProduct(data.variant._id)} className="h-6 w-6 cursor-pointer" />
                     </div>
 
@@ -113,7 +114,7 @@ function AddToCart() {
           </div>
           <div className="flex justify-between py-5 border-b ">
             <p className=" uppercase font-semibold">total</p>
-            <p className=" font-bold text-xl">{calculateTotal(AddToCartData)}</p>
+            <p className=" font-bold text-xl">{calculateTotal(AddToCartData).toFixed(2)}</p>
           </div>
           <p className=" text-gray-500 mt-5">Tax included and shipping calculated at checkout</p>
           <div className=' text-center  text-base uppercase   hover:border-2  border-black  py-[12px]  font-bold  shadow-[5px_6px_rgb(166,222,205,1)] bg-[#4b7422] hover:text-black  hover:bg-white  text-white  w-full  mt-10 hover:shadow-black'>

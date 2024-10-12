@@ -15,6 +15,19 @@ function OrderWithCustomerDetail() {
         height: '',
         weight: ''
     });
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [buttonShow, setButtonShow] = useState(true);
+
+    useEffect(() => {
+        if (errorMessage || successMessage) {
+            const timer = setTimeout(() => {
+                setErrorMessage('');
+                setSuccessMessage('');
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [errorMessage, successMessage])
 
     const handleInputChange = (e) => {
         setFormData({
@@ -50,15 +63,27 @@ function OrderWithCustomerDetail() {
             }
         })
             .then(response => {
-                // Handle success
+                setSuccessMessage('Product on shiprocket registered');
+                setButtonShow(false);
             })
             .catch(error => {
                 // Handle error
+                setErrorMessage('Server error on shiprocket registration');
             });
     };
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
+            {errorMessage && (
+                <div className="bg-red-500 text-white p-3 rounded-lg fixed top-7 right-5 z-20">
+                    {errorMessage}
+                </div>
+            )}
+            {successMessage && (
+                <div className="bg-green-500 text-white p-3 rounded-lg fixed top-7 right-5 z-20">
+                    {successMessage}
+                </div>
+            )}
             <div className="max-w-5xl mx-auto grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {/* Current Order Box */}
                 <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -76,8 +101,8 @@ function OrderWithCustomerDetail() {
                         <ul className="list-disc list-inside ml-4 text-gray-700">
                             {modified_order.order_items.map((item, index) => (
                                 <li key={index} className="mb-1">
-                                    Product ID: {item.product_name} | Qty: {item.qty} | Total: ₹{item.qty * item.variant_price} 
-                                     | Product weight : {item.variant_weight} gm
+                                    Product ID: {item.product_name} | Qty: {item.qty} | Total: ₹{item.qty * item.variant_price}
+                                    | Product weight : {item.variant_weight} gm
                                 </li>
                             ))}
                         </ul>
@@ -131,12 +156,14 @@ function OrderWithCustomerDetail() {
                                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                 />
                             </div>
-                            <button
-                                onClick={handle_shiprocket_order}
-                                className="bg-green-500 text-white rounded-lg px-4 py-2 hover:bg-green-600 transition-colors duration-300"
-                            >
-                                Submit Fulfillment
-                            </button>
+                            {buttonShow && (
+                                <button
+                                    onClick={handle_shiprocket_order}
+                                    className="bg-green-500 text-white rounded-lg px-4 py-2 hover:bg-green-600 transition-colors duration-300"
+                                >
+                                    Submit Fulfillment
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>

@@ -38,7 +38,7 @@ function ProductDetailWhole() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
+    }, [id]);
 
     useEffect(() => {
 
@@ -109,6 +109,10 @@ function ProductDetailWhole() {
         dispatch(addProductInCart(productWithVariant));
     }
 
+    // console.log("myName.data?.data  => ", currentProduct.x);
+    const currentProduct_recommned = myName.data?.data.filter(element => currentProduct.recommend.includes(element._id));
+
+
     return (
         <>
             <div className='flex lg:my-10 flex-col lg:flex-row'>
@@ -141,7 +145,7 @@ function ProductDetailWhole() {
                         <select id="variantSelector" className="w-full mt-2 border p-2" value={selectedVariant?._id} onChange={handleVariantChange}>
                             {variant.map((v) => (
                                 <option key={v._id} value={v._id}>
-                                    {`${v.weight}g - Rs. ${v.price}`}
+                                    {`${v.weight}g - ₹${v.final_price}`}
                                 </option>
                             ))}
                         </select>
@@ -152,7 +156,10 @@ function ProductDetailWhole() {
                     </div>
                     <div className='w-full text-gray-500 mt-3'>
                         <p> Availability: {selectedVariant?.qty} <br /></p>
-                        <p className='mt-3 font-bold text-black text-xl'>Rs. {selectedVariant?.price}</p>
+                        <div className='flex gap-4'>
+                            <p className='mt-3 font-bold text-black text-xl'>₹{selectedVariant?.final_price}</p>
+                            <p className='mt-4 line-through text-lg'>₹{selectedVariant?.price}</p>
+                        </div>
                     </div>
                     <div className='flex flex-col w-full mt-4'>
                         <div>
@@ -166,7 +173,7 @@ function ProductDetailWhole() {
                                     <FaPlus />
                                 </button>
                             </div>
-                            <p className='mt-2 text-gray-500'>Subtotal: <span className='text-black font-semibold text-lg'>Rs. {selectedVariant?.price * quantity}</span></p>
+                            <p className='mt-2 text-gray-500'>Subtotal: <span className='text-black font-semibold text-lg'>₹{(selectedVariant?.final_price * quantity).toFixed(2)}</span></p>
                         </div>
                     </div>
                     <div className='w-full'>
@@ -209,6 +216,35 @@ function ProductDetailWhole() {
             <div className='px-10  pt-14'
                 dangerouslySetInnerHTML={{ __html: currentProduct.description }}
             />
+            <div className={`${currentProduct_recommned.length > 0 ? '' : 'hidden'} text-center font-semibold text-3xl mx-10 border-b-2 italic text-gray-700 border-black pb-5`}>
+                Related Products
+            </div>
+            <div className={`w-full grid gap-2 lg:gap-4 px-16 ${window.innerWidth < 1024 ? window.innerWidth < 770 ? window.innerWidth < 320 ? 'grid-cols-1' : 'grid-cols-2' : 'grid-cols-3' : 'grid-cols-4'}`}>
+                {
+                    currentProduct_recommned ? (
+                        currentProduct_recommned.map((data, i) => (
+                            <div key={i} className='py-3 shadow-sm'  >
+                                <Link className="overflow-hidden" to={{
+                                    pathname: `/productDetail/${data._id}`
+                                }} >
+                                    <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
+                                </Link>
+                                <div className="mt-4 text-center">
+                                    <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
+                                    <p className=" text-base line-clamp-2">{data.title}</p>
+                                    <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
+                                    <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
+                                        <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
+                                            Add to cart
+                                        </button>
+                                    </NavLink>
+                                </div>
+                            </div>
+                        ))) : (
+                        <h1></h1>
+                    )
+                }
+            </div>
         </>
     );
 }

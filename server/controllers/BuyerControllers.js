@@ -73,6 +73,7 @@ export const storeBuyerData = async (req, res) => {
     }));
 
     const order_number = await getOrderId();
+    const dis_amount = Number(discount_amount.toFixed(2));
     const orderData = {
       order_number,
       customer_id: customer._id,
@@ -81,9 +82,10 @@ export const storeBuyerData = async (req, res) => {
       payment_type,
       payment_status: 'pending',
       status: 'pending',
-      discount_amount,
+      discount_amount: dis_amount,
       discount_cupon
     };
+
 
     if (!payment_type) {  // COD
       const order = new Order(orderData);
@@ -96,9 +98,11 @@ export const storeBuyerData = async (req, res) => {
         order
       });
     } else {  // Razorpay
-      const [razorpay_order_id, amount] = await checkout(total_amount - discount_amount);
+      
+      const [razorpay_order_id, amount] = await checkout(total_amount - dis_amount);
       orderData.razorpay_order_id = razorpay_order_id;
       const order = new Order(orderData);
+      console.log("orderData ", orderData);
       await order.save();
       await updateOrderQty(false, orderData.order_items);
       return res.status(201).json({
@@ -150,28 +154,28 @@ export const customerData = async (req, res) => {
 
     // Step 2: Modify the JSON data
     const modified_order = {
-      _id : current_order._id,
+      _id: current_order._id,
       order_number: current_order.order_number,
-      customer_id : current_order.customer_id, 
+      customer_id: current_order.customer_id,
       order_items: [],
-      total_amount:current_order.total_amount,
-      discount_amount:current_order.discount_amount,
-      discount_cupon:current_order.discount_cupon,
+      total_amount: current_order.total_amount,
+      discount_amount: current_order.discount_amount,
+      discount_cupon: current_order.discount_cupon,
       payment_status: current_order.payment_status,
       payment_type: current_order.payment_type,
       razorpay_payment_id: current_order.razorpay_payment_id,
       razorpay_order_id: current_order.razorpay_order_id,
       status: current_order.status,
-      createdAt:current_order.createdAt,
-      updatedAt:current_order.updatedAt,
+      createdAt: current_order.createdAt,
+      updatedAt: current_order.updatedAt,
     };
 
     for (let i = 0; i < current_order.order_items.length; i++) {
       const product_id = current_order.order_items[i].product_id; // This is a string in your case
       const variant_id = current_order.order_items[i].variant_id;
-      
+
       // Find the product by title if product_id is a string, else find by ObjectId
-      const product = await Product.findById({_id : product_id});
+      const product = await Product.findById({ _id: product_id });
       const variant = await Variant.findById(variant_id);
 
       modified_order.order_items.push({

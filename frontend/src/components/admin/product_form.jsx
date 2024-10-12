@@ -1,6 +1,7 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCategroies } from '../../features/categroiesSubCategroiesSlice.js';
+import { fetchProducts } from "../../features/productsFileHairSlice.js";
 import Description_image_upload from './description_image_upload';
 import JoditEditor from 'jodit-react';
 import axios from 'axios';
@@ -50,17 +51,22 @@ function ProductForm() {
     const [buttonShow, setButtonShow] = useState(true);
 
     const [categroies, setcategroies] = useState([]);
+    const [recommend, setRecommend] = useState([]);
     const [showCategroies, setShowCategroies] = useState(false);
+    const [showRecommend, setShowRecommend] = useState(false);
 
     const dispatch = useDispatch();
     const myName = useSelector((state) => state.CategroiesReducer);
+    const myNameRecommend = useSelector((state) => state.ProductHairReducer);
 
     useEffect(() => {
         const fetchData = async () => {
             await dispatch(fetchCategroies());
         };
         fetchData();
+        dispatch(fetchProducts());
     }, [dispatch]);
+
 
     useEffect(() => {
         if (isEditMode) {
@@ -71,6 +77,8 @@ function ProductForm() {
             setVariants(product.variants || []);
             setMedia(product.media || []);
             setcategroies(product.category || []);
+            // console.log("product.recommend  ", product.recommend);
+            setRecommend(product.recommend || []);
         }
     }, [isEditMode, product]);
 
@@ -114,12 +122,16 @@ function ProductForm() {
         categroies.forEach((category, index) => {
             productData.append(`category[${index}]`, category); // Use `media[${index}]` as the key
         });
+        recommend.forEach((recomd, index) => {
+            productData.append(`recommend[${index}]`, recomd); // Use `media[${index}]` as the key
+        });
 
         variants.forEach((variant, index) => {
             productData.append(`variants[${index}][sku]`, variant.sku);
             productData.append(`variants[${index}][price]`, variant.price);
             productData.append(`variants[${index}][qty]`, variant.qty);
             productData.append(`variants[${index}][weight]`, variant.weight);
+            productData.append(`variants[${index}][price_off]`, variant.price_off);
             if (isEditMode) {
                 productData.append(`variants[${index}][_id]`, variant._id);
             }
@@ -176,7 +188,7 @@ function ProductForm() {
     };
 
     const addVariant = () => {
-        setVariants([...variants, { sku: '', price: '', qty: '', weight: '' }]);
+        setVariants([...variants, { sku: '', price: '', price_off: '', qty: '', weight: '' }]);
     };
 
     const removeVariant = (index) => {
@@ -207,6 +219,16 @@ function ProductForm() {
 
     const handleCategoryRemove = (category) => {
         setcategroies(categroies.filter((cat) => cat !== category));
+    };
+    const handleRecommendClick = (product) => {
+        if (!recommend.includes(product)) {
+            setRecommend([...recommend, product]);
+        }
+        setShowRecommend(false);
+    };
+
+    const handleRecommendRemove = (product) => {
+        setRecommend(recommend.filter((pro) => pro !== product));
     };
 
     const config = useMemo(() => ({
@@ -305,6 +327,7 @@ function ProductForm() {
                 </div>
             </div>
 
+
             {/* Product Subcategory */}
             <div className="space-y-2">
                 <label className="block text-gray-700 text-sm font-semibold" htmlFor="subCategory">
@@ -343,39 +366,63 @@ function ProductForm() {
             <div className="space-y-4">
                 <label className="block text-gray-700 text-sm font-semibold">Variants</label>
                 {variants.map((variant, index) => (
-                    <div key={index} className="grid grid-cols-4 gap-4 items-end">
-                        <input
-                            type="text"
-                            name="sku"
-                            value={variant.sku}
-                            onChange={(e) => handleVariantChange(index, e)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            placeholder="SKU"
-                        />
-                        <input
-                            type="number"
-                            name="price"
-                            value={variant.price}
-                            onChange={(e) => handleVariantChange(index, e)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            placeholder="Price"
-                        />
-                        <input
-                            type="number"
-                            name="qty"
-                            value={variant.qty}
-                            onChange={(e) => handleVariantChange(index, e)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            placeholder="Quantity"
-                        />
-                        <input
-                            type="text"
-                            name="weight"
-                            value={variant.weight}
-                            onChange={(e) => handleVariantChange(index, e)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            placeholder="Weight"
-                        />
+                    <div key={index} className="grid grid-cols-6 items-end">
+                        <div>
+                            <label className="block text-gray-700 text-sm font-semibold" htmlFor="sku">SKU</label>
+                            <input
+                                type="text"
+                                name="sku"
+                                value={variant.sku}
+                                onChange={(e) => handleVariantChange(index, e)}
+                                className="w-3/4 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                placeholder="SKU"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700 text-sm font-semibold" htmlFor="price">Price</label>
+                            <input
+                                type="number"
+                                name="price"
+                                value={variant.price}
+                                onChange={(e) => handleVariantChange(index, e)}
+                                className="w-3/4 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Price"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700 text-sm font-semibold" htmlFor="price_off">Price Off (in %)</label>
+                            <input
+                                type="number"
+                                name="price_off"
+                                value={variant.price_off}
+                                onChange={(e) => handleVariantChange(index, e)}
+                                className="w-3/4 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Price Off (in %)"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700 text-sm font-semibold" htmlFor="qty">QTY</label>
+                            <input
+                                type="number"
+                                name="qty"
+                                value={variant.qty}
+                                onChange={(e) => handleVariantChange(index, e)}
+                                className="w-3/4 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Quantity"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700 text-sm font-semibold" htmlFor="weight">Weight</label>
+                            <input
+                                type="text"
+                                name="weight"
+                                value={variant.weight}
+                                onChange={(e) => handleVariantChange(index, e)}
+                                className="w-3/4 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Weight"
+                            />
+                        </div>
+
                         <button
                             type="button"
                             onClick={() => removeVariant(index)}
@@ -468,6 +515,49 @@ function ProductForm() {
                     config={config}
                     onBlur={newContent => setDesc_Content(newContent)}
                 />
+            </div>
+
+            {/* Product Recommendation */}
+            <div className="space-y-2">
+                {/* <label className="block text-gray-700 text-sm font-semibold" htmlFor="category"> */}
+                Related Products
+                {/* </label> */}
+                <div className="relative">
+                    <input
+                        type="text"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                        value={recommend.join(', ')}
+                        readOnly
+                        onClick={() => setShowRecommend(!showRecommend)}
+                    />
+                    <ul className={`absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto ${showRecommend ? '' : 'hidden'}`}>
+                        {myNameRecommend?.data?.data.length > 0 ? (
+                            myNameRecommend?.data?.data.map((product, index) => (
+                                <li key={index} className="hover:bg-gray-100">
+                                    <button
+                                        type="button"
+                                        className="w-full px-4 py-2 text-gray-700 text-left"
+                                        onClick={() => handleRecommendClick(product._id)}
+                                    >
+                                        {product.title}
+                                    </button>
+                                </li>
+                            ))
+                        ) : (
+                            <li className="px-4 py-2 text-gray-600 hidden">No Recommendation available</li>
+                        )}
+                    </ul>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                    {recommend.map((product, index) => (
+                        <span key={index} className="inline-flex items-center px-3 py-1 bg-indigo-500 text-white text-sm rounded-full">
+                            {product}
+                            <button type="button" className="ml-2 text-white" onClick={() => handleRecommendRemove(product)}>
+                                &times;
+                            </button>
+                        </span>
+                    ))}
+                </div>
             </div>
 
             {buttonShow && (

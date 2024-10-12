@@ -4,13 +4,13 @@ const Schema = mongoose.Schema;
 const productSchema = new Schema({
   title: {
     type: String,
-    required: true 
+    required: true
   },
   description: {
     type: String
   },
   category: [{
-    type:String 
+    type: String
   }],
   subCategory: {
     type: String,
@@ -20,8 +20,12 @@ const productSchema = new Schema({
     type: Boolean,
     default: true
   },
-  images : [{
-    type:String 
+  images: [{
+    type: String
+  }],
+  recommend: [{
+    type: mongoose.Schema.Types.ObjectId,
+    default : []
   }]
 }, {
   timestamps: true
@@ -40,7 +44,14 @@ const variantSchema = new Schema({
     type: Number,
     required: true
   },
-  qty: { 
+  price_off: {
+    type: Number,
+    default : 0
+  },
+  final_price: {
+    type: Number 
+  },
+  qty: {
     type: Number,
     required: true
   },
@@ -48,15 +59,40 @@ const variantSchema = new Schema({
     type: Number,
     required: true
   },
-  sku:{
-    type:String,
-    required:true
+  sku: {
+    type: String,
+    required: true
   }
 }, {
   timestamps: false
 });
 
+variantSchema.pre('save', function(next) {
+  if (!this.final_price) {
+    this.final_price = (this.price - (this.price * this.price_off / 100)).toFixed(2);
+  }
+  next();
+});
+
+variantSchema.pre('findOneAndUpdate', function(next) {
+  let update = this.getUpdate();
+  
+  // Handle updates with $set operator
+  if (update.$set) {
+    update = update.$set;
+  }
+  
+  // Check if price or price_off is being updated
+  if (update.price && update.price_off !== undefined) {
+    update.final_price = (update.price - (update.price * update.price_off / 100)).toFixed(2);
+  } else if (update.price) {
+    update.final_price = (update.price - (update.price * ((update.price_off !== undefined) ? update.price_off : 0) / 100)).toFixed(2);
+  }
+
+  next();
+});
 
 
-export const  Product = mongoose.model('Product', productSchema);
-export const  Variant = mongoose.model('Variant', variantSchema);
+
+export const Product = mongoose.model('Product', productSchema);
+export const Variant = mongoose.model('Variant', variantSchema);

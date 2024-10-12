@@ -83,6 +83,6 @@ export const { singleProduct, addProductInCart, updateProductQuantityIncrease, u
 export default AddToCartSlice.reducer
 
 export function calculateTotal(cart) {
-    return cart.reduce((total, product) => total + product.variant.price * product.qty, 0);
+    return cart.reduce((total, product) => total + product.variant.final_price * product.qty, 0);
 }
 

@@ -241,6 +241,7 @@ export default function Cart(props) {
                 quantity: 1
             };
 
+
             dispatch(addProductInCart(productWithVariant));
         } catch (error) {
             console.error("Error in fetching the variants of the product");
@@ -454,7 +455,10 @@ export default function Cart(props) {
 
                         {
                             records.map((data, i) => (
-                                <div key={i} className="    hover:-translate-y-5 transition ease-in-out duration-500 mt-10 ">
+                                <div key={i} className=" relative    hover:-translate-y-5 transition ease-in-out duration-500 mt-10 ">
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                        {data.Variant_price_off}% off
+                                    </div>
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data._id}`
                                     }}
@@ -464,7 +468,10 @@ export default function Cart(props) {
                                     <div className=" mt-4 text-center  pt-3 ">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                         <p className=" text-base line-clamp-2">{data.title}</p>
-                                        <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
+                                        <div className="flex justify-center gap-4">
+                                            <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) :(data.Variant_total_price)}</p>
+                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                        </div>
                                         <div >
                                             <NavLink to={"/addtocart"} >
                                                 <button onClick={() => addCartHandler(data)} className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
