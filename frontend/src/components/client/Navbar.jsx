@@ -129,28 +129,15 @@ export default function Navbar() {
         setSearchKeyword(keyword);
     };
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            setShowSearchResults(true);
-        }
-        console.log("showSearchResults " , showSearchResults);
-    };
-
     const handleFocus = () => {
         setShowSearchResults(true);
     };
-
-    const handleBlur = () => {
-        // Optional: Hide the search results when input loses focus (if desired)
-        // setShowSearchResults(false);
-    };
-
     const mobile_search_handle = () => {
-        setShowSearchResults2(false);
+        setShowSearchResults2(!showSearchResults2);
     }
-    useEffect(() => {
-    }, [showSearchResults2]);
-
+    const check_search_result = () => {
+        setShowSearchResults(!showSearchResults);
+    }
 
     return (
         <>
@@ -188,6 +175,7 @@ export default function Navbar() {
                         <p>IN</p>
                     </div>
                     <div className='w-[200px] h-[70px] overflow-y-clip'><Link to="/"><LazyLoadImage src={logo} alt="" className=' w-[190px] h-[95px] ' /></Link></div>
+
                     <div className='flex items-center w-72 justify-between'>
                         <div className="relative mt-2 rounded-md shadow-sm mx-2 ">
                             <input
@@ -197,16 +185,16 @@ export default function Navbar() {
                                 className="block rounded-md py-1.5 border-b-2 w-[132px] pl-1 pr-10 text-gray-900 outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6"
                                 placeholder="Search"
                                 onFocus={handleFocus}
-                                onBlur={handleBlur}
                                 onChange={handleSearchKeyword}
-                                onKeyDown={handleKeyDown} // Listen for Enter key
                             />
+
                             {showSearchResults && (
-                                <Search
-                                    keyword={searchKeyword}
-                                    openAndClose={offcanvasOpenAndClose}
-                                    showOrNot={checkIsOffcanvasOpenForLogin}
-                                />
+                                <div className={`${showSearchResults ? '' : 'hidden'}`}>
+                                    <Search
+                                        keyword={searchKeyword}
+                                        openAndClose={check_search_result}
+                                    />
+                                </div>
                             )}
                             <div className="cursor-pointer transition-all hover:ease-in-out hover:duration-75 absolute inset-y-0 right-0 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="40" fill="currentColor" className="  bi bi-search " viewBox="0 0 16 16">
@@ -293,7 +281,7 @@ export default function Navbar() {
                             <li className={`nav ${activeLink === 6 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(6)}><Link to="/About">about us </Link></li>
                             <li className={`nav ${activeLink === 7 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(7)}><Link to="/">results </Link></li>
                             <li className={`nav ${activeLink === 8 ? 'navConditionClass' : ''}`} onClick={() => showTheActiveLinkFunc(8)}><Link to="/">blog </Link></li>
-                            <li className='px-3 py-3 font-medium text-center text-white bg-lime-800 rounded-full' ><Link to="https://yumimehandi.shiprocket.co/tracking">Track your order </Link></li>
+                            <li className='px-3 py-3 font-medium text-center text-white bg-lime-800 rounded-full' ><Link to="/orderTracking">Track your order </Link></li>
                         </ul>
                     </div>
 
@@ -388,12 +376,13 @@ export default function Navbar() {
                 </div>
 
                 {showSearchResults2 && (
-                    <Search
-                        showFull={true}
-                        mobile_search_handle={mobile_search_handle}
-                        openAndClose={offcanvasOpenAndClose}
-                        showOrNot={checkIsOffcanvasOpenForLogin}
-                    />
+                    <div className={`${showSearchResults2 ? '' : 'hidden'}`}>
+                        <Search
+                            showFull={true}
+                            mobile_search_handle={mobile_search_handle}
+                            openAndClose={mobile_search_handle}
+                        />
+                    </div>
                 )}
             </nav >
 

@@ -23,6 +23,7 @@ const Congratulation = lazy(() => import("./components/client/congratulation.jsx
 const FAQ = lazy(() => import("./components/client/faq.jsx"))
 const Contact = lazy(() => import("./components/client/contact.jsx"))
 const About = lazy(() => import("./components/client/about.jsx"))
+const OrderTracking = lazy(() => import("./components/client/orderTracking.jsx"))
 import DotLoader from "react-spinners/DotLoader";
 
 // admin components
@@ -85,7 +86,9 @@ function App() {
             <Route path='/paymentDetailSummary/:id/:variantId' element={<PaymentDetailSummary />} />
             <Route path='/register' element={<Register />} />
             <Route path='/logout' element={<Logout />} />
-            <Route path='/congratulation' element={<Congratulation />} />
+            <Route path='/congratulation/:Order_Id' element={<Congratulation />} />
+
+            <Route path='/orderTracking' element={<OrderTracking />} />
 
             {/* admin routes */}
             <Route path='/admin' element={<AdminLayout />} >

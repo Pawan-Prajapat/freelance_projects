@@ -43,11 +43,12 @@ function Search(props) {
         return keywords.every(keyword => title.includes(keyword));
     }).slice(0, 4);
 
+
     return (
         <>
             {props.showFull ? (
                 // Full-screen version
-                <div className={`${props.showOrNot(3) ? 'hidden' : ''} inset-0 z-50 bg-white flex flex-col p-5`}>
+                <div className={`inset-0 z-50 bg-white flex flex-col p-5`}>
                     <div className="flex justify-between items-center mb-4">
                         <input
                             type="text"
@@ -57,7 +58,7 @@ function Search(props) {
                             className="border p-2 w-full text-lg rounded-md shadow-md"
                         />
                         <div className='flex justify-end'>
-                            <IoCloseOutline onClick={() => { props.openAndClose(3); props.mobile_search_handle; }} className='mt-0 text-2xl cursor-pointer' />
+                            <IoCloseOutline onClick={() => props.openAndClose()} className='mt-0 text-2xl cursor-pointer' />
                         </div>
                     </div>
                     <div className="flex-grow overflow-y-auto">
@@ -65,8 +66,11 @@ function Search(props) {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                 {filteredData.map((data, i) => (
                                     <div key={i} className="hover:-translate-y-2 transition ease-in-out duration-300 p-4">
+                                        <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                            {data.Variant_price_off}% off
+                                        </div>
                                         <Link
-                                            onClick={() => props.openAndClose(3)}
+                                            onClick={() => props.openAndClose()}
                                             to={`/productDetail/${data._id}`}
                                             className="block bg-white rounded-lg shadow-lg overflow-hidden"
                                         >
@@ -78,8 +82,11 @@ function Search(props) {
                                                 src={`${data.image}`}
                                             />
                                             <div className="p-4 text-center">
-                                            <p className="text-base line-clamp-2">{data.title}</p>
-                                            <p className="font-bold mt-1">₹{data.Variant_Price}</p>
+                                                <p className="text-base line-clamp-2">{data.title}</p>
+                                                <div className="flex justify-center gap-4">
+                                                    <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                                    <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                                </div>
                                             </div>
                                         </Link>
                                     </div>
@@ -92,16 +99,19 @@ function Search(props) {
                 </div>
             ) : (
                 // Original version
-                <div className={`${props.showOrNot(2) ? 'hidden' : ''} absolute top-10 bg-white shadow-2xl right-3 z-50 w-[700px] h-[300px] px-5 py-3`}>
+                <div className={` absolute top-10 bg-white shadow-2xl right-3 z-50 w-[700px] h-[300px] px-5 py-3`}>
                     <div className='flex justify-end'>
-                        <IoCloseOutline onClick={() => props.openAndClose(2)} className='mt-0 text-2xl cursor-pointer' />
+                        <IoCloseOutline onClick={() => props.openAndClose()} className='mt-0 text-2xl cursor-pointer' />
                     </div>
                     <div className='h-auto flex'>
                         {filteredData.length > 0 ? (
                             filteredData.map((data, i) => (
                                 <div key={i} className="hover:-translate-y-5 transition ease-in-out duration-500 mt-10 w-52 h-[200px]">
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                        {data.Variant_price_off}% off
+                                    </div>
                                     <Link
-                                        onClick={() => props.openAndClose(2)}
+                                        onClick={() => props.openAndClose()}
                                         className="overflow-hidden"
                                         to={{
                                             pathname: `/productDetail/${data._id}`
@@ -115,7 +125,10 @@ function Search(props) {
                                         />
                                         <div className="mt-4 text-center pt-3">
                                             <p className="text-base line-clamp-2">{data.title}</p>
-                                            <p className="font-bold mt-1">₹{data.Variant_Price}</p>
+                                            <div className="flex justify-center gap-4">
+                                                <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                                <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                            </div>
                                         </div>
                                     </Link>
                                 </div>

@@ -1,9 +1,6 @@
 import React from 'react'
 import { FaFacebookF } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
-import { GrPinterest } from "react-icons/gr";
-import { AiFillYoutube } from "react-icons/ai";
-import { BsTwitter } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import logo from '../../img/YumiHerbalProduct.png';
 import { SiWhatsapp } from "react-icons/si";
@@ -14,7 +11,7 @@ export default function Footer() {
     return null;
   }
   return (
-    <footer className="bg-white mt-24 mb-3">
+    <footer className="bg-white border-t-2 border-green-600 pt-10 mt-14 mb-3">
       <div className=" mx-auto flex flex-col md:flex-row justify-between px-5">
         <div className="w-full md:w-auto text-center md:text-left">
           <div>
@@ -42,27 +39,27 @@ export default function Footer() {
           <p className="text-lg font-bold mb-1  uppercase text-green-700">Shop</p>
           <ul className="list-unstyled  ">
             <li className="my-3">
-              <a href="#" className="text-gray-800 hover:underline underline-offset-4">
-                All Products
-              </a>
+              <Link to="/henna/all_henna" className="text-gray-800 hover:underline underline-offset-4">
+                Henna
+              </Link>
             </li>
 
             <li className="my-3">
-              <a href="#" className="text-gray-800 hover:underline underline-offset-4">
-                Hennas
-              </a>
+              <Link to="/essentialOil/all_oil" className="text-gray-800 hover:underline underline-offset-4">
+                ESSENTIAL OIL
+              </Link>
             </li>
 
             <li className="my-3">
-              <a href="#" className="text-gray-800 hover:underline underline-offset-4">
-                Free Trial
-              </a>
+              <Link to="/face_care" className="text-gray-800 hover:underline underline-offset-4">
+                FACE CARE
+              </Link>
             </li>
 
             <li className="my-3">
-              <a href="#" className="text-gray-800 hover:underline underline-offset-4">
-                New Launched
-              </a>
+              <Link to="/hair_care" className="text-gray-800 hover:underline underline-offset-4">
+                Hair CARE
+              </Link>
             </li>
           </ul>
         </div>

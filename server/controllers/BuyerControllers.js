@@ -102,7 +102,6 @@ export const storeBuyerData = async (req, res) => {
       const [razorpay_order_id, amount] = await checkout(total_amount - dis_amount);
       orderData.razorpay_order_id = razorpay_order_id;
       const order = new Order(orderData);
-      console.log("orderData ", orderData);
       await order.save();
       await updateOrderQty(false, orderData.order_items);
       return res.status(201).json({

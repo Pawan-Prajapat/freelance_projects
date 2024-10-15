@@ -178,7 +178,7 @@ function paymentDetailSummary() {
         if (res.data.razorpay_order_id != "no") {
           checkoutHandler(res.data.razorpay_order_id, res.data.amount);
         } else {
-          navigate("/congratulation");
+          navigate(`/congratulation/${res.data.order.order_number}`);
         }
         dispatch(clearCart());
       })
@@ -252,7 +252,7 @@ function paymentDetailSummary() {
           <div>
             <h1 className="text-2xl font-semibold mb-4">Contact</h1>
             <div className='relative'>
-              <label htmlFor="email" className={`${inputState.email.upLabel ? 'top-2 text-[12px]' : ' top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>Email or mobile phone number</label>
+              <label htmlFor="email" className={`${inputState.email.upLabel ? 'top-2 text-[12px]' : ' top-[22px] text-sm'} absolute left-4 block   text-gray-700`}>Email </label>
               <input value={buyer.customerDetails.email} onChange={(e) => { checkUpLabel(e.target.value, "email"); handleInputs(e) }} onBlur={(e) => validateEmail(e.target.value)} name='email' type="email" id="email" className="mt-1 text-base p-4 w-full border rounded-md outline-green-700" required />
               <p className={`text-red-500 text-sm px-4 ${mail ? "hidden" : "visible"}`}>Enter a valid Emaiil</p>
             </div>
@@ -420,7 +420,7 @@ function paymentDetailSummary() {
               <p className='  text-xl'>Total</p>
             </div>
             <div className='flex flex-col gap-y-2 text-end'>
-              <p className='font-semibold'>Rs. {subTotal?.toFixed(2)}</p> 
+              <p className='font-semibold'>Rs. {subTotal?.toFixed(2)}</p>
               <p className={`${discount_price !== 0 ? '' : 'hidden'}  text-gray-500`}>{discount_price.toFixed(2)}</p>
               <p className='text-gray-500'>INR <span className='text-black text-xl font-semibold'>Rs. {(subTotal - discount_price).toFixed(2)}</span></p>
             </div>

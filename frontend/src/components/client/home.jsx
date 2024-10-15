@@ -144,7 +144,7 @@ function Home() {
     }, [dispatch]);
 
     let records;
-    let recordsForBestSelling, recordsForTrend , recordsForMostViewed;
+    let recordsForBestSelling, recordsForTrend, recordsForMostViewed;
     if (myName.data?.data !== null) {
         records = myName.data?.data.filter(element => element.category?.includes("premiumProduct")).slice(0, 4) || [];
         recordsForBestSelling = myName.data?.data.filter(element => element.category?.includes("bestSellers")).slice(0, 4) || [];
@@ -201,7 +201,7 @@ function Home() {
 
     return (
         <React.Fragment>
-            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000}  removeArrowOnDeviceType={[ "mobile"]} >
+            <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["mobile"]} >
                 {banners.map((banner, index) => (
                     banner.slider == 1 && (
                         <div key={index} className='w-full'>
@@ -252,6 +252,9 @@ function Home() {
                     records ? (
                         records.map((data, i) => (
                             <div key={i} className='py-3 shadow-sm'  >
+                                <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                    {data.Variant_price_off}% off
+                                </div>
                                 <Link className="overflow-hidden" to={{
                                     pathname: `/productDetail/${data._id}`
                                 }} >
@@ -260,7 +263,10 @@ function Home() {
                                 <div className="mt-4 text-center">
                                     <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                     <p className=" text-base line-clamp-2">{data.title}</p>
-                                    <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
+                                    <div className="flex justify-center gap-4">
+                                        <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                        <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                    </div>
                                     <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
                                         <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
                                             Add to cart
@@ -310,6 +316,9 @@ function Home() {
                         recordsForBestSelling ? (
                             recordsForBestSelling.map((data, i) => (
                                 <div key={i} className='py-3'  >
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                        {data.Variant_price_off}% off
+                                    </div>
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data._id}`
                                     }} >
@@ -318,7 +327,10 @@ function Home() {
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                         <p className=" text-base line-clamp-2">{data.title}</p>
-                                        <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
+                                        <div className="flex justify-center gap-4">
+                                            <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                        </div>
                                         <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
                                             <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
                                                 Add To Cart
@@ -336,6 +348,9 @@ function Home() {
                         recordsForTrend ? (
                             recordsForTrend.map((data, i) => (
                                 <div key={i} className='py-3'  >
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                        {data.Variant_price_off}% off
+                                    </div>
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data._id}`
                                     }} >
@@ -344,7 +359,10 @@ function Home() {
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                         <p className=" text-base line-clamp-2">{data.title}</p>
-                                        <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
+                                        <div className="flex justify-center gap-4">
+                                            <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                        </div>
                                         <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
                                             <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
                                                 Add To Cart
@@ -362,6 +380,9 @@ function Home() {
                         recordsForMostViewed ? (
                             recordsForMostViewed.map((data, i) => (
                                 <div key={i} className='py-3'  >
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                        {data.Variant_price_off}% off
+                                    </div>
                                     <Link className="overflow-hidden" to={{
                                         pathname: `/productDetail/${data._id}`
                                     }} >
@@ -370,7 +391,10 @@ function Home() {
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                         <p className=" text-base line-clamp-2">{data.title}</p>
-                                        <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
+                                        <div className="flex justify-center gap-4">
+                                            <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                        </div>
                                         <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
                                             <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
                                                 Add To Cart
@@ -387,7 +411,7 @@ function Home() {
 
             <Carousel responsive={responsiveForBanner} infinite={true} autoPlay={true} autoPlaySpeed={4000} removeArrowOnDeviceType={["mobile"]} >
                 {banners.map((banner, index) => (
-                    banner.slider ==  3 &&(
+                    banner.slider == 3 && (
                         <div key={index} className='w-full'>
                             <a href={banner.link} target="_blank" rel="noopener noreferrer">
                                 <LazyLoadImage

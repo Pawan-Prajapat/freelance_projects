@@ -154,7 +154,6 @@ export const getAllProductData = async (req, res) => {
                 });
             }
 
-            console.log("minWeightVariant " , minWeightVariant);
             // Return the product data with the total quantity and the ID of the variant with the lowest weight
             return {
                 ...product.toObject(), // Convert Mongoose document to a plain object

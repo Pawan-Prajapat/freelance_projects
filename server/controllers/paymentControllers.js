@@ -11,7 +11,7 @@ export const checkout = async (amount) => {
     currency: "INR",
   };
 
-  console.log("yha aaya kya" , typeof(options.amount));
+  console.log("yha aaya kya", typeof (options.amount));
   const order = await instance.orders.create(options);
   return [order.id, options.amount];
 };
@@ -27,13 +27,13 @@ export const paymentVerification = async (req, res) => {
   if (isAuthentic) {
     // databse comes here 
 
-    await Order.findOneAndUpdate({ razorpay_order_id }, {
+    const order = await Order.findOneAndUpdate({ razorpay_order_id }, {
       $set: {
         payment_status: 'paid',
         razorpay_payment_id
       }
     })
-    res.redirect(process.env.FRONT_SITE + "/congratulation");
+    res.redirect(process.env.FRONT_SITE + "/congratulation" + `/${order.order_number}`);
   }
   else {
     res.status(400).json({

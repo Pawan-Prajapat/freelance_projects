@@ -135,3 +135,24 @@ export const create_shiprocket_order = async (req, res) => {
         }
     }
 };
+
+
+// check the order number is exsit or not
+
+export const order_exist = async (req, res) => {
+    const { order_number } = req.params;
+    const OrderData = await Order.findOne({ order_number: order_number });
+    const ShiproketData = await shiprocket_create_details.findOne({ channel_order_id: order_number })
+    if (!OrderData && !ShiproketData) {
+        res.status(404).json({ message: "order id not found", awb: "" })
+    }
+    else if (OrderData && !ShiproketData) {
+        res.status(201).json({ message: "order id not found", awb: "" })
+    }
+    else if (ShiproketData.awb_code === "") {
+        res.status(202).json({ message: "order id exit but awb not", awb: "" })
+    }
+    else {
+        res.status(203).json({ message: "order id and awb exit", awb: ShiproketData.awb_code })
+    }
+}
