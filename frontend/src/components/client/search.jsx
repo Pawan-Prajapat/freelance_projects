@@ -43,6 +43,7 @@ function Search(props) {
         return keywords.every(keyword => title.includes(keyword));
     }).slice(0, 4);
 
+    console.log("filteredData ", filteredData);
 
     return (
         <>
@@ -66,7 +67,7 @@ function Search(props) {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                 {filteredData.map((data, i) => (
                                     <div key={i} className="hover:-translate-y-2 transition ease-in-out duration-300 p-4">
-                                        <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                        <div className={`${data.Variant_price_off ? '' : 'hidden'}  absolute uppercase font-semibold text-white text-sm bg-red-600 py-1 px-2`}>
                                             {data.Variant_price_off}% off
                                         </div>
                                         <Link
@@ -75,11 +76,9 @@ function Search(props) {
                                             className="block bg-white rounded-lg shadow-lg overflow-hidden"
                                         >
                                             <LazyLoadImage
-                                                alt={`${serverUrl}/${data.image}`}
-                                                height={150}
-                                                width={150}
-                                                className="mx-auto"
-                                                src={`${data.image}`}
+                                                alt={`${data.images[0]}`}
+                                                className="object-cover object-center block"
+                                                src={`${data.images[0]}`}
                                             />
                                             <div className="p-4 text-center">
                                                 <p className="text-base line-clamp-2">{data.title}</p>
@@ -99,7 +98,7 @@ function Search(props) {
                 </div>
             ) : (
                 // Original version
-                <div className={` absolute top-10 bg-white shadow-2xl right-3 z-50 w-[700px] h-[300px] px-5 py-3`}>
+                <div className={` absolute top-10 bg-white shadow-2xl right-3 z-50 w-[700px] h-[350px] px-5 py-3`}>
                     <div className='flex justify-end'>
                         <IoCloseOutline onClick={() => props.openAndClose()} className='mt-0 text-2xl cursor-pointer' />
                     </div>
@@ -107,7 +106,7 @@ function Search(props) {
                         {filteredData.length > 0 ? (
                             filteredData.map((data, i) => (
                                 <div key={i} className="hover:-translate-y-5 transition ease-in-out duration-500 mt-10 w-52 h-[200px]">
-                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'}  absolute uppercase font-semibold text-white text-sm bg-red-600 p-1  `}>
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link
@@ -118,10 +117,9 @@ function Search(props) {
                                         }}
                                     >
                                         <LazyLoadImage
-                                            alt={`${serverUrl}/${data.image}`}
-                                            height={100}
-                                            width={100}
-                                            src={`${data.image}`}
+                                            alt={`${data.images[0]}`}
+                                            src={`${data.images[0]}`}
+                                            className='object-cover object-center block h-36'
                                         />
                                         <div className="mt-4 text-center pt-3">
                                             <p className="text-base line-clamp-2">{data.title}</p>

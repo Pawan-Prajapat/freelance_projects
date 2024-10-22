@@ -172,6 +172,7 @@ export const customerData = async (req, res) => {
     for (let i = 0; i < current_order.order_items.length; i++) {
       const product_id = current_order.order_items[i].product_id; // This is a string in your case
       const variant_id = current_order.order_items[i].variant_id;
+      const qty = current_order.order_items[i].qty;
 
       // Find the product by title if product_id is a string, else find by ObjectId
       const product = await Product.findById({ _id: product_id });
@@ -181,7 +182,7 @@ export const customerData = async (req, res) => {
         product_name: product ? product.title : 'Unknown Product', // Fallback if product is not found
         variant_price: variant ? variant.price : 0, // Fallback if variant is not found
         variant_weight: variant ? variant.weight : 0, // Fallback if variant is not found
-        qty: variant ? variant.qty : 1
+        qty: qty
       });
     };
 

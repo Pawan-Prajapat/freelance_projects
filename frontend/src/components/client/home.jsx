@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link, NavLink } from 'react-router-dom';
@@ -154,10 +154,10 @@ function Home() {
 
 
     const images = [
-        { url: "/images/Hennakart/Hennakart-01.jpg", name: "HENNA POWDER", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/henna/all_henna" },
-        { url: "/images/Hennakart/Hennakart-02.jpg", name: "ESSENTIAL OIL", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/essentialOil/all_oil" },
-        { url: "/images/Hennakart/Hennakart-03.jpg", name: "FACE CARE", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/face_care" },
-        { url: "/images/Hennakart/Hennakart-04.jpg", name: "HAIR CARE", description: "Try our wide range of natural hair care products, 100% Pure, Vegan and Cruelty free", urlLink: "/hair_care" }
+        { url: "/images/Hennakart/Hennakart-01.jpg", name: "HENNA POWDER", description: "Discover the beauty of nature with our range of 100% natural henna products, designed for rich color and gentle care. Try them today for vibrant, chemical-free results", urlLink: "/henna/all_henna" },
+        { url: "/images/Hennakart/Hennakart-02.jpg", name: "ESSENTIAL OIL", description: "Enhance your henna results with our lab-tested, 100% natural essential oils, specially formulated to deliver the deepest, richest henna stains. Try them now for the best results", urlLink: "/essentialOil/all_oil" },
+        { url: "/images/Hennakart/Hennakart-03.jpg", name: "FACE CARE", description: "Treat your skin to the goodness of nature with our range of natural and organic face care products. Nourish, hydrate, and glow with pure, chemical-free ingredients!", urlLink: "/face_care" },
+        { url: "/images/Hennakart/Hennakart-04.jpg", name: "HAIR CARE", description: "Achieve healthy, vibrant hair with our natural and organic hair masks and hair color. Nourish, strengthen, and color your hair naturally, without chemicals. Try them now", urlLink: "/hair_care" }
     ]
 
 
@@ -222,7 +222,7 @@ function Home() {
 
             </Carousel>
             <div className='mt-10'>
-                <p className='  font-bold font-pawan text-3xl tracking-normal text-[#4b7422] text-center'>Featured On Hennakart</p>
+                <p className='  font-bold font-pawan text-3xl tracking-normal text-[#4b7422] text-center uppercase'>Shop by Category</p>
             </div>
             <Carousel responsive={responsive} showDots={window.innerWidth < 1024 ? true : false} removeArrowOnDeviceType={["tablet", "mobile"]} >
                 {
@@ -243,8 +243,7 @@ function Home() {
                 }
             </Carousel>
             <div className='my-10'>
-                <p className='  font-bold font-pawan text-2xl text-[#4b7422] text-center'>Our Best Selling Premium</p>
-                <p className='  font-bold font-pawan text-2xl text-[#4b7422] text-center'>Quality Naturals Products</p>
+                <p className='  font-bold font-pawan text-[28px] text-[#4b7422] text-center'>Our Best Selling Premium Products</p>
             </div>
             {/* bad me shi se karnge optimize */}
             <div className={`w-full grid gap-2 lg:gap-4 px-3 ${window.innerWidth < 1024 ? window.innerWidth < 770 ? window.innerWidth < 320 ? 'grid-cols-1' : 'grid-cols-2' : 'grid-cols-3' : 'grid-cols-4'}`}>
@@ -316,7 +315,7 @@ function Home() {
                         recordsForBestSelling ? (
                             recordsForBestSelling.map((data, i) => (
                                 <div key={i} className='py-3'  >
-                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600  py-2 px-3`}>
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
@@ -348,7 +347,7 @@ function Home() {
                         recordsForTrend ? (
                             recordsForTrend.map((data, i) => (
                                 <div key={i} className='py-3'  >
-                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600  py-2 px-3`}>
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
@@ -380,7 +379,7 @@ function Home() {
                         recordsForMostViewed ? (
                             recordsForMostViewed.map((data, i) => (
                                 <div key={i} className='py-3'  >
-                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600  py-2 px-3`}>
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
@@ -431,28 +430,37 @@ function Home() {
             </Carousel>
 
             <div className='my-20 flex items-center flex-col'>
-                <p className='  font-bold mb-3 font-pawan text-[28px] text-[#4b7422] text-center capitalize'>Why hennakart</p>
+                <p className='  font-bold mb-3 font-pawan text-[28px] text-[#4b7422] text-center capitalize'>Why Yumi Mehandi</p>
                 <p className='text-center text-lg lg:w-[63%] w-full px-5 tracking-wide'> <span className=' font-bold'> Yumi Mehandi </span> is a well-established manufacturer of henna, essential oils, and hair and skin care products. Our offerings are 100% organic, pure, and ISO certified, ensuring you receive only the highest quality natural products. Trust Yumi Mehandi for your beauty and wellness needs.</p>
             </div>
 
             <Carousel responsive={responsiveVerifyLogo} className=' bg-gray-100 py-5 lg:py-16 border-t'>
-                <div className='w-full px-5'>
-                    <LazyLoadImage src="/images/logo/1.avif" alt="" className=' ' />
+                <div className=' px-0'>
+                    <LazyLoadImage src="/images/logo/1.png" alt="" className='h-24 w-24  ' />
                 </div>
-                <div className='w-full px-5'>
-                    <LazyLoadImage src="/images/logo/2.png" alt="" className='w-full' />
+                <div className=' px-0'>
+                    <LazyLoadImage src="/images/logo/2.png" alt="" className='h-24 w-24' />
                 </div>
-                <div className='w-full px-5'>
-                    <LazyLoadImage src="/images/logo/3.png" alt="" className='w-full' />
+                <div className=' px-0'>
+                    <LazyLoadImage src="/images/logo/3.png" alt="" className='h-24 w-24' />
                 </div>
-                <div className='w-full px-5'>
-                    <LazyLoadImage src="/images/logo/4.avif" alt="" className=' ' />
+                <div className=' px-0'>
+                    <LazyLoadImage src="/images/logo/4.png" alt="" className='h-24 w-24  ' />
                 </div>
-                <div className='w-full px-5'>
-                    <LazyLoadImage src="/images/logo/5.avif" alt="" className='w-full' />
+                <div className=' px-0'>
+                    <LazyLoadImage src="/images/logo/5.png" alt="" className='h-24 w-24' />
                 </div>
-                <div className='w-full px-5'>
-                    <LazyLoadImage src="/images/logo/6.avif" alt="" className='w-full' />
+                <div className=' px-0'>
+                    <LazyLoadImage src="/images/logo/6.png" alt="" className='h-24 w-24' />
+                </div>
+                <div className=' px-0'>
+                    <LazyLoadImage src="/images/logo/7.png" alt="" className='h-24 w-24' />
+                </div>
+                <div className=' px-0'>
+                    <LazyLoadImage src="/images/logo/8.png" alt="" className='h-24 w-24' />
+                </div>
+                <div className=' px-0'>
+                    <LazyLoadImage src="/images/logo/9.png" alt="" className='h-24 w-24' />
                 </div>
             </Carousel>
 
@@ -520,9 +528,8 @@ function Home() {
                             <LazyLoadImage src="/images/logo/busLove.png" height={50} width={70} alt="" />
                         </div>
                         <div>
-                            <p className=' text-green-800 mb-3 text-lg font-semibold'>Always Free Shipping</p>
-                            <p>We always provide  free shipping all over India on all oreder with no minimum
-                                purchase and delivered products within 5-6 Days
+                            <p className=' text-green-800 mb-3 text-lg font-semibold'>Enjoy fast delivery with HennaKart!</p>
+                            <p>We ensure your orders reach you within 5-10 business days, providing quick and reliable service to get your products to you on time.
                             </p>
                         </div>
                     </div>
@@ -531,9 +538,8 @@ function Home() {
                             <LazyLoadImage src="/images/logo/heartLove.png" height={50} width={60} alt="" />
                         </div>
                         <div>
-                            <p className=' text-green-800 mb-3 text-lg font-semibold'>Easy Free Returns</p>
-                            <p>if you are not completely satisfied with your purchage for any reason or received
-                                damaged product, you may return it to us.
+                            <p className=' text-green-800 mb-3 text-lg font-semibold'>HennaKart delivers globally </p>
+                            <p>within 6-10 business days, offering fast, reliable shipping at great rates. No matter where you are, expect quality products delivered right to your doorstep!"
                             </p>
                         </div>
                     </div>
@@ -542,9 +548,8 @@ function Home() {
                             <LazyLoadImage src="/images/logo/StarLove.png" height={50} width={70} alt="" />
                         </div>
                         <div>
-                            <p className=' text-green-800 mb-3 text-lg font-semibold'>Genuine Products</p>
-                            <p>We always provides 100% original products to customer without mixing any chemical
-                                or harmful ingredients.
+                            <p className=' text-green-800 mb-3 text-lg font-semibold'>Available Products</p>
+                            <p>At HennaKart, we offer high-quality products in bulk at competitive prices. Perfect for resellers and artists, our bulk options ensure you get the best value without compromising on quality!
                             </p>
                         </div>
                     </div>
@@ -554,12 +559,11 @@ function Home() {
             <div className='flex flex-col my-10'>
                 <div className=' inline-flex gap-2 justify-between  items-center'>
                     <hr className=' bg-black w-1/5 lg:w-1/3 h-[3px]' />
-                    <p className=' font-semibold capitalize font-pawan lg:text-3xl text-lg'>Costumer Reviews</p>
+                    <p className=' font-semibold capitalize font-pawan lg:text-3xl text-lg'>Customer Testimonials</p>
                     <hr className=' bg-black w-1/5 lg:w-1/3 h-[3px]' />
                 </div>
                 <div className='inline-flex justify-center'>
-                    <p className='text-gray-600 lg:w-2/3 text-center'>See the magic through their eyes! Explore our Organic Henna Powder's stellar reviews with captivating
-                        before-and-after pictures – where transformations speak louder than words.</p>
+                    <p className='text-gray-600 lg:w-2/3 text-center'>"See what our satisfied customers are saying! From vibrant, long-lasting color to gentle, chemical-free results, our clients love the natural beauty that Yumi Mehandi delivers."</p>
                 </div>
             </div>
             <Carousel responsive={responsiveVerifyLogo} className=' transition-transform duration-500 ease-in-out bg-gray-100 border-t' infinite={true} autoPlay={true} autoPlaySpeed={1500} removeArrowOnDeviceType={["tablet", "mobile", "desktop", "superLargeDesktop"]}>

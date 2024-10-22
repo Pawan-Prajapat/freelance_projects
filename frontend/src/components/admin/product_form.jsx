@@ -234,28 +234,7 @@ function ProductForm() {
     const config = useMemo(() => ({
         readonly: false,
         placeholder: 'Write your description which helps to grow your business...',
-        toolbarSticky: false,
-        buttons: [
-            'bold', 'italic', 'underline', 'strikethrough', 'eraser', 'ul', 'ol', '|',
-            'fontsize', 'image', '|',
-            'align', 'undo', 'redo', '|',
-            'hr', 'eraser', 'fullsize',
-        ],
-        controls: {
-            fontsize: {
-                list: {
-                    '8': '8',
-                    '10': '10',
-                    '12': '12',
-                    '14': '14',
-                    '16': '16',
-                    '18': '18',
-                    '24': '24',
-                    '36': '36',
-                    '48': '48'
-                }
-            }
-        }
+        toolbarSticky: false
     }), []);
 
     return (

@@ -13,6 +13,9 @@ import { addProductInCart, singleProduct } from "../../features/AddToCartSlice";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { fetchProducts } from "../../features/productsFileHairSlice.js";
 import axios from 'axios';
+import { SiWhatsapp } from "react-icons/si";
+// import Carousel from "react-multi-carousel";
+// import "react-multi-carousel/lib/styles.css";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -22,6 +25,28 @@ const responsive = {
     tablet: { breakpoint: { max: 800, min: 464 }, items: 1 },
     mobile: { breakpoint: { max: 464, min: 0 }, items: 1 }
 };
+
+const responsive_related = {
+    superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 1024 },
+        items: 4
+    },
+    desktop: {
+        breakpoint: { max: 1024, min: 800 },
+        items: 3
+    },
+    tablet: {
+        breakpoint: { max: 800, min: 464 },
+        items: 2
+    },
+    mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1
+    }
+};
+
+
 
 function ProductDetailWhole() {
     const dispatch = useDispatch();
@@ -156,7 +181,7 @@ function ProductDetailWhole() {
                         <p> Availability: {selectedVariant?.qty} <br /></p>
                         <div className='flex gap-4'>
                             <p className='mt-3 font-bold text-black text-xl'>₹{selectedVariant?.final_price}</p>
-                            <p className={` ${ selectedVariant?.price_off <= 0 ? ' hidden' : "mt-4 line-through text-lg"}`}>₹{selectedVariant?.price}</p>
+                            <p className={` ${selectedVariant?.price_off <= 0 ? ' hidden' : "mt-4 line-through text-lg"}`}>₹{selectedVariant?.price}</p>
                         </div>
                     </div>
                     <div className='flex flex-col w-full mt-4'>
@@ -183,8 +208,10 @@ function ProductDetailWhole() {
                             <GoShareAndroid className='h-7 w-7 cursor-pointer' />
                         </div>
                         <a href="https://wa.me/919256432475">
-                            <div className='text-center text-base uppercase hover:border-none border-2 border-gray-600 py-[12px] font-bold shadow-[5px_6px_rgb(166,222,205,1)] hover:text-blue-50 bg-white hover:bg-black text-black w-full mt-10'>
-                                Buy Bulk
+                            <div className='text-center flex gap-2 items-center justify-center text-base uppercase hover:border-none border-2 border-gray-600 py-[12px] font-bold shadow-[5px_6px_rgb(166,222,205,1)] hover:text-blue-50 bg-white hover:bg-black text-black w-full mt-10'>
+                                Order On Whatsapp <div className='bg-green-600  rounded-full flex justify-center items-center'>
+                                    <a href="https://wa.me/919256432475"><SiWhatsapp className=' text-white  w-8 h-8' /></a>
+                                </div>
                             </div>
                         </a>
                         <Link to={`/paymentDetailSummary/${id}/${selectedVariant?._id}`} onClick={() => handleSingleProduct(currentProduct)}>
@@ -217,11 +244,13 @@ function ProductDetailWhole() {
             <div className={`${currentProduct_recommned.length > 0 ? '' : 'hidden'} text-center font-semibold text-3xl mx-10 border-b-2 italic text-gray-700 border-black pb-5`}>
                 Related Products
             </div>
-            <div className={`w-full grid gap-2 lg:gap-4 px-16 ${window.innerWidth < 1024 ? window.innerWidth < 770 ? window.innerWidth < 320 ? 'grid-cols-1' : 'grid-cols-2' : 'grid-cols-3' : 'grid-cols-4'}`}>
+            <div className={'w-full px-0 lg:px-14 mt-10'}>
                 {
                     currentProduct_recommned ? (
+                    <Carousel responsive={responsive_related} showDots={ false} removeArrowOnDeviceType={["mobile"]} >
+                    {
                         currentProduct_recommned.map((data, i) => (
-                            <div key={i} className='py-3 shadow-sm'  >
+                            <div key={i} className='py-3 shadow-sm px-0 lg:px-7 flex flex-col justify-center items-center'  >
                                 <Link className="overflow-hidden" to={{
                                     pathname: `/productDetail/${data._id}`
                                 }} >
@@ -238,7 +267,9 @@ function ProductDetailWhole() {
                                     </NavLink>
                                 </div>
                             </div>
-                        ))) : (
+                        ))
+                    }
+                </Carousel>) : (
                         <h1></h1>
                     )
                 }

@@ -456,7 +456,7 @@ export default function Cart(props) {
                         {
                             records.map((data, i) => (
                                 <div key={i} className=" relative    hover:-translate-y-5 transition ease-in-out duration-500 mt-10 ">
-                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600  py-1 px-2`}>
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{

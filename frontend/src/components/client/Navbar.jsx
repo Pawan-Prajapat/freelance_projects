@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import flag from '../../img/India.webp';
-import logo from '../../img/YumiHerbalProduct.png';
+import logo from '../../img/henna_logo2.jpg';
 import { LiaShoppingBagSolid } from "react-icons/lia";
 import { FiMenu } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
@@ -143,7 +143,7 @@ export default function Navbar() {
         <>
             {/* login offcanvas  */}
             <Login openAndClose={offcanvasOpenAndClose} showOrNot={checkIsOffcanvasOpenForLogin} />
-            <div className='flex h-14 overflow-hidden gap-96 group bg-orange-300'>
+            <div className='flex h-14 overflow-hidden gap-96 group bg-[#222621] text-white'>
                 <div className=' flex flex-shrink-0 items-center justify-around whitespace-nowrap w-full animate-slide gap-4 group-hover:paused'>
                     <div className='inline-flex items-center justify-center'>
                         {textParts.map((part, index) => (
@@ -174,7 +174,7 @@ export default function Navbar() {
                         <LazyLoadImage src={flag} alt="" className=' w-6 me-1 ' />
                         <p>IN</p>
                     </div>
-                    <div className='w-[200px] h-[70px] overflow-y-clip'><Link to="/"><LazyLoadImage src={logo} alt="" className=' w-[190px] h-[95px] ' /></Link></div>
+                    <div className='w-[200px] h-[70px] overflow-y-clip'><Link to="/"><LazyLoadImage src={logo} alt="" className=' w-[190px] h-[70px] ' /></Link></div>
 
                     <div className='flex items-center w-72 justify-between'>
                         <div className="relative mt-2 rounded-md shadow-sm mx-2 ">
