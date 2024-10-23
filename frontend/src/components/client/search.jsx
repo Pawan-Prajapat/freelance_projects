@@ -82,9 +82,9 @@ function Search(props) {
                                             />
                                             <div className="p-4 text-center">
                                                 <p className="text-base line-clamp-2">{data.title}</p>
-                                                <div className="flex justify-center gap-4">
-                                                    <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
-                                                    <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                                <div className="flex justify-center gap-4 mt-2">
+                                                    <p className={` font-semibold text-lg`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                                    <p className={` ${data.Variant_price_off ? '' : 'hidden'} font-semibold text-red-600 text-base line-through `} >₹{data.Variant_Price}</p>
                                                 </div>
                                             </div>
                                         </Link>
@@ -123,9 +123,9 @@ function Search(props) {
                                         />
                                         <div className="mt-4 text-center pt-3">
                                             <p className="text-base line-clamp-2">{data.title}</p>
-                                            <div className="flex justify-center gap-4">
-                                                <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
-                                                <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                            <div className="flex justify-center gap-4 mt-2">
+                                                <p className={` font-bold text-lg`}>₹ {!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                                <p className={` ${data.Variant_price_off ? '' : 'hidden'} font-semibold text-red-600 text-base line-through `} >₹ {data.Variant_Price}</p>
                                             </div>
                                         </div>
                                     </Link>

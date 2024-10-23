@@ -179,9 +179,10 @@ function ProductDetailWhole() {
                     </div>
                     <div className='w-full text-gray-500 mt-3'>
                         <p> Availability: {selectedVariant?.qty} <br /></p>
-                        <div className='flex gap-4'>
-                            <p className='mt-3 font-bold text-black text-xl'>₹{selectedVariant?.final_price}</p>
-                            <p className={` ${selectedVariant?.price_off <= 0 ? ' hidden' : "mt-4 line-through text-lg"}`}>₹{selectedVariant?.price}</p>
+                        <div className='flex gap-2 items-end'>
+                            <p className='mt-3 font-semibold text-red-500 text-2xl'>₹ {selectedVariant?.final_price}</p>
+                            <p className={` ${selectedVariant?.price_off <= 0 ? ' hidden' : "mt-4 line-through text-base"}`}>₹ {selectedVariant?.price}</p>
+                            <p className={` ${selectedVariant?.price_off <= 0 ? ' hidden' : "mt-4 text-green-800 font-bold text-base"}`}>{selectedVariant?.price_off}% Off</p>
                         </div>
                     </div>
                     <div className='flex flex-col w-full mt-4'>

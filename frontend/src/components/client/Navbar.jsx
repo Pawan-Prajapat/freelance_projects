@@ -143,30 +143,26 @@ export default function Navbar() {
         <>
             {/* login offcanvas  */}
             <Login openAndClose={offcanvasOpenAndClose} showOrNot={checkIsOffcanvasOpenForLogin} />
-            <div className='flex h-14 overflow-hidden gap-96 group bg-[#222621] text-white'>
-                <div className=' flex flex-shrink-0 items-center justify-around whitespace-nowrap w-full animate-slide gap-4 group-hover:paused'>
-                    <div className='inline-flex items-center justify-center'>
-                        {textParts.map((part, index) => (
-                            <React.Fragment key={index}>
-                                <p>{part}</p>
-                                {/* Insert the icon between text parts, except after the last part */}
-                                {index < textParts.length - 1 && <FaFireFlameCurved className='mx-3 h-5 w-5' />}
-                            </React.Fragment>
-                        ))}
-                    </div>
+            <div className='flex h-14 overflow-hidden gap-4 group bg-[#222621] text-white'>
+                <div className='flex flex-shrink-0 items-center justify-start whitespace-nowrap min-w-full animate-slide gap-4 group-hover:paused'>
+                    {textParts.map((part, index) => (
+                        <React.Fragment key={index}>
+                            <p className="text-sm">{part}</p>
+                            {index < textParts.length - 1 && <FaFireFlameCurved className='mx-2 h-5 w-5' />}
+                        </React.Fragment>
+                    ))}
                 </div>
-                <div className=' flex flex-shrink-0 items-center justify-around whitespace-nowrap w-full animate-slide gap-4 group-hover:paused'>
-                    <div className='inline-flex items-center justify-center'>
-                        {textParts.map((part, index) => (
-                            <React.Fragment key={index}>
-                                <p>{part}</p>
-                                {/* Insert the icon between text parts, except after the last part */}
-                                {index < textParts.length - 1 && <FaFireFlameCurved className='mx-3 h-5 w-5' />}
-                            </React.Fragment>
-                        ))}
-                    </div>
+                <div className='flex flex-shrink-0 items-center justify-start whitespace-nowrap min-w-full animate-slide gap-4 group-hover:paused'>
+                    {textParts.map((part, index) => (
+                        <React.Fragment key={index}>
+                            <p className="text-sm">{part}</p>
+                            {index < textParts.length - 1 && <FaFireFlameCurved className='mx-2 h-5 w-5' />}
+                        </React.Fragment>
+                    ))}
                 </div>
             </div>
+
+
             <nav className={`${navbar ? 'h-[50px]  pb-10 pt-3   bg-white   fixed top-0  ' : '  '} shadow-md xl:shadow-none w-full z-[1001] `}>
                 <div className={`${navbar ? 'hidden' : 'w-full h-0 xl:h-[88px] items-center justify-between px-4  bg-[#f8f8f8] hidden xl:flex'}`}>
 

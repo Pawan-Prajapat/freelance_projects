@@ -262,9 +262,9 @@ function Home() {
                                 <div className="mt-4 text-center">
                                     <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                     <p className=" text-base line-clamp-2">{data.title}</p>
-                                    <div className="flex justify-center gap-4">
-                                        <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
-                                        <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                    <div className="flex justify-center gap-4 mt-2">
+                                        <p className={` font-bold text-lg`}>₹ {!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                        <p className={` ${data.Variant_price_off ? '' : 'hidden'} font-bold text-red-600 text-base  line-through `} >₹ {data.Variant_Price}</p>
                                     </div>
                                     <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
                                         <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
@@ -326,9 +326,9 @@ function Home() {
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                         <p className=" text-base line-clamp-2">{data.title}</p>
-                                        <div className="flex justify-center gap-4">
-                                            <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
-                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                        <div className="flex justify-center gap-4 items-center mt-2">
+                                            <p className={` font-bold text-lg `}>₹ {!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} font-bold text-red-600 text-base line-through `} >₹ {data.Variant_Price}</p>
                                         </div>
                                         <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
                                             <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
@@ -358,9 +358,9 @@ function Home() {
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                         <p className=" text-base line-clamp-2">{data.title}</p>
-                                        <div className="flex justify-center gap-4">
-                                            <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
-                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                        <div className="flex justify-center gap-4 mt-2">
+                                            <p className={` font-bold text-lg`}>₹ {!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} font-bold text-red-600 text-base line-through `} >₹ {data.Variant_Price}</p>
                                         </div>
                                         <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
                                             <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
@@ -390,9 +390,9 @@ function Home() {
                                     <div className="mt-4 text-center">
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                         <p className=" text-base line-clamp-2">{data.title}</p>
-                                        <div className="flex justify-center gap-4">
-                                            <p className={` font-bold mt-1`}>₹{!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
-                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} text-sm line-through mt-2`} >₹{data.Variant_Price}</p>
+                                        <div className="flex justify-center gap-4 mt-2">
+                                            <p className={` font-bold text-lg`}>₹ {!data.Variant_total_price ? (data.Variant_Price) : (data.Variant_total_price)}</p>
+                                            <p className={` ${data.Variant_price_off ? '' : 'hidden'} font-bold text-red-600 text-base line-through`} >₹ {data.Variant_Price}</p>
                                         </div>
                                         <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
                                             <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
@@ -442,10 +442,10 @@ function Home() {
                     <LazyLoadImage src="/images/logo/2.png" alt="" className='h-24 w-24' />
                 </div>
                 <div className=' px-0'>
-                    <LazyLoadImage src="/images/logo/3.png" alt="" className='h-24 w-24' />
+                    <LazyLoadImage src="/images/logo/3c.png" alt="" className='h-24 w-24' />
                 </div>
                 <div className=' px-0'>
-                    <LazyLoadImage src="/images/logo/4.png" alt="" className='h-24 w-24  ' />
+                    <LazyLoadImage src="/images/logo/4c.png" alt="" className='h-24 w-24  ' />
                 </div>
                 <div className=' px-0'>
                     <LazyLoadImage src="/images/logo/5.png" alt="" className='h-24 w-24' />
