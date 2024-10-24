@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 
 function TermsOfService() {
   // when uesr click then page show on the top every time
@@ -7,7 +7,7 @@ function TermsOfService() {
   }, [])
   return (
     <div className='px-6 lg:px-32 py-5'>
-      <h1 className='text-2xl font-bold mb-4 text-center'>Terms of Service</h1>
+      <h1 className='text-2xl font-bold mb-4 text-center'>Terms and Conditions</h1>
       <p className='mb-4'>
         Welcome to Hennakart. These Terms of Service govern your use of our website and the purchase of our products. By accessing or using our website, you agree to comply with and be bound by these terms. Please read them carefully.
       </p>
@@ -121,9 +121,9 @@ function TermsOfService() {
         If you have any questions about these Terms of Service, please contact us at:
       </p>
       <ul className='list-disc list-inside mb-4'>
-        <li>Email: [insert your customer service email]</li>
-        <li>Phone: [insert your customer service phone number]</li>
-        <li>Address: Hennakart [Your address], Sojat, Rajasthan</li>
+        <li>Email: <a href="mailto:CAREYUMIMEHANDI@GMAIL.COM"  className=' text-blue-700 underline'>careyumimehandi@gmail.com</a></li>
+        <li>Phone: <a href="tel:+919256432475" className=' text-blue-700 underline'> +919256432475</a></li>
+        <li>Address:  Bera Maylat Sojat City ( Pali) 306104 Rajasthan India</li>
       </ul>
       <p>Thank you for choosing Hennakart. We appreciate your business and look forward to serving you.</p>
     </div>

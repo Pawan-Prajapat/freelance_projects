@@ -251,7 +251,7 @@ function Home() {
                     records ? (
                         records.map((data, i) => (
                             <div key={i} className='py-3 shadow-sm'  >
-                                <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-2 px-3`}>
+                                <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white bg-red-600 py-1 px-2 lg:py-2 lg:px-3`}>
                                     {data.Variant_price_off}% off
                                 </div>
                                 <Link className="overflow-hidden" to={{
@@ -315,7 +315,7 @@ function Home() {
                         recordsForBestSelling ? (
                             recordsForBestSelling.map((data, i) => (
                                 <div key={i} className='py-3'  >
-                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600  py-2 px-3`}>
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600 py-1 px-2 lg:py-2 lg:px-3`}>
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
@@ -347,7 +347,7 @@ function Home() {
                         recordsForTrend ? (
                             recordsForTrend.map((data, i) => (
                                 <div key={i} className='py-3'  >
-                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600  py-2 px-3`}>
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600 py-1 px-2 lg:py-2 lg:px-3`}>
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
@@ -379,7 +379,7 @@ function Home() {
                         recordsForMostViewed ? (
                             recordsForMostViewed.map((data, i) => (
                                 <div key={i} className='py-3'  >
-                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600  py-2 px-3`}>
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600 py-1 px-2 lg:py-2 lg:px-3`}>
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
