@@ -89,8 +89,8 @@ export const paymentVerification = async (req, res) => {
       const order = new Order(orderData);
       await order.save();
       await updateOrderQty(false, orderData.order_items);
-
-      res.redirect(process.env.FRONT_SITE + "/congratulation" + `/${order.order_number}`);
+      return res.status(201).json({success: true , order });
+      // res.redirect(process.env.FRONT_SITE + "/congratulation" + `/${order.order_number}`);
     }
     else {
       res.status(400).json({

@@ -169,12 +169,12 @@ function paymentDetailSummary() {
             dispatch(clearCart());
           })
           .catch(err => {
-            if (err.response.status === 400) {
-              setError("Payment Failed");
-            }
-            else if (err.response.status === 500) {
-              setError(err.response.data.message);
-            }
+            // if (err.response.status === 400) {
+            //   setError("Payment Failed");
+            // }
+            // else if (err.response.status === 500) {
+            //   setError(err.response.data.message);
+            // }
             console.error(err);
           });
       },
