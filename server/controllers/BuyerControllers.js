@@ -1,10 +1,12 @@
 import { Customer, Order } from "../models/buyerModel.js";
 import { OrderCounter } from "../models/yumi_order_id_shiproket_token_model.js";
-import { checkout } from "./paymentControllers.js";
+import { config } from 'dotenv';
 import { Product, Variant } from "../models/productModel.js"
 import moment from 'moment';
 
-const getOrderId = async () => {
+config({ path: "./config/config.env" });
+
+export const getOrderId = async () => {
   const counter = await OrderCounter.findByIdAndUpdate(
     "order_id",
     { $inc: { sequence_value: 1 } },
@@ -13,7 +15,7 @@ const getOrderId = async () => {
   return counter.sequence_value;
 }
 
-const updateOrderQty = async (add, variantsArray) => {
+export const updateOrderQty = async (add, variantsArray) => {
   try {
     for (const item of variantsArray) {
       const { variant_id, qty } = item;
@@ -48,9 +50,29 @@ const updateOrderQty = async (add, variantsArray) => {
 
 
 export const storeBuyerData = async (req, res) => {
+  // store data payment varification me bhi hai ise optimize krna hai 
   try {
     const { email, country, firstName, lastName, city, state, pincode, phone, address } = req.body.customerDetails;
     const { order_items, total_amount, payment_type, discount_amount, discount_cupon } = req.body.orderDetails;
+
+
+    // Regex patterns
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const textPattern = /^[A-Za-z\s]+$/;
+    const pincodePattern = /^\d{6}$/;
+    const phonePattern = /^\d{10}$/;
+
+    if (!emailPattern.test(email))
+      return res.status(400).json({ error: "Invalid Email" });
+    if (!textPattern.test(firstName) && !textPattern.test(lastName))
+      return res.status(400).json({ error: "Invalid Name" });
+    if (!pincodePattern.test(pincode))
+      return res.status(400).json({ error: "Invalid Pincode" });
+    if (!phonePattern.test(phone))
+      return res.status(400).json({ error: "Invalid Phone Number" });
+
+
+
     let customer = await Customer.findOne({ email });
     if (!customer) {
       customer = await Customer.create({
@@ -87,31 +109,33 @@ export const storeBuyerData = async (req, res) => {
     };
 
 
-    if (!payment_type) {  // COD
-      const order = new Order(orderData);
-      await order.save();
-      await updateOrderQty(false, orderData.order_items);
-      return res.status(201).json({
-        success: true,
-        message: 'Order created successfully with COD',
-        razorpay_order_id: "no",
-        order
-      });
-    } else {  // Razorpay
-      
-      const [razorpay_order_id, amount] = await checkout(total_amount - dis_amount);
-      orderData.razorpay_order_id = razorpay_order_id;
-      const order = new Order(orderData);
-      await order.save();
-      await updateOrderQty(false, orderData.order_items);
-      return res.status(201).json({
-        success: true,
-        message: 'Order created successfully with Razorpay',
-        razorpay_order_id,
-        amount,
-        order
-      });
-    }
+    // if (!payment_type) {  // COD
+    const order = new Order(orderData);
+    await order.save();
+    await updateOrderQty(false, orderData.order_items);
+    return res.status(201).json({success: true , order });
+    //   message: 'Order created successfully with COD',
+    //   razorpay_order_id: "no",
+    //   
+    //
+
+    // res.redirect(process.env.FRONT_SITE + "/congratulation" + `/${order.order_number}`);
+    // }
+    //  else {  // Razorpay
+
+    //   const [razorpay_order_id, amount] = await checkout(total_amount - dis_amount);
+    //   orderData.razorpay_order_id = razorpay_order_id;
+    //   const order = new Order(orderData);
+    //   await order.save();
+    //   await updateOrderQty(false, orderData.order_items);
+    //   return res.status(201).json({
+    //     success: true,
+    //     message: 'Order created successfully with Razorpay',
+    //     razorpay_order_id,
+    //     amount,
+    //     order
+    //   });
+    // }
 
   } catch (error) {
     console.error("Error in storeBuyerData:", error);  // Log the error for debugging

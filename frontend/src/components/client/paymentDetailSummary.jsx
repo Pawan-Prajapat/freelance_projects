@@ -42,6 +42,9 @@ function paymentDetailSummary() {
   const [discount_code, setDiscount_code] = useState('');
   const discount_ref = useRef(null);
 
+  // for invalid email , pincode , phone
+  const [error, setError] = useState('');
+
   // document se email ki value get nhi ho rhi tho state se karte hai
   const [email, setEmail] = useState('');
   const [mail, setMail] = useState(true);
@@ -151,7 +154,30 @@ function paymentDetailSummary() {
       image: logo,
       order_id,
       // collback_url important backend me hona chahiye
-      callback_url: serverUrl + "/api/paymentVerification",
+      // callback_url: serverUrl + "/api/paymentVerification",
+      "handler": async function (response) {
+
+        buyer.razorpay_order_id = response.razorpay_order_id;
+        buyer.razorpay_payment_id = response.razorpay_payment_id;
+        buyer.razorpay_signature = response.razorpay_signature;
+        console.log("buyer after append ", buyer);
+        buyer.orderDetails.discount_amount = Number(discount_price.toFixed(2));
+        buyer.orderDetails.discount_cupon = discount_code;
+        await axios.post(serverUrl + "/api/paymentVerification", buyer)
+          .then(res => {
+            navigate(`/congratulation/${res.data.order.order_number}`);
+            dispatch(clearCart());
+          })
+          .catch(err => {
+            if (err.response.status === 400) {
+              setError("Payment Failed");
+            }
+            else if (err.response.status === 500) {
+              setError(err.response.data.message);
+            }
+            console.error(err);
+          });
+      },
       prefill: {
         "name": buyer.customerDetails.firstName + buyer.customerDetails.lastName,
         "email": buyer.customerDetails.email,
@@ -165,29 +191,58 @@ function paymentDetailSummary() {
       }
     };
     const razor = new Razorpay(options);
+    razor.on('payment.failed', function (response) {
+      alert(response.error.code);
+      alert(response.error.description);
+      alert(response.error.source);
+      alert(response.error.step);
+      alert(response.error.reason);
+      alert(response.error.metadata.order_id);
+      alert(response.error.metadata.payment_id);
+    });
     razor.open();
   }
 
   const dispatch = useDispatch();
 
   const buyerDataStore = async () => {
-    buyer.orderDetails.discount_amount = Number(discount_price.toFixed(2));
-    buyer.orderDetails.discount_cupon = discount_code;
-    await axios.post(serverUrl + "/api/storeBuyerData", buyer)
-      .then(res => {
-        if (res.data.razorpay_order_id != "no") {
-          checkoutHandler(res.data.razorpay_order_id, res.data.amount);
-        } else {
+    if (!buyer.orderDetails.payment_type) {
+      buyer.orderDetails.discount_amount = Number(discount_price.toFixed(2));
+      buyer.orderDetails.discount_cupon = discount_code;
+      await axios.post(serverUrl + "/api/storeBuyerData", buyer)
+        .then(res => {
           navigate(`/congratulation/${res.data.order.order_number}`);
-        }
-        dispatch(clearCart());
+          dispatch(clearCart());
+        })
+        .catch(err => {
+          if (err.response.status === 500) {
+            setError(err.response.data.error);
+          }
+          console.error(err);
+        });
+    }
+    else{
+      const amount = buyer.orderDetails.total_amount - buyer.orderDetails.discount_amount;
+      await axios.post(serverUrl + "/api/checkout",{amount})
+      .then(res=>{
+        checkoutHandler(res.data.order_id , res.data.order_amount);
       })
-      .catch(err => {
-        console.error(err);
-      });
+      .catch(err =>{
+        setError(err);
+      })
+    }
   }
 
+  useEffect(() => {
+    if (error) {
+      window.scrollTo(0, 0);
+      const timer = setTimeout(() => {
+        setError(''); // Clear the error after 3 seconds
+      }, 3000);
 
+      return () => clearTimeout(timer); // Clean up the timer when component unmounts or error changes
+    }
+  }, [error]);
 
   // when uesr click then page show on the top every time
   useEffect(() => {
@@ -245,7 +300,11 @@ function paymentDetailSummary() {
   return (
 
     <div className='mt-14  border'>
-
+      {error && (
+        <div className="absolute top-14 right-5 transform -translate-x-1/2 bg-red-500 text-white py-2 px-4 mt-4 rounded z-[1005]">
+          {error}
+        </div>
+      )}
       <form className='grid  lg:grid-cols-2 grid-cols-1 '>
         <div className="grid  gap-3 lg:ps-20 lg:pe-10 px-3 pt-14 border-r">
           {/* this is for email */}
