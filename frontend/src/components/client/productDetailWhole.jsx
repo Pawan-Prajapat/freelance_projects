@@ -161,7 +161,7 @@ function ProductDetailWhole() {
             <div className='flex lg:my-10 flex-col lg:flex-row'>
                 <div className='lg:w-[60%] lg:pe-6 lg:ps-14 ps-0 pe-0 w-full'>
                     <div className=" pic w-full md:w-[100%] xl:w-[730.08] px-2 sm:px-5 lg:px-10 gap-y-10 flex">
-                        <Carousel  responsive={responsive} infinite={true} showDots customDot={<CustomDot />} customRightArrow={<CustomRightArrow />} customLeftArrow={<CustomLeftArrow />}
+                        <Carousel responsive={responsive} infinite={true} showDots customDot={<CustomDot />} customRightArrow={<CustomRightArrow />} customLeftArrow={<CustomLeftArrow />}
                             className='w-full h-[450px] pt-5 pb-20 lg:h-auto '>
                             {multipleImages[0].map((image, index) => (
                                 <div key={index} className='w-full lg:h-[900px] h-auto'>
@@ -246,57 +246,57 @@ function ProductDetailWhole() {
                         <p className='text-gray-500'><span className='text-amber-700 font-semibold'>{customerCount}</span> customers are viewing this product</p>
                     </div>
                     <div className="w-full flex justify-between mt-5 gap-4">
-                       <div className='flex flex-col gap-2 justify-center items-center text-sm'>
-                        <div><IoShieldCheckmarkSharp className='bg-red-600 text-white w-8 h-8 p-[5px] rounded-full' /></div>
-                        <div className='text-center'>100% Genuine Product</div>
-                       </div>
-                       <div className='flex flex-col gap-2 justify-center items-center text-sm'>
-                        <div><img src={best_price} alt="Best Price" className='w-8 h-8 rounded-full bg-red-400 p-[5px]' /></div>
-                        <div className='text-center'>Assured Best Price</div>
-                       </div>
-                       <div className='flex flex-col gap-2 justify-center items-center text-sm'>
-                        <div><FcOnlineSupport className=' w-8 h-8'/></div>
-                        <div className='text-center'>Customer Support</div>
-                       </div>
+                        <div className='flex flex-col gap-2 justify-center items-center text-sm'>
+                            <div><IoShieldCheckmarkSharp className='bg-red-600 text-white w-8 h-8 p-[5px] rounded-full' /></div>
+                            <div className='text-center'>100% Genuine Product</div>
+                        </div>
+                        <div className='flex flex-col gap-2 justify-center items-center text-sm'>
+                            <div><img src={best_price} alt="Best Price" className='w-8 h-8 rounded-full bg-red-400 p-[5px]' /></div>
+                            <div className='text-center'>Assured Best Price</div>
+                        </div>
+                        <div className='flex flex-col gap-2 justify-center items-center text-sm'>
+                            <div><FcOnlineSupport className=' w-8 h-8' /></div>
+                            <div className='text-center'>Customer Support</div>
+                        </div>
                     </div>
 
                 </div>
             </div>
-            <div className='text-center mt-10 font-semibold text-3xl mx-10 border-b-2 italic text-gray-700 border-black pb-5'>
-                This is your Description
+            <div className='text-center mt-10 font-semibold text-2xl mx-10 border-b-2 font-serif text-gray-700 border-black pb-5'>
+                Description
             </div>
             <div className='px-10  pt-14'
                 dangerouslySetInnerHTML={{ __html: currentProduct.description }}
             />
-            <div className={`${currentProduct_recommned.length > 0 ? '' : 'hidden'} text-center font-semibold text-3xl mx-10 border-b-2 italic text-gray-700 border-black pb-5`}>
-                Related Products
+            <div className={`${currentProduct_recommned.length > 0 ? '' : 'hidden'} text-center font-semibold text-xl lg:text-2xl mx-10 mt-10 font-serif text-gray-700 `}>
+                You May Also Like
             </div>
-            <div className={'w-full px-0 lg:px-14 mt-10'}>
+            <div className={'w-full px-0 lg:px-14 mt-2 lg:mt-10'}>
                 {
                     currentProduct_recommned ? (
-                    <Carousel responsive={responsive_related} showDots={ false}  >
-                    {
-                        currentProduct_recommned.map((data, i) => (
-                            <div key={i} className='py-3 shadow-sm px-0 lg:px-7 flex flex-col justify-center items-center'  >
-                                <Link className="overflow-hidden" to={{
-                                    pathname: `/productDetail/${data._id}`
-                                }} >
-                                    <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
-                                </Link>
-                                <div className="mt-4 text-center">
-                                    <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
-                                    <p className=" text-base line-clamp-2">{data.title}</p>
-                                    <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
-                                    <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
-                                        <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
-                                            Add to cart
-                                        </button>
-                                    </NavLink>
-                                </div>
-                            </div>
-                        ))
-                    }
-                </Carousel>) : (
+                        <Carousel responsive={responsive_related} showDots={false}  >
+                            {
+                                currentProduct_recommned.map((data, i) => (
+                                    <div key={i} className='py-3 shadow-sm px-0 lg:px-7 flex flex-col justify-center items-center'  >
+                                        <Link className="overflow-hidden" to={{
+                                            pathname: `/productDetail/${data._id}`
+                                        }} >
+                                            <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
+                                        </Link>
+                                        <div className="mt-4 text-center">
+                                            <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
+                                            <p className=" text-base line-clamp-2">{data.title}</p>
+                                            <p className="font-bold mt-1">Rs. {data.Variant_Price}</p>
+                                            <NavLink to="/addtocart" onClick={() => handleAddToCart(data)}>
+                                                <button className="   mb-4 border border-gray-400 w-full py-[12px] mt-3 bg-gray-50 hover:bg-gray-100 font-semibold rounded-md text-black ">
+                                                    Add to cart
+                                                </button>
+                                            </NavLink>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </Carousel>) : (
                         <h1></h1>
                     )
                 }

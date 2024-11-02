@@ -16,6 +16,7 @@ export default function Footer() {
         <div className="w-full text-white md:w-auto text-center md:text-left">
           <div>
             <img src={logo} alt="" className='bg-white px-5 py-1 mb-6 border-t-[4px] border-b-[6px] border-l-[4px] border-e-[6px] border-orange-500 rounded-lg'  height={50} width={200} />
+            <p className='leading-relaxed'>Krins Henna Products</p>
             <p className="leading-relaxed">
               BERA MAYLAT,SOJAT CITY (306104)
               <br />

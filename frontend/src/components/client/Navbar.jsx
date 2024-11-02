@@ -339,7 +339,7 @@ export default function Navbar() {
                             <p className={`font-medium uppercase px-2 py-[10px] ${activeLink === 15 ? 'navConditionClass' : ''}`}><Link onClick={() => { offcanvasOpenAndClose(0), showTheActiveLinkFunc(15) }} to="/About">about us </Link></p>
                             <p className={`font-medium uppercase px-2 py-[10px] ${activeLink === 16 ? 'navConditionClass' : ''}`}><Link onClick={() => { offcanvasOpenAndClose(0), showTheActiveLinkFunc(16) }} to="/">results </Link></p>
                             <p className={`font-medium uppercase px-2 py-[10px] ${activeLink === 17 ? 'navConditionClass' : ''}`}><Link onClick={() => { offcanvasOpenAndClose(0), showTheActiveLinkFunc(17) }} to="/">blog </Link></p>
-                            <p className='px-3 py-3 font-medium text-center text-white bg-lime-800 rounded-full' ><Link to="/">Trak your order </Link></p>
+                            <p className='px-3 py-3 font-medium text-center text-white bg-lime-800 rounded-full' ><Link onClick={() => offcanvasOpenAndClose(0)} to="/orderTracking">Track your order </Link></p>
                         </section>
                     </div>
                     <div className={`${navbar ? '' : ' xl:hidden'} flex gap-7  `}>
