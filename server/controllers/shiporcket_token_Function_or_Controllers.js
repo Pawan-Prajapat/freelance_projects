@@ -156,3 +156,11 @@ export const order_exist = async (req, res) => {
         res.status(203).json({ message: "order id and awb exit", awb: ShiproketData.awb_code })
     }
 }
+
+export const shiprocket_order = async (req,res)=>{
+    const Orders = await shiprocket_create_details.find().select('channel_order_id status');
+    if(Orders.length === 0){
+       return res.status(404).json({message : "product not found"});
+    }
+    res.status(200).json({data : Orders});
+}

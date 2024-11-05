@@ -33,6 +33,7 @@ function Order() {
         return date.toLocaleString('en-US', options).replace(',', ' at');
     }
 
+
     return (
         <div className="flex flex-col p-4 bg-gray-100">
             <div className="overflow-x-auto">
@@ -83,7 +84,7 @@ function Order() {
                                                 {user.order_items.length}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
-                                                {user.status}
+                                                {user.delivery_status}
                                             </td>
                                         </tr>
                                     ))

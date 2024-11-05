@@ -71,8 +71,6 @@ function OrderWithCustomerDetail() {
                 setErrorMessage('Server error on shiprocket registration');
             });
     };
-    console.log("modified_order ", modified_order);
-
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             {errorMessage && (
