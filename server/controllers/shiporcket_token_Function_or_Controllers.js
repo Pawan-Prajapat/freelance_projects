@@ -118,7 +118,13 @@ export const create_shiprocket_order = async (req, res) => {
 
         const Order_confirm_shiprocket = new shiprocket_create_details(newOrder.data);
         await Order_confirm_shiprocket.save();
-        res.json({ message: "Order successfully added to Shiprocket", data: newOrder.data });
+
+
+        await Order.findOneAndUpdate({order_number : newOrder.data.channel_order_id} , {$set : {status : 'Done'}});
+
+        
+
+        res.json({ message: "Order successfully added to Shiprocket"});
     } catch (error) {
         // Log the error and send a response with an appropriate status code
         console.error('Error creating Shiprocket order:', error);

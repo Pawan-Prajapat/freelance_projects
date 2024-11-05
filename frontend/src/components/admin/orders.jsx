@@ -42,7 +42,7 @@ function Order() {
                         <table className="min-w-full divide-y divide-gray-200 bg-white">
                             <thead className="bg-gray-200">
                                 <tr>
-                                    {['Order', 'Date', 'Customer', 'Total', 'Payment Status', 'Fulfillment Status', 'Items', 'Delivery Status'].map((heading) => (
+                                    {['Order', 'Date', 'Customer', 'Total', 'Payment Type', 'Fulfillment Status', 'Items', 'Delivery Status'].map((heading) => (
                                         <th
                                             key={heading}
                                             scope="col"
@@ -75,7 +75,7 @@ function Order() {
                                                 {user.total_amount}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
-                                                {user.payment_status}
+                                                {user.payment_type === 'true' ? 'Prepaid' : 'COD' }
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-700">
                                                 {user.status}

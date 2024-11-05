@@ -149,11 +149,13 @@ export const orderDataAll = async (req, res) => {
     const ordersWithCustomerNames = await Promise.all(
       orders.map(async (order) => {
         const customer = await Customer.findById(order.customer_id).select('firstName lastName');
-        const ship_order = await shiprocket_create_details.find({channel_order_id : order.order_number.toString()}).select('status');
+
+        // for show the previous shiping products
+        // const ship_order = await shiprocket_create_details.find({channel_order_id : order.order_number.toString()}).select('status');
         return {
           ...order._doc,
           name: `${customer?.firstName} ${customer?.lastName}`,
-          status : ship_order.length>0 ? 'Done' : 'Pending'
+          // status : ship_order.length>0 ? 'Done' : 'Pending'  
         }
       })
     )

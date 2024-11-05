@@ -83,7 +83,8 @@ const orderSchema = new mongoose.Schema({
         default : ""
     },
     status : {
-        type : String 
+        type : String,
+        default : 'Pending'
     },
     delivery_status : {
         type : String,
