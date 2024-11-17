@@ -35,7 +35,7 @@ function Register() {
     }
     return (
         <div className={`flex justify-center h-auto mb-0`}>
-            <section className={`text-black bg-white px-8 gap-8 flex flex-col w-[50%] transition-all duration-500 ease-in-out`}>
+            <section className={`text-black bg-white px-8 gap-8 flex flex-col w-full lg:w-[50%] transition-all duration-500 ease-in-out`}>
                 <div className='flex justify-center items-center mt-4'>
                     <p className='font-semibold text-2xl uppercase tracking-wider'>create account</p>
                 </div>
