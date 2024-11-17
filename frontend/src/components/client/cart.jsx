@@ -28,7 +28,7 @@ export default function Cart(props) {
     const [selectedOptionForSort, setSelectedOptionForSort] = useState();
     const optionsForSort = [
         { value: 'featured', label: 'Featured' },
-        { value: 'bestSelling', label: 'Best Selling' },
+        // { value: 'bestSelling', label: 'Best Selling' },
         { value: 'aToz', label: 'Alphabetically,A-Z' },
         { value: 'zToa', label: 'Alphabetically,Z-A' },
         { value: 'lToh', label: 'Price, low to high' },
@@ -140,19 +140,19 @@ export default function Cart(props) {
     // maintain the use effect for sorting the cart
     const sortData = useCallback((sortType) => {
         if (sortType === 'aToz') {
-            let newData = [...currentData].sort((a, b) => a.name.localeCompare(b.name));
+            let newData = [...currentData].sort((a, b) => a.title.localeCompare(b.title));
             setCurrentData(newData);
         } else if (sortType === 'zToa') {
-            let newData = [...currentData].sort((a, b) => b.name.localeCompare(a.name));
+            let newData = [...currentData].sort((a, b) => b.title.localeCompare(a.title));
             setCurrentData(newData);
         }
         else if (sortType === 'lToh') {
-            const sortingProduct = (a, b) => a.price - b.price
+            const sortingProduct = (a, b) => a.Variant_total_price - b.Variant_total_price
             let newData = [...currentData].sort(sortingProduct);
             setCurrentData(newData);
         }
         else if (sortType === 'hTol') {
-            const sortingProduct = (a, b) => b.price - a.price
+            const sortingProduct = (a, b) => b.Variant_total_price - a.Variant_total_price
             let newData = [...currentData].sort(sortingProduct);
             setCurrentData(newData);
         }
@@ -173,7 +173,10 @@ export default function Cart(props) {
     const [selected, setSelected] = useState([]);
     const productTypeChange = (e, index) => {
 
+
+
         const activeCheck = document.getElementById(index).checked;
+        
         if (activeCheck) {
             setSelected(oldData => [...oldData, e.target.value]);
         }
@@ -186,7 +189,7 @@ export default function Cart(props) {
         if (selected.length > 0) {
             let mergeData = [];
             for (let name of selected) {
-                const tempData = props.data.filter(checks => checks.subCategroies === name);
+                const tempData = props.data.filter(checks => checks.subCategory=== name);
                 mergeData = mergeData.concat(tempData);
             }
             setCurrentData(mergeData);
@@ -199,7 +202,7 @@ export default function Cart(props) {
     // useEffect for the show products on selected product range
     // some problem*
     const sortProdutByRange = () => {
-        const tempData = props.data.filter(check => (check.price >= inputFrom && check.price <= inputTo));
+        const tempData = props.data.filter(check => (check.Variant_total_price>= inputFrom && check.Variant_total_price<= inputTo));
         setCurrentData(tempData);
     };
 
@@ -295,14 +298,14 @@ export default function Cart(props) {
                                         </div>
 
                                         <div className="w-full relative">
-                                            <input type="range" onChange={(e) => { setInputFrom(e.target.value); left() }} className=" h-1 w-full -top-1   pointer-events-none  absolute " min={props.min} max={props.max} step={props.step} defaultValue={props.min} id="leftValueSetOnRange" />
-                                            <input type="range" onChange={(e) => { setInputTo(e.target.value); right() }} className=" h-1 w-full -top-1   pointer-events-none  absolute " min={props.min} max={props.max} step={props.step} defaultValue={props.max} id="rightValueSetOnRange" />
+                                            <input type="range" onChange={(e) => { setInputFrom(e.target.value); left() }} className=" h-1 w-full -top-1   pointer-events-none cursor-pointer  absolute " min={props.min} max={props.max} step={props.step} defaultValue={props.min} id="leftValueSetOnRange" />
+                                            <input type="range" onChange={(e) => { setInputTo(e.target.value); right() }} className=" h-1 w-full -top-1   pointer-events-none cursor-pointer absolute " min={props.min} max={props.max} step={props.step} defaultValue={props.max} id="rightValueSetOnRange" />
                                         </div>
                                     </div>
                                     <div className="flex justify-between items-center mb-4 ">
-                                        <div className=" text-base border  px-2 py-3 "><span>₹</span><input onInput={(event) => leftValeRangeSetOnInput(event.target.value)} type="number" className=" placeholder:text-black border-none outline-none w-14 " dir="rtl" placeholder={props.min} id="leftValueSetOnBox" min={props.min} max={props.max} /></div>
+                                        <div className=" text-base border  px-2 py-3 "><span>₹</span><input onInput={(event) => leftValeRangeSetOnInput(event.target.value)} readOnly type="number" className=" placeholder:text-black border-none outline-none w-14 " dir="rtl" placeholder={props.min} id="leftValueSetOnBox" min={props.min} max={props.max} /></div>
                                         <div className="text-base text-black ">to</div>
-                                        <div className=" text-base border  px-2 py-3 "><span>₹</span><input onInput={(event) => rightValeRangeSetOnInput(event.target.value)} type="number" className=" placeholder:text-black border-none outline-none w-14 " dir="rtl" placeholder={props.max} id="rightValueSetOnBox" min={props.min} max={props.max} /></div>
+                                        <div className=" text-base border  px-2 py-3 "><span>₹</span><input onInput={(event) => rightValeRangeSetOnInput(event.target.value)} readOnly type="number" className=" placeholder:text-black border-none outline-none w-14 " dir="rtl" placeholder={props.max} id="rightValueSetOnBox" min={props.min} max={props.max} /></div>
                                     </div>
                                     <button onClick={() => sortProdutByRange()} className="bg-[#4b7422] text-gray-50 font-bold w-full h-14 hover:text-black hover:bg-white hover:border-2 hover:duration-100 hover:border-black ">
                                         APPLY
@@ -327,7 +330,7 @@ export default function Cart(props) {
                                     {
                                         props.productTypes.map((product, i) => (
                                             <div key={i}>
-                                                <input type="checkbox" value={product.subategory} id={i} onChange={(e) => productTypeChange(e, i)} />
+                                                <input type="checkbox" value={product.subcategory} id={i} onChange={(e) => productTypeChange(e, i)} />
                                                 <span className="ps-3 ">{product.subcategory} {`(${product.count})`}</span>
                                             </div>
                                         ))
@@ -455,8 +458,8 @@ export default function Cart(props) {
 
                         {
                             records.map((data, i) => (
-                                <div key={i} className=" relative    hover:-translate-y-5 transition ease-in-out duration-500 mt-10 ">
-                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute uppercase font-semibold text-white text-sm bg-red-600  py-1 px-2`}>
+                                <div key={i} className={` relative ${gridCart === 'grid-cols-1' ? 'flex gap-28 justify-center' : ''}    hover:-translate-y-5 transition ease-in-out duration-500 mt-10 `}>
+                                    <div className={`${data.Variant_price_off ? '' : 'hidden'} absolute ${gridCart === 'grid-cols-1' ? 'left-[152px]' : ''} uppercase font-semibold text-white text-sm bg-red-600  py-1 px-2`}>
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
@@ -465,7 +468,7 @@ export default function Cart(props) {
                                     >
                                         <LazyLoadImage alt={`${data.images[0]}`} className={`object-cover object-center block ${window.innerWidth > 1024 ? image : ''}`} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                     </Link>
-                                    <div className=" mt-4 text-center  pt-3 ">
+                                    <div className={`mt-4 text-center ${gridCart === 'grid-cols-1' ? ' w-1/3' : ''} pt-3 `}>
                                         <h3 className=" text-green-700 font-bold  title-font mb-1">Yumi mehendi</h3>
                                         <p className=" text-base line-clamp-2">{data.title}</p>
                                         <div className="flex justify-center gap-4 mt-2">

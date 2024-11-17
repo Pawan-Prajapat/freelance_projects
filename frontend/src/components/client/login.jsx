@@ -29,6 +29,7 @@ function Login(props) {
     } catch (error) {
       console.error(error);
     }
+    props.openAndClose(1);
   }
 
   const token = useSelector((state) => state.TokenReducer.token || "");
@@ -56,11 +57,11 @@ function Login(props) {
           </div>
 
           <form onSubmit={onsubmit} className={`${display ? "visible" : "hidden"}`}>
-            <label className='font-medium' htmlFor="email">Email Address <span className='text-red-500'>*</span></label>
-            <input value={user.email} onChange={handleInputs} type="text" id='email' name='email' className='border border-black outline-none placeholder:text-gray-500 px-3 py-2 my-3 w-full' placeholder='Email Address' />
+            <label className='font-medium'  htmlFor="email">Email Address <span className='text-red-500'>*</span></label>
+            <input value={user.email} required onChange={handleInputs} type="text" id='email' name='email' className='border border-black outline-none placeholder:text-gray-500 px-3 py-2 my-3 w-full' placeholder='Email Address' />
             <label className='font-medium' htmlFor="password">Password <span className='text-red-500'>*</span></label>
-            <input value={user.password} onChange={handleInputs} type="password" id='password' name='password' className='border border-black outline-none placeholder:text-gray-500 px-3 py-2 my-3 w-full' placeholder='Password' />
-            <button onClick={() => props.openAndClose(1)} className='text-lg uppercase hover:border-2 hover:border-black w-full py-[12px] mt-3 font-bold bg-[#4b7422] shadow-[5px_6px_rgb(166,222,205,1)] text-blue-50 hover:bg-white hover:text-black hover:shadow-black' type="submit">Login</button>
+            <input value={user.password} required  onChange={handleInputs} type="password" id='password' name='password' className='border border-black outline-none placeholder:text-gray-500 px-3 py-2 my-3 w-full' placeholder='Password' />
+            <button  className='text-lg uppercase hover:border-2 hover:border-black w-full py-[12px] mt-3 font-bold bg-[#4b7422] shadow-[5px_6px_rgb(166,222,205,1)] text-blue-50 hover:bg-white hover:text-black hover:shadow-black' type="submit">Login</button>
             <p className='text-center mt-3 underline underline-offset-2'>
               <Link className='cursor-pointer text-gray-700' to="/forgot-password">Forgot your password?</Link>
             </p>

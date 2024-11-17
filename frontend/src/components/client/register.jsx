@@ -42,7 +42,7 @@ function Register() {
 
                 <form onSubmit={onsubmit}>
                     <label className='font-medium' htmlFor="username">Username <span className='text-red-500'>*</span></label>
-                    <input value={user.username} onChange={handleInputs} type="text" id='username' name='username' className='border border-black outline-none placeholder:text-gray-500 px-3 py-2 my-3 w-full' placeholder='Username' />
+                    <input value={user.username}  onChange={handleInputs} type="text" id='username' name='username' className='border border-black outline-none placeholder:text-gray-500 px-3 py-2 my-3 w-full' placeholder='Username' />
                     <label className='font-medium' htmlFor="email">Email Address <span className='text-red-500'>*</span></label>
                     <input value={user.email} onChange={handleInputs} type="text" id='email' name='email' className='border border-black outline-none placeholder:text-gray-500 px-3 py-2 my-3 w-full' placeholder='Email Address' />
                     <label className='font-medium' htmlFor="phone">Phone <span className='text-red-500'>*</span></label>
