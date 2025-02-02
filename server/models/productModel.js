@@ -16,6 +16,10 @@ const productSchema = new Schema({
     type: String,
     required: true
   },
+  slug: {
+    type: String,
+    required: true
+  },
   cod: {
     type: Boolean,
     default: true
@@ -25,7 +29,7 @@ const productSchema = new Schema({
   }],
   recommend: [{
     type: mongoose.Schema.Types.ObjectId,
-    default : []
+    default: []
   }]
 }, {
   timestamps: true
@@ -46,10 +50,10 @@ const variantSchema = new Schema({
   },
   price_off: {
     type: Number,
-    default : 0
+    default: 0
   },
   final_price: {
-    type: Number 
+    type: Number
   },
   qty: {
     type: Number,
@@ -67,21 +71,21 @@ const variantSchema = new Schema({
   timestamps: false
 });
 
-variantSchema.pre('save', function(next) {
+variantSchema.pre('save', function (next) {
   if (!this.final_price) {
     this.final_price = (this.price - (this.price * this.price_off / 100)).toFixed(2);
   }
   next();
 });
 
-variantSchema.pre('findOneAndUpdate', function(next) {
+variantSchema.pre('findOneAndUpdate', function (next) {
   let update = this.getUpdate();
-  
+
   // Handle updates with $set operator
   if (update.$set) {
     update = update.$set;
   }
-  
+
   // Check if price or price_off is being updated
   if (update.price && update.price_off !== undefined) {
     update.final_price = (update.price - (update.price * update.price_off / 100)).toFixed(2);

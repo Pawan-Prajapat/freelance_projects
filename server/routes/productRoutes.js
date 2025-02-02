@@ -31,7 +31,7 @@ router.route("/upload_images").post(
 
 router.route("/all_images").get(
     get_all_description_images
-)
+);
 
 router.route("/product").patch(
     authMiddleware,

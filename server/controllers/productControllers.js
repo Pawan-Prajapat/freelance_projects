@@ -1,17 +1,79 @@
 import { Product, Variant } from "../models/productModel.js";
 import mongoose from "mongoose";
+import fs from 'fs';
+import { create } from 'xmlbuilder2';
+
+async function generateUniqueSlug(name) {
+    let slug = name
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '') // Remove special characters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .substring(0, 50); // Limit to 50 characters
+
+    let existingProduct = await Product.findOne({ slug });
+    let count = 1;
+
+    while (existingProduct) {
+        let newSlug = `${slug}-${count}`;
+        existingProduct = await Product.findOne({ slug: newSlug });
+
+        if (!existingProduct) {
+            slug = newSlug;
+            break;
+        }
+
+        count++;
+    }
+
+    return slug;
+}
+
+
+// export sitemap.xml file 
+
+export const siteMap = async (req, res) => {
+    try {
+        const products = await Product.find({}, 'slug'); // Get product slugs
+
+        // Create XML sitemap
+        const urlSet = create({ version: '1.0' }).ele('urlset', { xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9' });
+
+        // Add homepage
+        urlSet.ele('url').ele('loc').txt(`${process.env.FRONT_SITE}/`);
+
+        // Add product pages
+        products.forEach(product => {
+            urlSet.ele('url').ele('loc').txt(`${process.env.FRONT_SITE}/${product.slug}`);
+        });
+
+        const xmlString = urlSet.end({ prettyPrint: true });
+
+        // Save file to public directory
+        fs.writeFileSync('./public/sitemap.xml', xmlString);
+
+        res.header('Content-Type', 'application/xml');
+        res.send(xmlString);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to generate sitemap' });
+    }
+}
+
 
 export const storeProductData = async (req, res) => {
     try {
         const { title, description, category, subCategory, variants, media, cod, recommend } = req.body;
         const codType = (cod === 'Allow');
-        recommend = recommend.map(id => mongoose.Types.ObjectId(id));
+        if (typeof recommend !== 'undefined') {
+            recommend = recommend.map(id => mongoose.Types.ObjectId(id));
+        }
         if (title) {
+            const slug = await generateUniqueSlug(title);
             const newProduct = await Product.create({
                 title,
                 description,
                 subCategory,
                 category,
+                slug,
                 cod: codType,
                 images: media,
                 recommend

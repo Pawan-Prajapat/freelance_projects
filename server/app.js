@@ -7,6 +7,7 @@ import productRoute from "./routes/productRoutes.js";
 import authRoute from "./routes/authRoutes.js";
 import categroiesRoute from "./routes/categroiesRoutes.js";
 import banner_discount_topSlideRoute from "./routes/bannerAndSliderDiscountRoutes.js";
+import sitemapRoute from './routes/sitemapRoutes.js';
 
 config({ path: "./config/config.env" });
 
@@ -23,6 +24,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/', sitemapRoute);
 app.use("/api", paymentRoute);
 app.use("/api", buyerRoute);
 app.use("/api", productRoute);
