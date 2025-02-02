@@ -85,25 +85,27 @@ function ProductDetailWhole() {
         window.scrollTo(0, 0);
     }, [id]);
 
-    useEffect(() => {
+    // useEffect(() => {
 
 
-        const fetchVariant = async () => {
-            try {
-                const res = await axios.get(`${serverUrl}/api/getVariant/${id}`);
-                const variants = res.data.variants;
-                setVariant(variants);
-                setSelectedVariant(variants[0]);  // Set the first variant as default
-            } catch (error) {
-                console.error("Error in fetching the variants of the product");
-            }
-        };
-        fetchVariant();
-    }, [id]);
+    const fetchVariant = async (id) => {
+        try {
+            const res = await axios.get(`${serverUrl}/api/getVariant/${id}`);
+            const variants = res.data.variants;
+            setVariant(variants);
+            setSelectedVariant(variants[0]);  // Set the first variant as default
+        } catch (error) {
+            console.error("Error in fetching the variants of the product");
+        }
+    };
+    // }, [id]);
 
     if (!myName.data?.data) return <h1>Loading........ </h1>;
 
-    const currentProduct = myName.data?.data.find(element => element._id === id);
+    const currentProduct = myName.data?.data.find(element => element.slug === id);
+    if(currentProduct._id !== 'undefined'){
+        fetchVariant(currentProduct._id);
+    }
     if (!currentProduct) return <h1>Product not found</h1>;
 
     const multipleImages = [currentProduct.images];
@@ -279,7 +281,7 @@ function ProductDetailWhole() {
                                 currentProduct_recommned.map((data, i) => (
                                     <div key={i} className='py-3 shadow-sm px-0 lg:px-7 flex flex-col justify-center items-center'  >
                                         <Link className="overflow-hidden" to={{
-                                            pathname: `/productDetail/${data._id}`
+                                            pathname: `/productDetail/${data.slug}`
                                         }} >
                                             <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                         </Link>

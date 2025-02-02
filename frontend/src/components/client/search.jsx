@@ -72,7 +72,7 @@ function Search(props) {
                                         </div>
                                         <Link
                                             onClick={() => props.openAndClose()}
-                                            to={`/productDetail/${data._id}`}
+                                            to={`/productDetail/${data.slug}`}
                                             className="block bg-white rounded-lg shadow-lg overflow-hidden"
                                         >
                                             <LazyLoadImage
@@ -113,7 +113,7 @@ function Search(props) {
                                         onClick={() => props.openAndClose()}
                                         className="overflow-hidden"
                                         to={{
-                                            pathname: `/productDetail/${data._id}`
+                                            pathname: `/productDetail/${data.slug}`
                                         }}
                                     >
                                         <LazyLoadImage

@@ -146,6 +146,7 @@ function Home() {
     let records;
     let recordsForBestSelling, recordsForTrend, recordsForMostViewed;
     if (myName.data?.data !== null) {
+        console.log(myName.data);
         records = myName.data?.data.filter(element => element.category?.includes("premiumProduct")).slice(0, 4) || [];
         recordsForBestSelling = myName.data?.data.filter(element => element.category?.includes("bestSellers")).slice(0, 4) || [];
         recordsForTrend = myName.data?.data.filter(element => element.category?.includes("trendNow")).slice(0, 4) || [];
@@ -255,7 +256,7 @@ function Home() {
                                     {data.Variant_price_off}% off
                                 </div>
                                 <Link className="overflow-hidden" to={{
-                                    pathname: `/productDetail/${data._id}`
+                                    pathname: `/productDetail/${data.slug}`
                                 }} >
                                     <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                 </Link>
@@ -319,7 +320,7 @@ function Home() {
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
-                                        pathname: `/productDetail/${data._id}`
+                                        pathname: `/productDetail/${data.slug}`
                                     }} >
                                         <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                     </Link>
@@ -351,7 +352,7 @@ function Home() {
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
-                                        pathname: `/productDetail/${data._id}`
+                                        pathname: `/productDetail/${data.slug}`
                                     }} >
                                         <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                     </Link>
@@ -383,7 +384,7 @@ function Home() {
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
-                                        pathname: `/productDetail/${data._id}`
+                                        pathname: `/productDetail/${data.slug}`
                                     }} >
                                         <LazyLoadImage alt="ecommerce" className={`object-cover object-center block `} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
                                     </Link>

@@ -43,7 +43,42 @@ export const siteMap = async (req, res) => {
 
         // Add product pages
         products.forEach(product => {
-            urlSet.ele('url').ele('loc').txt(`${process.env.FRONT_SITE}/${product.slug}`);
+            urlSet.ele('url').ele('loc').txt(`${process.env.FRONT_SITE}/productDetail/${product.slug}`);
+        });
+        
+        const allUrls = [
+            'https://hennakart.in/face_care',
+            'https://hennakart.in/hair_care',
+            'https://hennakart.in/About',
+            'https://hennakart.in/faq',
+            'https://hennakart.in/Contact',
+            'https://hennakart.in/Tearms_Service',
+            'https://hennakart.in/privacy_policy',
+            'https://hennakart.in/Refund_Return',
+            'https://hennakart.in/Shipping_Policy',
+            'https://hennakart.in/bestSellers',
+            'https://hennakart.in/henna/all_henna',
+            'https://hennakart.in/henna/baq_henna',
+            'https://hennakart.in/henna/herbal_henna',
+            'https://hennakart.in/henna/natural_henna',
+            'https://hennakart.in/henna/henna_based_hair_color',
+            'https://hennakart.in/essentialOil/all_oil',
+            'https://hennakart.in/essentialOil/eucalyptus_oil',
+            'https://hennakart.in/essentialOil/lavender_oil',
+            'https://hennakart.in/essentialOil/tea_tree_oil',
+            'https://hennakart.in/essentialOil/mehandi_oil',
+            'https://hennakart.in/essentialOil/clove_oil',
+            'https://hennakart.in/essentialOil/cajeput_oil',
+            'https://hennakart.in/combopack/all_combo',
+            'https://hennakart.in/combopack/henna_and_oil_combo',
+            'https://hennakart.in/combopack/essential_oil_combo',
+            'https://hennakart.in/combopack/henna_indigo_combo',
+            'https://hennakart.in/combopack/face_care_combo',
+            'https://hennakart.in/combopack/skin_care_combo',
+            'https://hennakart.in/orderTracking'
+        ];
+        allUrls.forEach(url => {
+            urlSet.ele('url').ele('loc').txt(url);
         });
 
         const xmlString = urlSet.end({ prettyPrint: true });
@@ -223,7 +258,7 @@ export const getAllProductData = async (req, res) => {
                 Variant_Id: minWeightVariant ? minWeightVariant._id : null, // Only the _id of the variant with the lowest weight
                 Variant_Price: minWeightVariant ? minWeightVariant.price : null,
                 Variant_price_off: minWeightVariant ? minWeightVariant.price_off : 0,
-                Variant_total_price: minWeightVariant ? minWeightVariant.final_price : Variant_Price,
+                Variant_total_price: minWeightVariant ? minWeightVariant.final_price : 0,
             };
         }));
 

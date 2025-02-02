@@ -463,7 +463,7 @@ export default function Cart(props) {
                                         {data.Variant_price_off}% off
                                     </div>
                                     <Link className="overflow-hidden" to={{
-                                        pathname: `/productDetail/${data._id}`
+                                        pathname: `/productDetail/${data.slug}`
                                     }}
                                     >
                                         <LazyLoadImage alt={`${data.images[0]}`} className={`object-cover object-center block ${window.innerWidth > 1024 ? image : ''}`} style={window.innerWidth < 1024 ? { height: `${window.innerWidth * 0.477}px`, width: `${window.innerWidth * 0.477}px` } : {}} src={`${data.images[0]}`} />
