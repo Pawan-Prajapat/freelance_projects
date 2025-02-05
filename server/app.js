@@ -24,7 +24,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', sitemapRoute);
+app.use('/api', sitemapRoute);
 app.use("/api", paymentRoute);
 app.use("/api", buyerRoute);
 app.use("/api", productRoute);

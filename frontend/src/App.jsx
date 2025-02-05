@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route , useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 const Home = lazy(() => import('./components/client/home.jsx'));
 const Navbar = lazy(() => import('./components/client/Navbar.jsx'));
 const Face = lazy(() => import('./components/client/face.jsx'));
@@ -24,6 +24,8 @@ const FAQ = lazy(() => import("./components/client/faq.jsx"))
 const Contact = lazy(() => import("./components/client/contact.jsx"))
 const About = lazy(() => import("./components/client/about.jsx"))
 const OrderTracking = lazy(() => import("./components/client/orderTracking.jsx"))
+const SitemapXML = lazy(() => import("./components/client/sitemapXML.jsx"))
+const SitemapHTML = lazy(() => import("./components/client/sitemapHTML.jsx"))
 import DotLoader from "react-spinners/DotLoader";
 
 // admin components
@@ -39,7 +41,7 @@ const Orders = lazy(() => import('./components/admin/orders.jsx'));
 function Layout({ children }) {
   const location = useLocation();
 
-  const hideNavAndFooter = location.pathname === '/congratulation';
+  const hideNavAndFooter = ['/congratulation', '/sitemap.xml'].includes(location.pathname);
 
   return (
     <>
@@ -50,9 +52,10 @@ function Layout({ children }) {
   );
 }
 
+console.log(" app function se phele ");
 
 function App() {
-
+  console.log(" app function ke badd");
   return (
     <Router>
       <Layout>
@@ -89,6 +92,9 @@ function App() {
             <Route path='/congratulation/:Order_Id' element={<Congratulation />} />
 
             <Route path='/orderTracking' element={<OrderTracking />} />
+            {/* sitemap  */}
+            <Route path="/sitemap.xml" element={<SitemapXML />} />
+            <Route path="/sitemap.html" element={<SitemapHTML />} />
 
             {/* admin routes */}
             <Route path='/admin' element={<AdminLayout />} >

@@ -1,7 +1,5 @@
 import { Product, Variant } from "../models/productModel.js";
 import mongoose from "mongoose";
-import fs from 'fs';
-import { create } from 'xmlbuilder2';
 
 async function generateUniqueSlug(name) {
     let slug = name
@@ -33,20 +31,10 @@ async function generateUniqueSlug(name) {
 
 export const siteMap = async (req, res) => {
     try {
-        const products = await Product.find({}, 'slug'); // Get product slugs
-
-        // Create XML sitemap
-        const urlSet = create({ version: '1.0' }).ele('urlset', { xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9' });
-
-        // Add homepage
-        urlSet.ele('url').ele('loc').txt(`${process.env.FRONT_SITE}/`);
-
-        // Add product pages
-        products.forEach(product => {
-            urlSet.ele('url').ele('loc').txt(`${process.env.FRONT_SITE}/productDetail/${product.slug}`);
-        });
-        
+        const products = await Product.find({}, 'slug');
+        const urls = products.map((p) =>  `${process.env.FRONT_SITE}/productDetail/${p.slug}`);
         const allUrls = [
+            'https://hennakart.in/',
             'https://hennakart.in/face_care',
             'https://hennakart.in/hair_care',
             'https://hennakart.in/About',
@@ -77,17 +65,8 @@ export const siteMap = async (req, res) => {
             'https://hennakart.in/combopack/skin_care_combo',
             'https://hennakart.in/orderTracking'
         ];
-        allUrls.forEach(url => {
-            urlSet.ele('url').ele('loc').txt(url);
-        });
-
-        const xmlString = urlSet.end({ prettyPrint: true });
-
-        // Save file to public directory
-        fs.writeFileSync('./public/sitemap.xml', xmlString);
-
-        res.header('Content-Type', 'application/xml');
-        res.send(xmlString);
+        const all_urls = allUrls.concat(urls);
+        res.status(200).json({urls: all_urls});
     } catch (error) {
         res.status(500).json({ error: 'Failed to generate sitemap' });
     }
