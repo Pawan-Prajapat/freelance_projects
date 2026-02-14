@@ -1,0 +1,69 @@
+/* product page css  */
+
+/* for cards  */
+
+.product_inner_imgbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(220, 220, 220, 0.479);
+    box-shadow: 0 5px 20px -3px  rgba(59, 54, 54, 0.5);
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.product_inner_imgbox img{
+    border-radius: 0.5rem;
+    transition: all;
+}
+
+/* for footer  */
+
+footer #conctIcon{
+    display: flex;
+    justify-content: center;
+}
+
+footer .container #conctIcon .conctIcon a{
+    color: rgba(161, 113, 201, 0.527);
+    font-size: 2rem;
+    border-radius: 0.5rem;
+    padding: 3px;
+}
+
+
+/* for title product */
+#products .titleDesi{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+#products .container .card  .product_inner_imgbox{
+    transition: 1s;
+}
+
+#products .container .card  .product_inner_imgbox:hover{
+    background-color: rgba(1, 31, 43, 0.103);
+    transform: scale(1.1);
+    z-index: 20;
+}
+
+/* for navLogo */
+nav .container{
+    display: flex;
+    justify-content:center;
+}
+
+nav .container .navLogo{
+    width: 50vw;
+}
+
+
+/* product page css end  */
+
+
+
+/* about page css  */
+
