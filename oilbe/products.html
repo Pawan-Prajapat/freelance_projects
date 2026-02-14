@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap-5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/navFoot.css">
+    <title>Document</title>
+</head>
+<body>
+    <!-- navbar start -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light p-4 d-flex ">
+        
+    </nav>
+    <!-- navbar end  -->
+
+    <!-- main contant and other section are start -->
+
+    <div class="row p-4 w-100" style="background-color: rgba(185, 169, 144, 0.644);">
+        <div class="row d-flex justify-content-evenly border-secondary">
+                <button  onclick="wherecome('AllPro')" style="width: 15%;">All</button>
+                <button  onclick="wherecome('Coconut')" style="width: 15%;">Coconut</button>
+                <button  onclick="wherecome('Mustured')" style="width: 15%;">Mustured</button>
+                <button  onclick="wherecome('Sesame')" style="width: 15%;">Sesame</button>
+                <button  onclick="wherecome('Peanut')" style="width: 15%;">Peanut</button>
+        </div>
+    </div>
+
+    <div id="product" class="row  p-5 " style="background-color: rgba(127, 255, 212, 0.432);">
+        <!-- Product cards go here -->
+
+    </div>
+
+    <!-- main contant and other section are end -->
+
+
+    <!-- footer start -->
+    <footer class=" text-center py-4 px-0 footer"></footer>
+    <!-- footer end  -->
+</body>
+<script src="./js/navFoot.js"></script>
+<script src="./js/product.js"></script>
+<script src="./bootstrap-5/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to parse query parameters from the URL
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split('&');
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split('=');
+                if (decodeURIComponent(pair[0]) === variable) {
+                    return decodeURIComponent(pair[1]);
+                }
+            }
+        }
+    
+        // Check if the 'productType' parameter is in the URL
+        var productType = getQueryVariable("productType");
+        
+        // Check the value and call the 'wherecome' function accordingly
+        if (productType === "AllPro") {
+            wherecome('AllPro');
+        }
+        if (productType === "Coconut") {
+            wherecome('Coconut');
+        }
+        if (productType === "Mustured") {
+            wherecome('Mustured');
+        }
+        if (productType === "Sesame") {
+            wherecome('Sesame');
+        }
+        if (productType === "Peanut") {
+            wherecome('Peanut');
+        }
+        // Add more cases for other product types as needed
+    });
+    </script>
+</html>

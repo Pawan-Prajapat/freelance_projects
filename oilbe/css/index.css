@@ -1,0 +1,129 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+.company-logo {
+    width: 200px;
+    height: 150px;
+    object-fit: cover;
+}
+
+/* video  */
+
+#video {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* banner  */
+
+
+#banner .carousel-inner .carousel-item  img{
+    height: 40rem;
+    width: 100%;
+    z-index: -5;
+}
+
+
+/* Apply responsive styles for images based on screen width */
+@media (max-width: 767px) {
+    /* On small screens, set a max-height and max-width for the images */
+    #banner .carousel-item img {
+        max-height: 300px;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    /* On larger screens, adjust max-height and max-width as needed */
+    #banner .carousel-item img  {
+        max-height: 600px;
+        max-width: 100%;
+    }
+}
+
+
+
+/* products  */
+
+@media (max-width: 767px) {
+    /* On small screens, set a max-height and max-width for the images */
+     #porduct .col-md-3 .card {
+        max-height: 100px;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    /* On larger screens, adjust max-height and max-width as needed */
+     #porduct .col-md-3 .card {
+        max-height: 500px;
+        max-width: 100%;
+    }
+}
+
+
+/* review */
+
+@media (max-width: 767px) {
+    /* On small screens, set a max-height and max-width for the images */
+    #review .row .col-md-4{
+        max-height: 200px;
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #review .row .col-md-4 .card{
+        padding: 0;
+    }
+
+    #review .row .col-md-4 .card .card-text{
+        max-height: 100px;
+        max-width: 100%;
+        overflow: hidden;
+    }
+}
+
+@media (min-width: 768px) {
+    /* On larger screens, adjust max-height and max-width as needed */
+    #review .row .col-md-4 {
+        max-height: 600px;
+        max-width: 100%;
+    }
+}
+
+
+
+/* video */
+
+@media (max-width: 767px) {
+    /* On small screens, set a max-height and max-width for the images */
+    #video{
+        max-height: 200px;
+        max-width: 100%;
+        margin-bottom: none;
+    }
+     #video .row .col-12 video{
+        max-height: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    /* On larger screens, adjust max-height and max-width as needed */
+    #video{
+        max-height: 100%;
+        max-width: 100%;
+        margin-bottom: none;
+    }
+    #video .row .col-12 video {
+        max-height: 100%;
+        max-width: 100%;
+    }
+}
