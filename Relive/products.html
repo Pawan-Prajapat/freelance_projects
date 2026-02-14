@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap-5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Ortho Products Store</title>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-4">
+        <div class="container">
+            <div class="navLogo">
+                <a class="navbar-brand" href="index.html"><img src="./img/Relive Othro.png" alt=""></a>            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page content goes here -->
+    <!-- Example: Home Page -->
+    <div class="row " id="products">
+        <div class="titleDesi">
+            <h1>Welcome to Ortho Store</h1>
+            <p>Your one-stop shop for ortho products.</p>
+        </div>
+        <!-- Add content specific to the product page -->
+        <div class="container" >
+            
+            <div id="carouselExampleControls" class="carousel slide productRange" data-bs-ride="carousel">
+                <!-- Navigation arrows -->
+                
+                <div class="carousel-inner">
+                    <div class="carousel-item active" id="productRangedf">
+                        <!-- Set of buttons for the first slide -->
+                        <button class="d-block" onclick="specificpro('BodyBeltBraces')">Uper Limb</button>
+                        <button class="d-block" onclick="specificpro('CervicalAcids')">Cervical Acids</button>
+                        <button class="d-block" onclick="specificpro('EconomyRange')">Economy Range</button>
+                        <button class="d-block" onclick="specificpro('Fingers')">Finger</button>
+                    </div>
+                    <div class="carousel-item">
+                        <!-- Set of buttons for the second slide -->
+                        <button class="d-block" onclick="specificpro('wristArms')">Wrist & Arms</button>
+                        <button class="d-block" onclick="specificpro('FootCare')">Foot Care</button>
+                        <button class="d-block" onclick="specificpro('FractureAcids')">Fracture Acids</button>
+                        <button class="d-block" onclick="specificpro('kneeAnkle')">Knee & Ankle</button>
+                    </div>
+                    <div class="carousel-item">
+                        <!-- Set of buttons for the Third slide -->
+                        <button class="d-block" onclick="specificpro('other')">Other</button>
+                    </div>
+                </div>
+                <button class="carousel-control-prev bg-black" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev" style="width: 2em; height: 2em; border-radius: 50%;">
+                    <span class="carousel-control-prev-icon" ></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                
+                <button class="carousel-control-next bg-black" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next" style="width: 2em; height: 2em; border-radius: 50%;">
+                    <span class="carousel-control-next-icon" ></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <div class="row" id="productContainer">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 px-0">
+        <div id="foot-first-part">
+            <div class="f1">
+                <h2>About Us</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod eveniet, perspiciatis debitis dolorum
+                    dolore, cumque incidunt natus consequatur illo distinctio dolor. Perspiciatis soluta enim voluptatem
+                    accusamus, tempore quidem cum quos?
+                </p>
+            </div>
+            <div class="f2">
+                <span>Email Address</span>
+                <input type="email" name="email" id="" placeholder="Your Email Address" class="w-100 mb-2 p-2">
+                <input type="submit" value="Submit" class="  mb-2 p-2  shadow-lg">
+            </div>
+        </div>
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-3 ">
+                    <h4>Connect with Us</h4>
+                    <!-- Add social media icons here -->
+                    <div id="conctIcon">
+                        <div class="conctIcon">
+                            <a href="#"><i class="fab fa-facebook-square"></i></a>
+                        </div>
+                        <div class="conctIcon">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                        <div class="conctIcon">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                        <div class="conctIcon">
+                            <a href="#"><i class="fab fa-twitter-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <!-- Additional footer content goes here -->
+                    <h4>Address</h4>
+                    <p>Relive Pvt. Ltd. Plot No.: 163-164, Sector 90, Bindayka Industrial Area, jaipur, Rajasthan
+                        -403821</p>
+                </div>
+                <div class="col-md-3">
+                    <!-- Additional footer content goes here -->
+                    <h4>Support</h4>
+                    <p>FAQ's <br> Warranty <br> Collection & Return Policy</p>
+                </div>
+                <div class="col-md-3">
+                    <!-- Additional footer content goes here -->
+                    <h4>Contact Us</h4>
+                    <p>Relivecare@relive.com <br> +918302344987</p>
+                </div>
+            </div>
+            <br>
+            <p>&copy; 2023 Ortho Store</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and jQuery scripts -->
+    <script src="./bootstrap-5/js/bootstrap.min.js"></script>
+    <script src="./products.js"></script>
+</body>
+
+</html>
