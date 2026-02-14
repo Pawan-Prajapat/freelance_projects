@@ -1,0 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* footer */
+
+footer{
+    height: 100%;
+    width: 100%;
+    color: black;
+    background-size:100% 50%;
+    background-repeat: no-repeat;
+    background-position:bottom;
+}
+
+@media (max-width: 767px) {
+    /* On small screens, set a max-height and max-width for the images */
+    footer #foot-first-part{
+        max-height:400px;
+        max-width: 100%;
+        padding: 2rem;
+    }
+}
